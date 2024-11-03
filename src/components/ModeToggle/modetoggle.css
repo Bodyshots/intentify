@@ -1,0 +1,14 @@
+.mode_btn {
+    position: fixed;
+    display: inline-flex;
+    bottom: 0;
+    right: 0;
+    margin: 1em;
+    z-index: 10; 
+    opacity: 50%;
+}
+
+.mode_btn:hover {
+    transition: all 0.15s ease-in-out;
+    opacity: 100%;
+}
