@@ -1,5 +1,5 @@
-import { SidebarTrigger, SidebarProvider } from '@/src/components/ui/sidebar'
-import { AppSidebar } from '@/src/components/AppSidebar/appsidebar'
+import { SidebarTrigger, SidebarProvider } from '@//components/ui/sidebar'
+import { AppSidebar } from '@/components/AppSidebar/appsidebar'
 import './globals.css'
 import { Gabarito } from 'next/font/google'
 import { ThemeProvider } from '../components/ThemeProvider/themeprovider'
