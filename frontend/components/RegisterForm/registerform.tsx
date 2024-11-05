@@ -50,9 +50,8 @@ function RegisterForm() {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" 
+                <Input placeholder="Email" 
                        required 
                        type="email" 
                        {...field}/>
@@ -60,8 +59,16 @@ function RegisterForm() {
               <FormDescription>
                 Enter your email here
               </FormDescription>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
               <FormControl>
-                <Input placeholder="password"
+                <Input placeholder="Password"
                        required
                        type="password"
                        {...field}/>
