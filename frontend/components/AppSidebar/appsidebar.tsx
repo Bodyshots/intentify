@@ -1,4 +1,4 @@
-import { Home, Settings, MessageCircle, CircleHelp, UserRound} from "lucide-react"
+import { Home, Settings, CircleHelp, UserRound, Link} from "lucide-react"
 import './appsidebar.css';
 
 import {
@@ -25,9 +25,9 @@ const items = [
     icon: UserRound,
   },
   {
-    title: "Chats",
-    url: "/chats",
-    icon: MessageCircle,
+    title: "URL Intentifier",
+    url: "/intentifier",
+    icon: Link,
   },
   {
     title: "About us",

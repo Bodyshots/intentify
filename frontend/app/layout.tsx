@@ -13,6 +13,7 @@ export const metadata = {
 const gabarito = Gabarito({
   weight: '400',
   subsets: ['latin'],
+  display: 'swap',
 })
 
 export default function RootLayout({
