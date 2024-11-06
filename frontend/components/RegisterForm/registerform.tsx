@@ -59,13 +59,12 @@ function RegisterForm() {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values)
 
     let request = {
       method: 'POST',
-      headers: { 'Content-Type': 'appliaction/json'
+      headers: { 'Content-Type': 'appliaction/json',
+                 'X-CSRF-TOKEN': csrfToken
        },
       body: JSON.stringify({ "email": values.email,
                              "password": values.password,

@@ -9,4 +9,4 @@ class Config:
     SESSION_COOKIE_SAMESITE = 'None'
     CSRF_COOKIE_SAMESITE = 'None'
     SESSION_COOKIE_HTTPONLY = True
-    WTF_CSRF_ENABLED = False
+    WTF_CSRF_ENABLED = True

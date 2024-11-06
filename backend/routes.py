@@ -163,11 +163,10 @@ def auth_check():
     return make_response(jsonify({'message': 'Error checking authorization', 
                           'error': str(e)}), 500)
   
-# @main.route('/api/get-csrf-token', methods=['GET'])
-# def get_csrf_token():
-#   try:
-#     token = generate_csrf(token_key=current_app.config['SECRET_KEY'])
-#     session['user'] = 'test'  # Just to set something in the session
-#     return jsonify({'csrf_token': token})
-#   except Exception as e:
-#     return jsonify({'errors': str(e)}, 500)
+@main.route('/api/get-csrf-token', methods=['GET'])
+def get_csrf_token():
+  try:
+    token = generate_csrf()
+    return jsonify({'csrf_token': token})
+  except Exception as e:
+    return jsonify({'errors': str(e)}, 500)
