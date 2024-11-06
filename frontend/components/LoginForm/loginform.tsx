@@ -1,6 +1,7 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -16,7 +17,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email.'}).trim(),
@@ -34,20 +34,9 @@ const formSchema = z.object({
     path: ["conf_password"],
 });
 
-function RegisterForm() {
-  const { push } = useRouter();
-  const [csrfToken, setCsrfToken] = useState("");
+function LoginForm() {
 
-  // Fetch CSRF token when the component mounts
-  useEffect(() => {
-    fetch("http://localhost:4000/api/get-csrf-token", { method: "GET" })
-      .then((res) => res.json())
-      .then((data) => {
-        setCsrfToken(data.csrf_token); // assuming your backend sends the token in { csrf_token: '...'}
-        console.log(data.csrf_token);
-      })
-      .catch((err) => console.error("Error fetching CSRF token:", err));
-  }, []);
+  const navigate = useNavigate();
 
   // Defining form defaults
   const form = useForm<z.infer<typeof formSchema>>({
@@ -65,25 +54,20 @@ function RegisterForm() {
 
     let request = {
       method: 'POST',
-      headers: { 'Content-Type': 'appliaction/json'
-       },
+      headers: { 'Content-Type': 'appliaction/json' },
       body: JSON.stringify({ "email": values.email,
-                             "password": values.password,
-                             "conf_password": values.conf_password
-      })
+                             "password": values.password
+       })
     }
 
-    fetch('http://localhost:4000/register', request)
+    fetch('http://localhost:4000/login', request)
     .then(response => response.json()
     .then(data => ({
       data: data,
       response: response
     })).then(res => {
       if (res.response.ok) {
-        push('/login')
-      }
-      else {
-        console.log("Something went wrong");
+        navigate('/')
       }
     }))
   }
@@ -91,8 +75,8 @@ function RegisterForm() {
   return (
     <div>
       <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8" method="post">
-      <input type="hidden" name="csrf-token" value="{{ csrf_token() }}"/>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <Input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <FormField
           control={form.control}
           name="email"
@@ -128,24 +112,6 @@ function RegisterForm() {
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="conf_password"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="Password"
-                       required
-                       type="password"
-                       {...field}/>
-              </FormControl>
-              <FormDescription>
-                Confirm your password here
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <Button type="submit">Submit</Button>
       </form>
     </Form>
@@ -153,4 +119,4 @@ function RegisterForm() {
   )
 }
 
-export default RegisterForm
+export default LoginForm

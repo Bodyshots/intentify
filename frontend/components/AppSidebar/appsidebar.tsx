@@ -1,4 +1,5 @@
 import { Home, Settings, CircleHelp, UserRound, Link} from "lucide-react"
+import { useEffect, useState } from "react"
 import './appsidebar.css';
 
 import {
@@ -42,6 +43,14 @@ const items = [
 ]
 
 export function AppSidebar() {
+  // const [isAuth, setIsAuth] = useState(false);
+
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     const res = await fetch("")
+  //   }
+  // })
+
   return (
     <Sidebar>
       <SidebarContent>

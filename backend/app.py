@@ -1,14 +1,17 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_wtf.csrf import CSRFProtect
 from config import Config
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from constants import LOGIN_VIEW
 
 db = SQLAlchemy()
+cors = CORS()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
+csrf = CSRFProtect()
 
 # App instance
 def create_app():
@@ -19,17 +22,19 @@ def create_app():
   login_manager.init_app(app)
   login_manager.login_view = LOGIN_VIEW
   
+  from models import User
+  @login_manager.user_loader
+  def load_user(user_id):
+      return User.get(user_id)
+  
   # Connect frontend w/ backend and vice-versa
   # Frontend port: 3000
   # Backend port: 4000
   # Database port: 5432
-  CORS(app)
+  cors.init_app(app)
   db.init_app(app)
   
-  @login_manager.user_loader
-  def load_user(email):
-    from models import User
-    return User.query.filter_by(email=email).first()
+  csrf.init_app(app)
   
   # Import inside function to avoid circular import
   from routes import main
