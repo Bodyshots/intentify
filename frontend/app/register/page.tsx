@@ -1,7 +1,7 @@
 import React from 'react'
 import RegisterForm from '@/components/RegisterForm/registerform'
 
-function Register() {
+async function Register() {
   return (
     <div>
       <RegisterForm/>

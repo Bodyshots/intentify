@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useRouter } from 'next/navigation';
+import { RequestInit } from 'next/dist/server/web/spec-extension/request';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email.'}).trim(),
@@ -40,11 +41,13 @@ function RegisterForm() {
 
   // Fetch CSRF token when the component mounts
   useEffect(() => {
-    fetch("http://localhost:4000/api/get-csrf-token", { method: "GET" })
+    fetch("http://localhost:4000/api/get-csrf-token",
+      { method: "GET",
+        credentials: "include",
+       })
       .then((res) => res.json())
       .then((data) => {
-        setCsrfToken(data.csrf_token); // assuming your backend sends the token in { csrf_token: '...'}
-        console.log(data.csrf_token);
+        setCsrfToken(data.csrf_token);
       })
       .catch((err) => console.error("Error fetching CSRF token:", err));
   }, []);
@@ -59,18 +62,25 @@ function RegisterForm() {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
 
-    let request = {
-      method: 'POST',
-      headers: { 'Content-Type': 'appliaction/json',
-                 'X-CSRF-TOKEN': csrfToken
-       },
-      body: JSON.stringify({ "email": values.email,
-                             "password": values.password,
-                             "conf_password": values.conf_password
-      })
+    if (!csrfToken) {
+      console.error("CSRF token is missing");
+      return;
     }
+
+    let request: RequestInit = {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': csrfToken,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: values.email,
+        password: values.password,
+        conf_password: values.conf_password,
+      }),
+      credentials: 'include',
+    };
 
     fetch('http://localhost:4000/register', request)
     .then(response => response.json()
@@ -90,8 +100,7 @@ function RegisterForm() {
   return (
     <div>
       <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8" method="post">
-      <input type="hidden" name="csrf-token" value="{{ csrf_token() }}"/>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
           name="email"
