@@ -8,11 +8,6 @@ function page() {
 
   useEffect(() => {
     document.title = "Intentify | Home"
-    // fetch("http://localhost:8080/api/home")
-    // .then((response) => response.json())
-    // .then((data) => {
-    //     setMsg(data.msg);
-    // });
   }, []);
 
   return (

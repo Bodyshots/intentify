@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useRouter } from 'next/navigation';
 import { RequestInit } from 'next/dist/server/web/spec-extension/request';
+import { useAuth } from '@/contexts/AuthContext';
 
 const formSchema = z.object({
   email: z.string(),
@@ -27,6 +28,7 @@ const formSchema = z.object({
 function RegisterForm() {
   const { push } = useRouter();
   const [csrfToken, setCsrfToken] = useState("");
+  const { login } = useAuth();
 
   // Fetch CSRF token when the component mounts
   useEffect(() => {
@@ -51,10 +53,7 @@ function RegisterForm() {
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    console.log(csrfToken)
-    console.log(document.cookie)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
 
     if (!csrfToken) {
       console.error("CSRF token is missing");
@@ -74,20 +73,12 @@ function RegisterForm() {
       credentials: 'include',
     };
 
-    fetch('http://localhost:4000/login', request)
-    .then(response => response.json()
-    .then(data => ({
-      data: data,
-      response: response
-    })).then(res => {
-      if (res.response.ok) {
-        console.log("login success");
-        push('/')
-      }
-      else {
-        console.log("Something went wrong");
-      }
-    }))
+    if (await login(request)) {
+      push('/')
+    }
+    else {
+      console.log("Login request denied");
+    }
   }
 
   return (

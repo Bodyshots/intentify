@@ -4,6 +4,7 @@ import './globals.css'
 import { Gabarito } from 'next/font/google'
 import { ThemeProvider } from '../components/ThemeProvider/themeprovider'
 import { ModeToggle } from '../components/ModeToggle/modetoggle'
+import { AuthProvider } from '@/contexts/AuthContext'
 
 export const metadata = {
   title: 'Intentify',
@@ -26,16 +27,18 @@ export default function RootLayout({
       <body className={gabarito.className}>
       <ThemeProvider
         attribute="class"
-        defaultTheme="system"
+        defaultTheme="dark"
         enableSystem
         disableTransitionOnChange
         >
+      <AuthProvider>
       <SidebarProvider>
         <AppSidebar/>
         <ModeToggle/>
         <SidebarTrigger/>
         {children}
       </SidebarProvider>
+      </AuthProvider>
       </ThemeProvider>
       </body>
     </html>

@@ -26,7 +26,7 @@ def create_app():
   from models import User
   @login_manager.user_loader
   def load_user(user_id):
-      return User.get(user_id)
+      return User.get_by_id(user_id)
   
   # Connect frontend w/ backend and vice-versa
   # Frontend port: 3000
