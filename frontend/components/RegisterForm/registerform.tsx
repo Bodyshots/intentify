@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useRouter } from 'next/navigation';
 import { RequestInit } from 'next/dist/server/web/spec-extension/request';
-import SiteTitle from '../SiteTitle/sitetitle';
+import SiteFullTitle from '../SiteFullTitle/sitefulltitle';
 import './registerform.css';
 
 const formSchema = z.object({
@@ -101,7 +101,7 @@ function RegisterForm() {
 
   return (
     <div className="register_form_comp">
-      <SiteTitle/>
+      <SiteFullTitle/>
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 register_form">
         <FormField
