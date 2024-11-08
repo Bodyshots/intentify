@@ -4,9 +4,13 @@ import React, { useEffect, useState } from 'react'
 import SiteTitle from '@/components/SiteFullTitle/SiteTitle/sitetitle';
 import SiteSlogan from '@/components/SiteFullTitle/SiteSlogan/siteslogan';
 import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
+import SiteFullTitle from '@/components/SiteFullTitle/sitefulltitle';
 import './home.css'
 
-const placeholders = ["test1", "test2", "test3"]
+const placeholders = ["https://www.apple.com/",
+                      "https://www.microsoft.com/en-ca",
+                      "https://www.amazon.ca/",
+                      "https://www.youtube.com/"]
 
 
 function Home() {
@@ -20,11 +24,11 @@ function Home() {
   return (
     <div className="landing_container">
       <div>
-        <span className="text-5xl py-10"><SiteTitle/></span>
+        <SiteFullTitle/>
         <PlaceholdersAndVanishInput placeholders={placeholders}
                                     onChange={(e) => console.log(e)}
                                     onSubmit={(e) => console.log(e)}/>
-        <span className="text-3xl"><SiteSlogan/></span>
+        <span className="text-3xl">instructions</span>
         whoa
       </div>
       test
