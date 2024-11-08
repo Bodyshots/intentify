@@ -35,7 +35,7 @@ export default function RootLayout({
       <SidebarProvider>
         <AppSidebar/>
         <ModeToggle/>
-        <SidebarTrigger/>
+        <SidebarTrigger style={{marginRight: "1em"}}/>
         {children}
       </SidebarProvider>
       </AuthProvider>

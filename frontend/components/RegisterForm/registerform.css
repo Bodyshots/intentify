@@ -9,6 +9,7 @@
   width: 50%;
   box-shadow: 3px 3px 3px hsl(var(--sidebar-foreground));
   border-radius: 8px;
+  background-color: hsl(var(--sidebar-background));
   /* margin: auto; */
 }
 

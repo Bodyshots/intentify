@@ -4,12 +4,15 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
+const placeholders = ["https://www.apple.com/",
+                      "https://www.microsoft.com/en-ca",
+                      "https://www.amazon.ca/",
+                      "https://www.youtube.com/"]
+
 export function PlaceholdersAndVanishInput({
-  placeholders,
   onChange,
   onSubmit,
 }: {
-  placeholders: string[];
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }) {

@@ -85,7 +85,7 @@ function RegisterForm() {
 
   return (
     <div className="login_form_comp">
-      <SiteFullTitle/>
+      {SiteFullTitle(5, 2)}
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 login_form">
         <FormField

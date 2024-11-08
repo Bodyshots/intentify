@@ -101,7 +101,7 @@ function RegisterForm() {
 
   return (
     <div className="register_form_comp">
-      <SiteFullTitle/>
+      {SiteFullTitle(5, 2)}
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 register_form">
         <FormField
@@ -145,7 +145,7 @@ function RegisterForm() {
           render={({ field }) => (
             <FormItem className="w-4/6">
               <FormControl>
-                <Input placeholder="Password"
+                <Input placeholder="Confirm Password"
                        required
                        type="password"
                        {...field}/>
