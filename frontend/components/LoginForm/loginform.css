@@ -1,0 +1,26 @@
+.login_form_comp {
+  padding: 2em;
+  height: 65%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column nowrap;
+  gap: 1.5em;
+  width: 50%;
+  box-shadow: 3px 3px 3px hsl(var(--sidebar-foreground));
+  border-radius: 8px;
+  /* margin: auto; */
+}
+
+.login_form {
+  width: 100%;
+  height: auto;
+  flex-flow: column nowrap;
+  align-self: center;
+  align-items: center;
+  display: flex;
+}
+
+.login_title {
+  font-size: 2.5em;
+}

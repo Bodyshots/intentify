@@ -1,0 +1,9 @@
+.logo_container {
+  width: 1em;
+  height: auto;
+  color: hsl(130, 63%, 50%);
+}
+/* 
+.title_text {
+  color: hsl(var(--sidebar-foreground));
+} */

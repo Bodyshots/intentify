@@ -18,6 +18,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { useRouter } from 'next/navigation';
 import { RequestInit } from 'next/dist/server/web/spec-extension/request';
+import SiteTitle from '../SiteTitle/sitetitle';
+import './registerform.css';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email.'}).trim(),
@@ -98,18 +100,19 @@ function RegisterForm() {
   }
 
   return (
-    <div>
+    <div className="register_form_comp">
+      <SiteTitle/>
       <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 register_form">
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-4/6">
               <FormControl>
                 <Input placeholder="Email" 
                        required 
-                       type="email" 
+                       type="email"
                        {...field}/>
               </FormControl>
               <FormDescription>
@@ -122,7 +125,7 @@ function RegisterForm() {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-4/6">
               <FormControl>
                 <Input placeholder="Password"
                        required
@@ -140,7 +143,7 @@ function RegisterForm() {
           control={form.control}
           name="conf_password"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-4/6">
               <FormControl>
                 <Input placeholder="Password"
                        required

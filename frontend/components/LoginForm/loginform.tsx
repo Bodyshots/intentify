@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import './loginform.css'
  
 import { Button } from "@/components/ui/button"
 import {
@@ -19,6 +20,7 @@ import { Input } from "@/components/ui/input"
 import { useRouter } from 'next/navigation';
 import { RequestInit } from 'next/dist/server/web/spec-extension/request';
 import { useAuth } from '@/contexts/AuthContext';
+import SiteTitle from '../SiteTitle/sitetitle';
 
 const formSchema = z.object({
   email: z.string(),
@@ -82,14 +84,15 @@ function RegisterForm() {
   }
 
   return (
-    <div>
+    <div className="login_form_comp">
+      <SiteTitle/>
       <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 login_form">
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-4/6">
               <FormControl>
                 <Input placeholder="Email" 
                        required 
@@ -106,7 +109,7 @@ function RegisterForm() {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-4/6">
               <FormControl>
                 <Input placeholder="Password"
                        required
