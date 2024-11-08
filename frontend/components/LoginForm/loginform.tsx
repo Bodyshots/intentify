@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input"
 import { useRouter } from 'next/navigation';
 import { RequestInit } from 'next/dist/server/web/spec-extension/request';
 import { useAuth } from '@/contexts/AuthContext';
-import SiteTitle from '../SiteTitle/sitetitle';
+import SiteFullTitle from '../SiteFullTitle/sitefulltitle';
 
 const formSchema = z.object({
   email: z.string(),
@@ -85,7 +85,7 @@ function RegisterForm() {
 
   return (
     <div className="login_form_comp">
-      <SiteTitle/>
+      <SiteFullTitle/>
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 login_form">
         <FormField

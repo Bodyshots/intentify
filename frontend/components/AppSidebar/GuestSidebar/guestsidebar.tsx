@@ -1,4 +1,4 @@
-import { Home, Settings, CircleHelp, UserRoundPen, Link, LogIn} from "lucide-react"
+import { Home, DollarSign, CircleHelp, UserRoundPen, Link, LogIn} from "lucide-react"
 
 import {
   Sidebar,
@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import SiteTitle from "@/components/SiteFullTitle/SiteTitle/sitetitle"
 
 // Menu items.
 const items = [
@@ -17,6 +18,16 @@ const items = [
     title: "Home",
     url: "/",
     icon: Home,
+  },
+  {
+    title: "Pricing",
+    url: "/pricing",
+    icon: DollarSign
+  },
+  {
+    title: "URL Intentifier",
+    url: "/intentifier",
+    icon: Link,
   },
   {
     title: "Sign in",
@@ -29,20 +40,10 @@ const items = [
     icon: UserRoundPen,
   },
   {
-    title: "URL Intentifier",
-    url: "/intentifier",
-    icon: Link,
-  },
-  {
     title: "About us",
     url: "/about",
     icon: CircleHelp,
-  },
-  {
-    title: "Settings",
-    url: "/settings",
-    icon: Settings,
-  },
+  }
 ]
 
 export function GuestSidebar() {
@@ -51,7 +52,7 @@ export function GuestSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-lg text-foreground justify-center flex"><SiteTitle/></SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

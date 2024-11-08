@@ -1,0 +1,9 @@
+.landing_container {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  flex-flow: column nowrap;
+  width: 100%;
+  margin: auto;
+  height: 100%;
+}
