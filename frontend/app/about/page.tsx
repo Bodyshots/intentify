@@ -1,8 +1,9 @@
 import React from 'react'
+import AboutCard from '@/components/AboutCard/aboutcard'
 
 function About() {
   return (
-    <div>About</div>
+    <AboutCard/>
   )
 }
 

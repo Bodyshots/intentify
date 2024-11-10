@@ -12,7 +12,7 @@ function Home() {
     <Head>
       <title>{"Intentify | Home"}</title>
     </Head>
-    <div className="landing_container flex justify-center py-11 rounded-2xl">
+    <div className="landing_container flex justify-center py-10 rounded-2xl">
       <div className="flex flex-row justify-evenly">
         <div className="search_hero_container gap-6 p-4 flex justify-center py-10">
           <SiteFullTitle titleClass='text-6xl' sloganClass='4xl'/>

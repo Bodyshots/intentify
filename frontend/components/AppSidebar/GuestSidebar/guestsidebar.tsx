@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import SiteTitle from "@/components/SiteFullTitle/SiteTitle/sitetitle"
+import { TransitionLink } from "@/lib/TransitionLink"
 
 // Menu items.
 const items = [
@@ -58,10 +59,10 @@ export function GuestSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <TransitionLink href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </TransitionLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

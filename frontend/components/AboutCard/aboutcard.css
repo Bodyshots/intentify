@@ -1,0 +1,13 @@
+.about_container {
+  text-align: center;
+  flex-flow: column nowrap;
+  width: 70%;
+  margin: auto;
+  height: auto;
+  align-items: center;
+  align-self: center;
+  text-align: center;
+  background-color: hsl(var(--sidebar-background));
+  text-align: left
+}
+

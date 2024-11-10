@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -13,7 +13,6 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -27,7 +26,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 
 const formSchema = z.object({
-  email: z.string(),
+  email: z.string().email({ message: 'Please enter a valid email!'}).trim(),
   password: z.string()
 })
 
@@ -57,6 +56,7 @@ function RegisterForm() {
       email: "",
       password: "",
     },
+    mode: 'onChange',
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -106,6 +106,9 @@ function RegisterForm() {
               <FormDescription>
                 Enter your email here
               </FormDescription>
+              <FormMessage>
+              {form.formState.errors.email && form.formState.errors.email.message}
+              </FormMessage>
             </FormItem>
           )}
         />
@@ -123,6 +126,9 @@ function RegisterForm() {
               <FormDescription>
                 Enter your password here
               </FormDescription>
+              <FormMessage>
+              {form.formState.errors.password && form.formState.errors.password.message}
+              </FormMessage>
               <FormMessage />
             </FormItem>
           )}

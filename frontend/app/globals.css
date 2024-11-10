@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  transition-property: opacity, transform;
+  transition-timing-function: ease-in-out;
+  transition-duration: 250ms;
+}
+
+.page-transition {
+  opacity: 0;
+  filter: blur(5px);
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
