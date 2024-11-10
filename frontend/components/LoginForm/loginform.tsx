@@ -22,6 +22,10 @@ import { RequestInit } from 'next/dist/server/web/spec-extension/request';
 import { useAuth } from '@/contexts/AuthContext';
 import SiteFullTitle from '../SiteFullTitle/sitefulltitle';
 
+import { setCsrfToken } from '@/redux/slices/csrfSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
+
 const formSchema = z.object({
   email: z.string(),
   password: z.string()
@@ -29,7 +33,8 @@ const formSchema = z.object({
 
 function RegisterForm() {
   const { push } = useRouter();
-  const [csrfToken, setCsrfToken] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+  const csrfToken = useSelector((state: RootState) => state.csrf.token)
   const { login } = useAuth();
 
   // Fetch CSRF token when the component mounts
@@ -40,8 +45,7 @@ function RegisterForm() {
        })
       .then((res) => res.json())
       .then((data) => {
-        setCsrfToken(data.csrf_token); // assuming your backend sends the token in { csrf_token: '...'}
-        console.log(data.csrf_token);
+        dispatch(setCsrfToken(data.csrf_token));
       })
       .catch((err) => console.error("Error fetching CSRF token:", err));
   }, []);
@@ -85,7 +89,7 @@ function RegisterForm() {
 
   return (
     <div className="login_form_comp">
-      {SiteFullTitle(5, 2)}
+      <SiteFullTitle titleClass='text-5xl' sloganClass='text-2xl'/>
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 login_form">
         <FormField

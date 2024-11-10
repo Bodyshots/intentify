@@ -1,5 +1,7 @@
 .login_form_comp {
   padding: 2em;
+  padding-top: 1em;
+  padding-bottom: 1em;
   height: 65%;
   display: flex;
   align-items: center;

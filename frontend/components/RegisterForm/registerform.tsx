@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
- 
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -12,7 +11,6 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -20,6 +18,10 @@ import { useRouter } from 'next/navigation';
 import { RequestInit } from 'next/dist/server/web/spec-extension/request';
 import SiteFullTitle from '../SiteFullTitle/sitefulltitle';
 import './registerform.css';
+
+import { setCsrfToken } from '@/redux/slices/csrfSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email.'}).trim(),
@@ -39,7 +41,8 @@ const formSchema = z.object({
 
 function RegisterForm() {
   const { push } = useRouter();
-  const [csrfToken, setCsrfToken] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+  const csrfToken = useSelector((state: RootState) => state.csrf.token)
 
   // Fetch CSRF token when the component mounts
   useEffect(() => {
@@ -49,7 +52,7 @@ function RegisterForm() {
        })
       .then((res) => res.json())
       .then((data) => {
-        setCsrfToken(data.csrf_token);
+        dispatch(setCsrfToken(data.csrf_token));
       })
       .catch((err) => console.error("Error fetching CSRF token:", err));
   }, []);
@@ -61,6 +64,7 @@ function RegisterForm() {
       email: "",
       password: "",
     },
+    mode: 'onChange',
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -101,7 +105,7 @@ function RegisterForm() {
 
   return (
     <div className="register_form_comp">
-      {SiteFullTitle(5, 2)}
+      <SiteFullTitle titleClass='text-5xl' sloganClass='text-2xl'/>
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 register_form">
         <FormField
@@ -118,6 +122,9 @@ function RegisterForm() {
               <FormDescription>
                 Enter your email here
               </FormDescription>
+              <FormMessage>
+              {form.formState.errors.email && form.formState.errors.email.message}
+              </FormMessage>
             </FormItem>
           )}
         />
@@ -135,7 +142,9 @@ function RegisterForm() {
               <FormDescription>
                 Enter your password here
               </FormDescription>
-              <FormMessage />
+              <FormMessage>
+              {form.formState.errors.password && form.formState.errors.password.message}
+              </FormMessage>
             </FormItem>
           )}
         />
@@ -143,7 +152,7 @@ function RegisterForm() {
           control={form.control}
           name="conf_password"
           render={({ field }) => (
-            <FormItem className="w-4/6">
+            <FormItem className="w-4/6 focus:bg-red-600">
               <FormControl>
                 <Input placeholder="Confirm Password"
                        required
@@ -153,11 +162,13 @@ function RegisterForm() {
               <FormDescription>
                 Confirm your password here
               </FormDescription>
-              <FormMessage />
+              <FormMessage>
+              {form.formState.errors.conf_password && form.formState.errors.conf_password.message}
+              </FormMessage>
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" className="hover:bg-custom_green_hover dark:hover:bg-muted-foreground">Submit</Button>
       </form>
     </Form>
     </div>

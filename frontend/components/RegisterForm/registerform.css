@@ -1,6 +1,5 @@
 .register_form_comp {
   padding: 2em;
-  height: 80%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,7 +9,6 @@
   box-shadow: 3px 3px 3px hsl(var(--sidebar-foreground));
   border-radius: 8px;
   background-color: hsl(var(--sidebar-background));
-  /* margin: auto; */
 }
 
 .register_form {

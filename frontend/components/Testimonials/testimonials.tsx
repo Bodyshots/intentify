@@ -59,10 +59,14 @@ const testimonials = [ {
 }
 ]
 
-function Testimonials() {
+interface TestimonialsProps {
+  className_add?: string;
+}
+
+function Testimonials({className_add}: TestimonialsProps) {
 
   return (
-    <div className="testimonial_container">
+    <div className={`testimonial_container ${className_add ? className_add : ''}`}>
       <Carousel className="w-full max-w-xs"
                 opts={{loop: true}}
                 plugins={[Autoplay({delay: 5000})]}>

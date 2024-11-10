@@ -5,6 +5,7 @@ import { Gabarito } from 'next/font/google'
 import { ThemeProvider } from '../components/ThemeProvider/themeprovider'
 import { ModeToggle } from '../components/ModeToggle/modetoggle'
 import { AuthProvider } from '@/contexts/AuthContext'
+import { ReduxProvider } from '@/redux/reduxprovider'
 
 export const metadata = {
   title: 'Intentify',
@@ -27,16 +28,18 @@ export default function RootLayout({
       <body className={gabarito.className}>
       <ThemeProvider
         attribute="class"
-        defaultTheme="dark"
+        defaultTheme="light"
         enableSystem
         disableTransitionOnChange
         >
       <AuthProvider>
       <SidebarProvider>
+      <ReduxProvider>
         <AppSidebar/>
         <ModeToggle/>
         <SidebarTrigger style={{marginRight: "1em"}}/>
         {children}
+      </ReduxProvider>
       </SidebarProvider>
       </AuthProvider>
       </ThemeProvider>

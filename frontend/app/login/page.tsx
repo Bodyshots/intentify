@@ -7,7 +7,7 @@ function Login() {
   return (
     <div className="login_container">
       <LoginForm/>
-      <Testimonials/>
+      <Testimonials className_add='px-6'/>
     </div>
   )
 }
