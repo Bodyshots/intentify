@@ -1,4 +1,4 @@
-import { Home, DollarSign, CircleHelp, UserRoundPen, Link, LogIn} from "lucide-react"
+import { Home, CircleHelp, UserRoundPen, Link2, LogIn} from "lucide-react"
 
 import {
   Sidebar,
@@ -11,7 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import SiteTitle from "@/components/SiteFullTitle/SiteTitle/sitetitle"
-import { TransitionLink } from "@/lib/TransitionLink"
+import Link from "next/link"
 
 // Menu items.
 const items = [
@@ -21,14 +21,9 @@ const items = [
     icon: Home,
   },
   {
-    title: "Pricing",
-    url: "/pricing",
-    icon: DollarSign
-  },
-  {
     title: "URL Intentifier",
     url: "/intentifier",
-    icon: Link,
+    icon: Link2,
   },
   {
     title: "Sign in",
@@ -59,10 +54,10 @@ export function GuestSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <TransitionLink href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </TransitionLink>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

@@ -1,4 +1,4 @@
-import { Home, Settings, CircleHelp, UserRound, Link, LogOut, DollarSign } from "lucide-react"
+import { Home, Settings, CircleHelp, UserRound, Link2, LogOut } from "lucide-react"
 
 import {
   Sidebar,
@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import SiteTitle from "@/components/SiteFullTitle/SiteTitle/sitetitle"
+import Link from "next/link"
 
 // Menu items.
 const items = [
@@ -20,14 +21,9 @@ const items = [
     icon: Home,
   },
   {
-    title: "Pricing",
-    url: "/pricing",
-    icon: DollarSign
-  },
-  {
     title: "URL Intentifier",
     url: "/intentifier",
-    icon: Link,
+    icon: Link2,
   },
   {
     title: "Your Account",
@@ -63,10 +59,10 @@ export function AuthSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

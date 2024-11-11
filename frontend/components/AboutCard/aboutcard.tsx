@@ -1,6 +1,6 @@
 import './aboutcard.css'
 
-function AboutCard() {
+export const AboutCard = () => {
 
   return (
     <div className="about_container px-10 py-8 rounded-2xl">
@@ -21,5 +21,3 @@ function AboutCard() {
     </div>
   )
 }
-
-export default AboutCard
