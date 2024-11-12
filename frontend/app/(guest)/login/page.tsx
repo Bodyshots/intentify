@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react'
 import LoginForm from '@/components/LoginForm/loginform'
 import Testimonials from '@/components/Testimonials/testimonials'
@@ -8,7 +10,7 @@ import { redirect } from 'next/navigation'
 
 function Login() {
   const { isAuth } = useAuth();
-  if (!isAuth) {
+  if (isAuth) {
     redirect('/');
   }
 

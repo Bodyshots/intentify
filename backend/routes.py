@@ -47,11 +47,10 @@ def get_sessions():
     session_data = [{ID: session.id, 
                      EMAIL: session.email,
                      SESSION_TOKEN: session.session_token,
-                     CREATED: session.created_at,
-                     EXPIRED: session.expires_at} for session in users_sessions]
+                     CREATED_AT: session.created_at,
+                     EXPIRED_AT: session.expires_at} for session in users_sessions]
     return make_response(jsonify(session_data), OK)
   except Exception as e:
-    db.session.rollback()
     return make_response(jsonify({MSG: 'Error getting user sessions',
                                   ERROR: str(e)}), INTERNAL_ERR)
 
