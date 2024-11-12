@@ -5,7 +5,12 @@ import React, { createContext, useState, useEffect, ReactNode, useContext } from
 // Define types for the context value
 interface AuthContextType {
   isAuth: boolean;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
   login: (request: RequestInit) => Promise<boolean>;
+  get_info: (request: RequestInit) => Promise<void>;
   logout: (request: RequestInit) => Promise<boolean>;
 }
 
@@ -21,6 +26,10 @@ export function useAuth() {
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuth, setIsAuth] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
   useEffect(() => {
     // Check authentication status on app load or refresh
@@ -43,11 +52,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (request: RequestInit) => {
     try {
       const response = await fetch('http://localhost:4000/login', request);
-      const data = await response.json();
 
-      if (response.ok) {
+      if ((await response.json()).ok) {
         setIsAuth(true);  // Update authentication state
-        console.log(data.message);  // Optionally handle the response
         return true;
       }
       return false;
@@ -56,6 +63,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return false;
       }
   }
+
+  const get_info = async (request: RequestInit) => {
+    try {
+      const response = await fetch('http://localhost:4000/api/user', request);
+      const data = await response.json();
+
+      if (response.ok) {
+        setEmail(data.email)
+        setPassword(data.password)
+        setFirstName(data.firstName)
+        setLastName(data.lastName)
+      }
+    } catch (error) {
+      console.error('Error finding user info', error);
+    }
+  };
 
   const logout = async (request: RequestInit) => {
     try {
@@ -75,7 +98,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuth, login, logout }}>
+    <AuthContext.Provider value={{ isAuth, email, password, firstName, lastName,
+                                   login, get_info, logout }}>
       {children}
     </AuthContext.Provider>
   );

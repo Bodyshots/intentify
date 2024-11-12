@@ -3,8 +3,15 @@ import LoginForm from '@/components/LoginForm/loginform'
 import Testimonials from '@/components/Testimonials/testimonials'
 import './loginpage.css'
 import Head from 'next/head'
+import { useAuth } from '@/contexts/AuthContext'
+import { redirect } from 'next/navigation'
 
 function Login() {
+  const { isAuth } = useAuth();
+  if (!isAuth) {
+    redirect('/');
+  }
+
   return (<>
   <Head>
     <title>{"Intentify | Login"}</title>

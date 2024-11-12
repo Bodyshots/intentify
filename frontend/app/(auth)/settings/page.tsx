@@ -1,8 +1,16 @@
 import Head from 'next/head'
 import React from 'react'
 import { SettingsCard } from '@/components/SettingsCard/settingscard'
+import { checkAuth } from '@/lib/checkauth'
+import { redirect } from 'next/navigation'
 
-function Settings() {
+const Settings = async () => {
+  const isAuth = await checkAuth();
+
+  if (!isAuth) {
+    redirect('/');
+  }
+  
   return (<>
     <Head>
       <title>{"Intentify | Settings"}</title>
@@ -11,4 +19,4 @@ function Settings() {
     </>)
 }
 
-export default Settings
+export default Settings;

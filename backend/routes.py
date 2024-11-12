@@ -55,6 +55,20 @@ def get_sessions():
     return make_response(jsonify({MSG: 'Error getting user sessions',
                                   ERROR: str(e)}), INTERNAL_ERR)
 
+@main.route('/api/user', methods=[GET])
+def get_curr_user():
+  try:
+    if (check_auth_status()):
+      return make_response(jsonify({ID: current_user.id,
+                                    EMAIL: current_user.email,
+                                    FIRST_NAME: current_user.first_name,
+                                    LAST_NAME: current_user.last_name,
+                                    PASSWORD: current_user.password}), OK)
+    return make_response(jsonify({MSG: "User not signed in"}), UNAUTHORIZED)
+  except Exception as e:
+    return make_response(jsonify({MSG: "Error getting user information",
+                                  ERROR: str(e)}), BAD_REQUEST)
+
 @main.route('/api/users/<id>', methods=[GET])
 def get_user(id):
   try:
