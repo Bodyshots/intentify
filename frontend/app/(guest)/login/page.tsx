@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import LoginForm from '@/components/LoginForm/loginform'
 import Testimonials from '@/components/Testimonials/testimonials'
 import './loginpage.css'
@@ -10,9 +10,11 @@ import { redirect } from 'next/navigation'
 
 function Login() {
   const { isAuth } = useAuth();
-  if (isAuth) {
-    redirect('/');
-  }
+  useEffect(() => {
+    if (isAuth) {
+      redirect('/');
+    }
+  }, [])
 
   return (<>
   <Head>

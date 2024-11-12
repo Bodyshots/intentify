@@ -52,9 +52,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (request: RequestInit) => {
     try {
       const response = await fetch('http://localhost:4000/login', request);
+      const data = await response.json();
 
-      if ((await response.json()).ok) {
+      if (response.ok) {
         setIsAuth(true);  // Update authentication state
+        console.log(data.message);  // Optionally handle the response
         return true;
       }
       return false;
