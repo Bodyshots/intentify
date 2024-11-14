@@ -5,8 +5,9 @@ import Testimonials from '@/components/Testimonials/testimonials'
 import Head from 'next/head'
 
 function Register() {
-  
-  return (<>
+
+  return (
+  (<>
   <Head>
     <title>{"Intentify | Register"}</title>
   </Head>
@@ -14,7 +15,7 @@ function Register() {
       <RegisterForm/>
       <Testimonials className_add='px-6'/>
     </div>
-  </>)
+  </>))
 }
 
 export default Register

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -15,13 +15,12 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useRouter } from 'next/navigation';
-import { RequestInit } from 'next/dist/server/web/spec-extension/request';
 import SiteFullTitle from '../SiteFullTitle/sitefulltitle';
+import { useAppSelector } from '@/redux/store';
 import './registerform.css';
+import { redirect } from 'next/navigation';
 
-import { setCsrfToken } from '@/redux/slices/csrfSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/redux/store';
+import getCSRF from '@/lib/GetCSRF';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email!'}).trim(),
@@ -41,21 +40,8 @@ const formSchema = z.object({
 
 function RegisterForm() {
   const { push } = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
-  const csrfToken = useSelector((state: RootState) => state.csrf.token)
-
-  // Fetch CSRF token when the component mounts
-  useEffect(() => {
-    fetch("http://localhost:4000/api/get-csrf-token",
-      { method: "GET",
-        credentials: "include",
-       })
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch(setCsrfToken(data.csrf_token));
-      })
-      .catch((err) => console.error("Error fetching CSRF token:", err));
-  }, []);
+  const csrfToken = getCSRF();
+  const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
 
   // Defining form defaults
   const form = useForm<z.infer<typeof formSchema>>({
@@ -67,43 +53,38 @@ function RegisterForm() {
     mode: 'onChange',
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!csrfToken) {
       console.error("CSRF token is missing");
       return;
     }
 
-    let request: RequestInit = {
-      method: 'POST',
-      headers: {
-        'X-CSRFToken': csrfToken,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: values.email,
-        password: values.password,
-        conf_password: values.conf_password,
-      }),
-      credentials: 'include',
-    };
-
-    fetch('http://localhost:4000/register', request)
-    .then(response => response.json()
-    .then(data => ({
-      data: data,
-      response: response
-    })).then(res => {
-      if (res.response.ok) {
-        push('/login')
+    try {
+      const response = await fetch('http://localhost:4000/register', {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': csrfToken,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: values.email,
+          password: values.password,
+          conf_password: values.conf_password,
+        }),
+        credentials: 'include',
+      });
+      const data = await response.json();
+      console.log(data.message);
+      if (response.ok) {
+        push('/login');
       }
-      else {
-        console.log("Something went wrong");
-      }
-    }))
+    } 
+    catch (error) {
+      console.error("Error registering", error);
+    }
   }
 
-  return (
+  return ( auth ? redirect('/') :
     <div className="register_form_comp">
       <SiteFullTitle titleClass='text-5xl' sloganClass='text-2xl'/>
       <Form {...form}>

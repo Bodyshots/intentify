@@ -16,14 +16,12 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useRouter } from 'next/navigation';
-import { RequestInit } from 'next/dist/server/web/spec-extension/request';
-import { useAuth } from '@/contexts/AuthContext';
 import SiteFullTitle from '../SiteFullTitle/sitefulltitle';
 
-import { setCsrfToken } from '@/redux/slices/csrfSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/redux/store';
+import getCSRF from '@/lib/GetCSRF';
+import { setAuth } from '@/redux/slices/authSlice';
+import { redirect } from 'next/navigation';
+import { useAppDispatch, useAppSelector } from '@/redux/store';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email!'}).trim(),
@@ -31,23 +29,9 @@ const formSchema = z.object({
 })
 
 function RegisterForm() {
-  const { push } = useRouter();
-  const dispatch = useDispatch<AppDispatch>();
-  const csrfToken = useSelector((state: RootState) => state.csrf.token)
-  const { login } = useAuth();
-
-  // Fetch CSRF token when the component mounts
-  useEffect(() => {
-    fetch("http://localhost:4000/api/get-csrf-token",
-      { method: "GET",
-        credentials: "include",
-       })
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch(setCsrfToken(data.csrf_token));
-      })
-      .catch((err) => console.error("Error fetching CSRF token:", err));
-  }, []);
+  const csrfToken = getCSRF();
+  const dispatch = useAppDispatch();
+  const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
 
   // Defining form defaults
   const form = useForm<z.infer<typeof formSchema>>({
@@ -60,34 +44,38 @@ function RegisterForm() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-
     if (!csrfToken) {
       console.error("CSRF token is missing");
       return;
     }
-
-    let request: RequestInit = {
-      method: 'POST',
-      headers: {
-        'X-CSRFToken': csrfToken,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: values.email,
-        password: values.password,
-      }),
-      credentials: 'include',
-    };
-
-    if (await login(request)) {
-      push('/')
-    }
-    else {
-      console.log("Login request denied");
+    try {
+      const response = await fetch('http://localhost:4000/login', {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': csrfToken,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: values.email,
+          password: values.password,
+        }),
+        credentials: 'include',
+      });
+      const data = await response.json();
+      console.log(data.message);
+  
+      if (response.ok) {
+        dispatch(setAuth(true));
+      }
+      else {
+        dispatch(setAuth(false));
+      }
+    } catch (error) {
+      console.error("Error logging in", error);
     }
   }
 
-  return (
+  return auth ? redirect('/') : (
     <div className="login_form_comp">
       <SiteFullTitle titleClass='text-5xl' sloganClass='text-2xl'/>
       <Form {...form}>

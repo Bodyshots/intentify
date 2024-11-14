@@ -3,12 +3,13 @@ import React from 'react'
 import { SettingsCard } from '@/components/SettingsCard/settingscard'
 
 function Settings() {
-  return (<>
+  return (
+  (<>
     <Head>
       <title>{"Intentify | Settings"}</title>
     </Head>
     <SettingsCard/>
-    </>)
+  </>))
 }
 
 export default Settings

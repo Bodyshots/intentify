@@ -1,22 +1,13 @@
-"use client"
-
-import React, { useEffect } from 'react'
+import React from 'react'
 import LoginForm from '@/components/LoginForm/loginform'
 import Testimonials from '@/components/Testimonials/testimonials'
 import './loginpage.css'
 import Head from 'next/head'
-import { useAuth } from '@/contexts/AuthContext'
-import { redirect } from 'next/navigation'
 
 function Login() {
-  const { isAuth } = useAuth();
-  useEffect(() => {
-    if (isAuth) {
-      redirect('/');
-    }
-  }, [])
 
-  return (<>
+  return (
+  (<>
   <Head>
     <title>{"Intentify | Login"}</title>
   </Head>
@@ -24,7 +15,7 @@ function Login() {
       <LoginForm/>
       <Testimonials className_add='px-6'/>
     </div>
-    </>)
+  </>))
 }
 
 export default Login

@@ -2,17 +2,10 @@
 
 import { AuthSidebar } from "./AuthSidebar/authsidebar";
 import { GuestSidebar } from "./GuestSidebar/guestsidebar";
-import { useAuth } from '../../contexts/AuthContext'
-import { useState, useEffect } from 'react';
-import './appsidebar.css';
+import { useAppSelector } from '@/redux/store';
 
 export function AppSidebar() {
-  const [sideBar, setSideBar] = useState(<GuestSidebar/>);
-  const { isAuth } = useAuth();
+  const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
 
-  useEffect(() => {
-    setSideBar((isAuth) ? (<AuthSidebar/>) : (<GuestSidebar/>))
-  }, [isAuth])
-
-  return ( sideBar )
+  return ( auth ? <AuthSidebar/> : <GuestSidebar/> )
 }

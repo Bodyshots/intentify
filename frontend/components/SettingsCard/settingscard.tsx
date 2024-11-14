@@ -7,7 +7,6 @@ import { Button } from '../ui/button'
 import { Label } from "@/components/ui/label"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { useEffect } from 'react';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
   Dialog,
@@ -27,29 +26,15 @@ import {
 } from "@/components/ui/form"
 import { z } from "zod"
 import { useAuth } from '@/contexts/AuthContext';
+import getCSRF from '@/lib/GetCSRF';
 
-import { setCsrfToken } from '@/redux/slices/csrfSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/redux/store';
+import { useAppSelector } from '@/redux/store';
+import { redirect } from 'next/navigation';
 
 export const SettingsCard = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const csrfToken = useSelector((state: RootState) => state.csrf.token)
+  const csrfToken = getCSRF();
   const { email, password, firstName, lastName } = useAuth();
-
-  useEffect(() => {
-    fetch("http://localhost:4000/api/get-csrf-token",
-      { 
-        method: "GET",
-        credentials: "include",
-      })
-      .then((res) => res.json())
-      .then((data) => {
-        dispatch(setCsrfToken(data.csrf_token));
-      })
-      .catch((err) => console.error("Error fetching CSRF token:", err));
-    
-  }, [])
+  const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
 
   const formEmailSchema = z.object({
     email: z.string().email({ message: 'Please enter a valid email!'}).trim(),
@@ -87,7 +72,7 @@ export const SettingsCard = () => {
     mode: 'onChange',
   })
 
-  return (
+  return ( !auth ? redirect('/') :
     <div className="settings_container bg-background px-10 py-8 rounded-2xl">
       <h1 className="text-6xl">Settings</h1>
       <h2 className="text-4xl pt-4">Theme Preferences</h2>
