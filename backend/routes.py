@@ -1,28 +1,26 @@
-from flask import jsonify, request, make_response, Blueprint
+from flask import jsonify, request, make_response, Blueprint, session
 from flask_login import login_user, login_required, logout_user, current_user
 from constants import *
 
 from app import db, bcrypt
 from flask_wtf.csrf import generate_csrf
 from forms import LoginForm, RegisterForm
-from models import User, UserSession
-import secrets
+from models import User
 from datetime import datetime
 from pytz import utc
+from datetime import timedelta
 
 main = Blueprint('main', __name__)
 
 # Helper to check authorization
 def check_auth_status():
-  session_token = request.cookies.get(SESSION_TOKEN, None)
-  if session_token:
-      curr_session = UserSession.get_session(session_token)
-      if curr_session and curr_session.expires_at:
-          # Ensure expires_at is timezone-aware
-          if curr_session.expires_at.tzinfo is None:
-              curr_session.expires_at = utc.localize(curr_session.expires_at)
-          if datetime.now(tz=utc) < curr_session.expires_at:
-              return True and current_user.is_authenticated
+  if (session.get(EMAIL, None)):
+    expiry = session.get(EXPIRED_AT, None)
+    # Ensure expires_at is timezone-aware
+    if expiry and expiry.tzinfo is None:
+        expiry = utc.localize(expiry)
+    if datetime.now(tz=utc) < expiry:
+        return True and current_user.is_authenticated
   return False
 
 @main.route('/api/users', methods=[GET])
@@ -38,20 +36,6 @@ def get_users():
   except Exception as e:
     db.session.rollback()
     return make_response(jsonify({MSG: 'Error getting users',
-                                  ERROR: str(e)}), INTERNAL_ERR)
-  
-@main.route('/api/sessions', methods=[GET])
-def get_sessions():
-  try:
-    users_sessions = UserSession.query.all()
-    session_data = [{ID: session.id, 
-                     EMAIL: session.email,
-                     SESSION_TOKEN: session.session_token,
-                     CREATED_AT: session.created_at,
-                     EXPIRED_AT: session.expires_at} for session in users_sessions]
-    return make_response(jsonify(session_data), OK)
-  except Exception as e:
-    return make_response(jsonify({MSG: 'Error getting user sessions',
                                   ERROR: str(e)}), INTERNAL_ERR)
 
 @main.route('/api/user', methods=[GET])
@@ -83,14 +67,10 @@ def get_user(id):
 @main.route('/api/users/update/email', methods=[PUT])
 def update_email():
   try:
-    old_email = current_user.email
-    
     # Update user first
     data = request.get_json()
     current_user.email = data[EMAIL]
-    
-    # Update session info
-    UserSession.query.filter_by(email=old_email).update({EMAIL: data[EMAIL]})
+    session[EMAIL] = data[EMAIL]
 
     db.session.commit()
     return make_response(jsonify({MSG: 'User email updated'}), OK)
@@ -125,11 +105,7 @@ def update_names():
 
 @main.route('/api/user/delete', methods=[DELETE])
 def delete_curr_user():
-  try:
-    data = request.get_json()
-    for session in UserSession.query.filter_by(email=data[EMAIL]):
-      db.session.delete(session)  # Delete the session from the database
-    
+  try:    
     db.session.delete(current_user)
     db.session.commit()
     return make_response(jsonify({MSG: 'User deleted'}), OK)
@@ -167,19 +143,11 @@ def login():
       user = User.get_by_email(submitted_email)
       if user and bcrypt.check_password_hash(user.password, submitted_password):
         login_user(user)
-
-        session_token = secrets.token_hex(42)
-        user_session = UserSession(email=submitted_email, session_token=session_token)
-        
-        db.session.add(user_session)
-        db.session.commit()
+        session[EMAIL] = submitted_email
+        session[CREATED_AT] = datetime.now(utc)
+        session[EXPIRED_AT] = datetime.now(utc) + timedelta(SESSION_LIFETIME)
         
         response = make_response(jsonify({MSG: "Login successful!"}))
-        response.set_cookie(SESSION_TOKEN,
-                            session_token,
-                            httponly=True,
-                            secure=True,
-                            samesite='Strict')
         
         return response, OK
       return make_response(jsonify({MSG: "Invalid email or password"}), UNAUTHORIZED)
@@ -254,16 +222,12 @@ def register():
 @login_required
 def logout():
   try:
-    if current_user.is_authenticated:
+    if current_user and current_user.is_authenticated:
       response = make_response(jsonify({MSG: 'User logged out successfully!'}), OK)
-      response.delete_cookie(SESSION_TOKEN)
-      
-      session_token = request.cookies.get(SESSION_TOKEN, None)
-      for session in UserSession.query.filter_by(session_token=session_token):
-        db.session.delete(session) # Delete the session from the database
+
       logout_user()
       db.session.commit()  # Commit changes to the database
-      return response, OK
+      return response
     else:
       return make_response(jsonify({MSG: 'User needs to be logged in', 
                                     ERROR: str(e)}), UNAUTHORIZED)

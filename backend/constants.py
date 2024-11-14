@@ -5,7 +5,7 @@ LOGIN_VIEW = 'login'
 PASSWORD = 'password'
 ACTIVE = 'active'
 HEALTHY = 'healthy'
-SESSION_TOKEN = 'session_token'
+SESSION_TOKEN = 'session'
 CREATED_AT = 'created_at'
 EXPIRED_AT = 'expires_at'
 FIRST_NAME = 'first_name'
@@ -14,6 +14,8 @@ AUTH = 'isAuth'
 MSG = 'message'
 ERROR = "error"
 CSRF_TOKEN = 'csrf_token'
+SESSION_LIFETIME = 7
+SECRET_KEY_INT = 42
 
 # Methods
 GET = 'GET'

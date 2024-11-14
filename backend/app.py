@@ -37,6 +37,7 @@ def create_app():
   csrf.init_app(app)
   app.config['SESSION_SQLALCHEMY'] = db
   
+  # Server-side sessions
   Session(app)
   
   # Import inside function to avoid circular import
