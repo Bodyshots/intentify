@@ -1,7 +1,7 @@
 .landing_container {
   text-align: center;
   flex-flow: column nowrap;
-  width: 90%;
+  width: 95%;
   margin: auto;
   align-items: center;
   align-self: center;
@@ -10,12 +10,34 @@
 }
 
 .search_hero_container {
-  text-align: center;
-  flex-flow: column nowrap;
   width: 80%;
-  padding-left: auto;
 }
 
 #first_subtitle {
   color: hsl(130, 63%, 50%);
+}
+
+.guesthome_cardgrid {
+  display: inline-grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto; /* Automatically adjust row height */
+  align-items: center;
+  row-gap: 1em;
+  column-gap: 1em;
+  width: auto;
+  text-wrap: wrap;
+}
+
+.big_text_hero_container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  gap: 2.5rem;
+  width: 66.67%;
+}
+
+@media (max-width: 1024px) {
+  .hero_container {
+    flex-flow: row wrap;
+  }
 }

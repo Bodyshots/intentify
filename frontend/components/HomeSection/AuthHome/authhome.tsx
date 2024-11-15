@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 const AuthHome = () => {
   return (
     <div className="landing_container flex justify-center py-10 rounded-2xl">
-      <div className="flex flex-row justify-evenly">
+      <div className="flex flex-col flex-wrap justify-evenly">
         <div className="search_hero_container gap-6 p-4 flex justify-center py-10">
           <SiteFullTitle titleClass='text-6xl' sloganClass='text-4xl'/>
           <PlaceholdersAndVanishInput onChange={(e) => console.log(e)}

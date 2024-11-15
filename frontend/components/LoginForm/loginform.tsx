@@ -76,10 +76,11 @@ function RegisterForm() {
   }
 
   return auth ? redirect('/') : (
-    <div className="login_form_comp">
+    <div className="login_form_comp flex align-center justify-center flex-col flex-nowrap gap-6 lg:w-1/2 rounded-lg p-8">
       <SiteFullTitle titleClass='text-5xl' sloganClass='text-2xl'/>
       <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 login_form">
+      <form onSubmit={form.handleSubmit(onSubmit)}
+            className="flex space-y-8 lg:w-full lg:h-auto lg:flex-col lg:flex-nowrap align-center items-center flex-col flex-nowrap">
         <FormField
           control={form.control}
           name="email"

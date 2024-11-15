@@ -66,8 +66,10 @@ interface TestimonialsProps {
 function Testimonials({className_add}: TestimonialsProps) {
 
   return (
-    <div className={`testimonial_container ${className_add ? className_add : ''}`}>
-      <Carousel className="w-full max-w-xs"
+    <div className={`flex text-center justify-center align-center w-full lg:w-1/2
+        ${className_add ? className_add : ''}
+        disappear_carousel`}>
+      <Carousel className="w-full lg:max-w-xs max-w-md"
                 opts={{loop: true}}
                 plugins={[Autoplay({delay: 5000})]}>
       <CarouselContent>
@@ -77,7 +79,7 @@ function Testimonials({className_add}: TestimonialsProps) {
               <Card className="flex justify-center flex-col items-center gap-6 bg-transparent border-0 shadow-none">
                 <Quote/>
                 <CardTitle>{item.header}</CardTitle>
-                <CardContent className="flex aspect-square items-center justify-center p-6">
+                <CardContent className="flex aspect-auto sm:aspect-2/1 lg:aspect-square items-center justify-center p-6">
                   <span className="text-xl">{item.body}</span>
                 </CardContent>
                 <CardFooter className="flex flex-col items-start w-full">

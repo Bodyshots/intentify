@@ -11,9 +11,9 @@ function Login() {
   <Head>
     <title>{"Intentify | Login"}</title>
   </Head>
-    <div className="login_container">
+    <div className="login_container flex flex-wrap lg:pt-24 lg:h-full lg:w-full flex-row items-center justify-evenly p-8">
       <LoginForm/>
-      <Testimonials className_add='px-6'/>
+      <Testimonials className_add='lg:px-2 py-8'/>
     </div>
   </>))
 }
