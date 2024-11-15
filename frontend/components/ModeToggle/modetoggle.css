@@ -14,5 +14,5 @@
 }
 
 .hover\:bg-primary\/90:hover {
-  background-color: hsl(var(--primary));
+  background-color: hsl(var(--primary))!important;
 }
