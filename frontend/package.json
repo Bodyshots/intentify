@@ -37,7 +37,7 @@
     "embla-carousel-react": "^8.3.1",
     "eslint": "^8.57.1",
     "eslint-config-next": "13.4.2",
-    "framer-motion": "^11.11.15",
+    "framer-motion": "^11.11.17",
     "glob": "^11.0.0",
     "lucide-react": "^0.454.0",
     "next": "latest",

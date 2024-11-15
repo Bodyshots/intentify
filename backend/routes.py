@@ -4,7 +4,7 @@ from constants import *
 
 from app import db, bcrypt
 from flask_wtf.csrf import generate_csrf
-from forms import LoginForm, RegisterForm
+from forms import LoginForm, RegisterForm, ChangeEmailForm, ChangePasswordForm, ChangeNamesForm, DeleteAccountForm
 from models import User
 from datetime import datetime
 from pytz import utc
@@ -67,13 +67,15 @@ def get_user(id):
 @main.route('/api/users/update/email', methods=[PUT])
 def update_email():
   try:
-    # Update user first
     data = request.get_json()
-    current_user.email = data[EMAIL]
-    session[EMAIL] = data[EMAIL]
-
-    db.session.commit()
-    return make_response(jsonify({MSG: 'User email updated'}), OK)
+    form = ChangeEmailForm(data=data)
+  
+    if (form.validate() and current_user and (data[EMAIL] == current_user.email)):
+      current_user.email = data[NEW_EMAIL]
+      session[EMAIL] = data[NEW_EMAIL]
+      db.session.commit()
+      return make_response(jsonify({MSG: 'User email updated'}), OK)
+    return make_response(jsonify({MSG: 'Non-matching email or email already exists'}), BAD_REQUEST)
   except Exception as e:
     db.session.rollback()
     return make_response(jsonify({MSG: 'Error updating user email',
@@ -83,21 +85,29 @@ def update_email():
 def update_password():
   try:
     data = request.get_json()
-    current_user.password = bcrypt.generate_password_hash(data[PASSWORD]).decode('utf-8')
-    db.session.commit()
-    return make_response(jsonify({MSG: 'User password updated'}), OK)
+    form = ChangePasswordForm(data=data)
+
+    if (form.validate() and current_user and (bcrypt.check_password_hash(current_user.password, data[PASSWORD]))):
+      current_user.password = bcrypt.generate_password_hash(data[NEW_PASSWORD]).decode('utf-8')
+      db.session.commit()
+      return make_response(jsonify({MSG: 'User password updated'}), OK)
+    return make_response(jsonify({MSG: 'Non-matching password'}), BAD_REQUEST)
   except Exception as e:
     db.session.rollback()
     return make_response(jsonify({MSG: 'Error updating user password',
                                   ERROR: str(e)}), INTERNAL_ERR)
   
-@main.route('/api/users/update/name', methods=[PUT])
+@main.route('/api/users/update/names', methods=[PUT])
 def update_names():
   try:
     data = request.get_json()
-    current_user.first_name, current_user.last_name = data[FIRST_NAME], data[LAST_NAME]
-    db.session.commit()
-    return make_response(jsonify({MSG: 'User first and last name updated'}), OK)
+    form = ChangeNamesForm(data=data)
+    
+    if (form.validate()):
+      current_user.first_name, current_user.last_name = data[FIRST_NAME], data[LAST_NAME]
+      db.session.commit()
+      return make_response(jsonify({MSG: 'User first and last name updated'}), OK)
+    return make_response(jsonify({MSG: 'Invalid first or last name'}), BAD_REQUEST)
   except Exception as e:
     db.session.rollback()
     return make_response(jsonify({MSG: 'Error updating user first and last names',
@@ -105,10 +115,15 @@ def update_names():
 
 @main.route('/api/user/delete', methods=[DELETE])
 def delete_curr_user():
-  try:    
-    db.session.delete(current_user)
-    db.session.commit()
-    return make_response(jsonify({MSG: 'User deleted'}), OK)
+  try:
+    data = request.get_json()
+    form = DeleteAccountForm(data=data)
+    
+    if (form.validate()):
+      db.session.delete(current_user)
+      db.session.commit()
+      return make_response(jsonify({MSG: 'User deleted'}), OK)
+    return make_response(jsonify({MSG: 'Invalid email or password'}), BAD_REQUEST)
   except Exception as e:
     db.session.rollback()
     return make_response(jsonify({MSG: 'Error deleting user',
@@ -228,9 +243,8 @@ def logout():
       logout_user()
       db.session.commit()  # Commit changes to the database
       return response
-    else:
-      return make_response(jsonify({MSG: 'User needs to be logged in', 
-                                    ERROR: str(e)}), UNAUTHORIZED)
+    return make_response(jsonify({MSG: 'User needs to be logged in', 
+                                  ERROR: str(e)}), UNAUTHORIZED)
   except Exception as e:
     db.session.rollback()
     return make_response(jsonify({MSG: 'Error logging out user', 

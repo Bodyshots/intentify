@@ -1,8 +1,10 @@
 # Constants
 ID = 'id'
-EMAIL = 'email'
 LOGIN_VIEW = 'login'
+EMAIL = 'email'
+NEW_EMAIL = 'new_email'
 PASSWORD = 'password'
+NEW_PASSWORD = 'new_password'
 ACTIVE = 'active'
 HEALTHY = 'healthy'
 SESSION_TOKEN = 'session'
