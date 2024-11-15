@@ -30,7 +30,7 @@ const formSchema = z.object({
   }).max(80, {
     message: "Password must be less than 80 characters."
   }),
-  conf_password: z.string().min(8).max(80),
+  conf_password: z.string(),
 }).refine((values) => {
     return values.password === values.conf_password;
   },
@@ -50,6 +50,7 @@ function RegisterForm() {
     defaultValues: {
       email: "",
       password: "",
+      conf_password: ""
     },
     mode: 'onChange',
   })

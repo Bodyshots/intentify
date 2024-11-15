@@ -7,7 +7,6 @@ import { useAppSelector } from '@/redux/store';
 
 function Home() {
   const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
-  console.log("auth: " + auth);
 
   return (<>
     <Head>

@@ -38,7 +38,7 @@ const GuestHome = () => {
   const { push } = useRouter();
   
   return (
-  <div className="flex flex-col justify-center text-center">
+  <div className="flex flex-col justify-center text-center px-12">
     <div className="landing_container flex justify-center py-10 rounded-2xl w-full">
       <div className="hero_container flex flex-row justify-evenly">
         <div className="w-9/12 text-center gap-6 p-4 flex justify-center py-10 pl-8 flex-col flex-nowrap">
