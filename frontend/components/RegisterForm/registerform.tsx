@@ -19,6 +19,7 @@ import SiteFullTitle from '../SiteFullTitle/sitefulltitle';
 import { useAppSelector } from '@/redux/store';
 import './registerform.css';
 import { redirect } from 'next/navigation';
+import { toast } from 'sonner';
 
 import getCSRF from '@/lib/GetCSRF';
 
@@ -74,13 +75,18 @@ function RegisterForm() {
         credentials: 'include',
       });
       const data = await response.json();
-      console.log(data.message);
+
       if (response.ok) {
+        toast.success(data.message);
         push('/login');
+      }
+      else {
+        toast.error(data.message);
       }
     } 
     catch (error) {
       console.error("Error registering", error);
+      toast.success("Error registering");
     }
   }
 

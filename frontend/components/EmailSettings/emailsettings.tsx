@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form"
 import { Label } from '@radix-ui/react-label'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
+import { toast } from 'sonner'
 
 interface EmailSettingsProps {
   csrfToken: string;
@@ -57,9 +58,16 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
         credentials: 'include',
       });
       const data = await response.json();
-      console.log(data.message);
+
+      if (response.ok) {
+        toast.success(data.message);
+      }
+      else {
+        toast.error(data.message);
+      }
     } catch (error) {
       console.error("Error updating email", error);
+      toast.error("Error updating email");
     }
   }
 

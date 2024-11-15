@@ -23,6 +23,7 @@ import {
 import { Input } from '../ui/input'
 import { useAppSelector, useAppDispatch } from '@/redux/store'
 import { setAuth } from '@/redux/slices/authSlice'
+import { toast } from 'sonner'
 
 interface DeleteAccountDialogProps {
   csrfToken: string;
@@ -71,13 +72,18 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
         credentials: 'include',
       });
       const data = await response.json();
-      console.log(data.message);
   
       if (response.ok) {
         dispatch(setAuth(false));
+        toast.success(data.message);
       }
+      else {
+        toast.error(data.message);
+      }
+
     } catch (error) {
       console.error("Error deleting account", error);
+      toast.error("Error deleting account");
     }
   }
 

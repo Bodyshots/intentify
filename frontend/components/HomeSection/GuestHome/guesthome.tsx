@@ -69,7 +69,8 @@ const GuestHome = () => {
           {cards.map((item) => {
             return <GuestHomeCard step_title={item.step_title}
                                   Icon={item.Icon}
-                                  desc={item.desc}/>
+                                  desc={item.desc}
+                                  key={item.step_title}/>
           })}
         </div>
     </div>

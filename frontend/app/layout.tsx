@@ -1,11 +1,12 @@
 import { SidebarTrigger, SidebarProvider } from '@//components/ui/sidebar'
 import { AppSidebar } from '@/components/AppSidebar/appsidebar'
-import './globals.css'
 import { Gabarito } from 'next/font/google'
 import { ThemeProvider } from '../components/ThemeProvider/themeprovider'
 import { ModeToggle } from '../components/ModeToggle/modetoggle'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { ReduxProvider } from '@/redux/reduxprovider'
+import { Toaster, toast } from 'sonner'
+import './globals.css'
 
 export const metadata = {
   title: 'Intentify',
@@ -38,6 +39,7 @@ export default function RootLayout({
         <AppSidebar/>
         <ModeToggle/>
         <SidebarTrigger style={{marginRight: "1em"}}/>
+        <Toaster richColors position="bottom-center"/>
         {children}
       </ReduxProvider>
       </SidebarProvider>

@@ -74,8 +74,8 @@ def update_email():
       current_user.email = data[NEW_EMAIL]
       session[EMAIL] = data[NEW_EMAIL]
       db.session.commit()
-      return make_response(jsonify({MSG: 'User email updated'}), OK)
-    return make_response(jsonify({MSG: 'Non-matching email or email already exists'}), BAD_REQUEST)
+      return make_response(jsonify({MSG: 'Email updated!'}), OK)
+    return make_response(jsonify({MSG: 'Current email does not match or email already exists'}), BAD_REQUEST)
   except Exception as e:
     db.session.rollback()
     return make_response(jsonify({MSG: 'Error updating user email',
@@ -90,8 +90,8 @@ def update_password():
     if (form.validate() and current_user and (bcrypt.check_password_hash(current_user.password, data[PASSWORD]))):
       current_user.password = bcrypt.generate_password_hash(data[NEW_PASSWORD]).decode('utf-8')
       db.session.commit()
-      return make_response(jsonify({MSG: 'User password updated'}), OK)
-    return make_response(jsonify({MSG: 'Non-matching password'}), BAD_REQUEST)
+      return make_response(jsonify({MSG: 'Password updated!'}), OK)
+    return make_response(jsonify({MSG: 'Current password does not match'}), BAD_REQUEST)
   except Exception as e:
     db.session.rollback()
     return make_response(jsonify({MSG: 'Error updating user password',
@@ -106,7 +106,7 @@ def update_names():
     if (form.validate()):
       current_user.first_name, current_user.last_name = data[FIRST_NAME], data[LAST_NAME]
       db.session.commit()
-      return make_response(jsonify({MSG: 'User first and last name updated'}), OK)
+      return make_response(jsonify({MSG: 'First and last name updated!'}), OK)
     return make_response(jsonify({MSG: 'Invalid first or last name'}), BAD_REQUEST)
   except Exception as e:
     db.session.rollback()
@@ -119,25 +119,13 @@ def delete_curr_user():
     data = request.get_json()
     form = DeleteAccountForm(data=data)
     
-    if (form.validate()):
+    if (form.validate() and current_user and (current_user.email == data[EMAIL]
+                                              and 
+                                              (bcrypt.check_password_hash(current_user.password, data[PASSWORD])))):
       db.session.delete(current_user)
       db.session.commit()
-      return make_response(jsonify({MSG: 'User deleted'}), OK)
+      return make_response(jsonify({MSG: 'Account deleted!'}), OK)
     return make_response(jsonify({MSG: 'Invalid email or password'}), BAD_REQUEST)
-  except Exception as e:
-    db.session.rollback()
-    return make_response(jsonify({MSG: 'Error deleting user',
-                                  ERROR: str(e)}), INTERNAL_ERR)
-
-@main.route('/api/users/<id>', methods=[DELETE])
-def delete_user(id):
-  try:
-    user = User.get_by_id(id)
-    if user:
-      db.session.delete(user)
-      db.session.commit()
-      return make_response(jsonify({MSG: 'User deleted'}), OK)
-    return make_response(jsonify({MSG: 'User not found'}), NOT_FOUND)
   except Exception as e:
     db.session.rollback()
     return make_response(jsonify({MSG: 'Error deleting user',
@@ -147,7 +135,7 @@ def delete_user(id):
 def login():
   try:
     if (check_auth_status()):
-      return make_response(jsonify({MSG: "User already logged in"}), FORBIDDEN)
+      return make_response(jsonify({MSG: "You are already logged in"}), FORBIDDEN)
 
     data = request.get_json()
     form = LoginForm(data=data)
@@ -198,7 +186,7 @@ def create_user():
 def register():
   try:
     if (check_auth_status()):
-      return make_response(jsonify({MSG: "User already logged in"}), FORBIDDEN)
+      return make_response(jsonify({MSG: "You are already logged in"}), FORBIDDEN)
 
     data = request.get_json()
     form = RegisterForm(data=data)
@@ -209,7 +197,7 @@ def register():
       
       user = User.get_by_email(submitted_email)
       if user: # Found existing user => User already exists
-        return make_response(jsonify({MSG: "Email already exists"}), UNAUTHORIZED)
+        return make_response(jsonify({MSG: "Account with this email already exists"}), UNAUTHORIZED)
 
       hash_password = bcrypt.generate_password_hash(submitted_password).decode('utf-8')
       
@@ -223,7 +211,7 @@ def register():
         ID: new_user.id,
         EMAIL: new_user.email,
         PASSWORD: new_user.password,
-        MSG: "User registered successfully!"
+        MSG: "Registration successful!"
       }), CREATED)
     return make_response(jsonify({MSG: "Invalid email or password",
                                   ERROR: form.errors}), UNAUTHORIZED)
@@ -238,12 +226,12 @@ def register():
 def logout():
   try:
     if current_user and current_user.is_authenticated:
-      response = make_response(jsonify({MSG: 'User logged out successfully!'}), OK)
+      response = make_response(jsonify({MSG: 'Logged out successfully!'}), OK)
 
       logout_user()
       db.session.commit()  # Commit changes to the database
       return response
-    return make_response(jsonify({MSG: 'User needs to be logged in', 
+    return make_response(jsonify({MSG: 'You need to be logged in', 
                                   ERROR: str(e)}), UNAUTHORIZED)
   except Exception as e:
     db.session.rollback()

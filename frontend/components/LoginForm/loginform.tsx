@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -22,6 +22,7 @@ import getCSRF from '@/lib/GetCSRF';
 import { setAuth } from '@/redux/slices/authSlice';
 import { redirect } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
+import { toast } from "sonner";
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email!'}).trim(),
@@ -62,16 +63,18 @@ function RegisterForm() {
         credentials: 'include',
       });
       const data = await response.json();
-      console.log(data.message);
   
       if (response.ok) {
         dispatch(setAuth(true));
+        toast.success(data.message);
       }
       else {
         dispatch(setAuth(false));
+        toast.error(data.message);
       }
     } catch (error) {
       console.error("Error logging in", error);
+      toast.error("Error logging in");
     }
   }
 
