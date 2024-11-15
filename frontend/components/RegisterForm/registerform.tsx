@@ -149,7 +149,10 @@ function RegisterForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="hover:bg-custom_green_hover dark:hover:bg-muted-foreground">Submit</Button>
+        <Button type="submit"
+                className="hover:bg-custom_green_hover dark:hover:bg-muted-foreground">
+          Submit
+        </Button>
       </form>
     </Form>
     </div>
