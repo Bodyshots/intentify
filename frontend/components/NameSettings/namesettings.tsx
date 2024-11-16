@@ -13,6 +13,8 @@ import { Label } from '@radix-ui/react-label'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { toast } from 'sonner'
+import { setFirstName, setLastName } from '@/redux/slices/nameSlice'
+import { useAppDispatch } from '@/redux/store'
 
 interface NameSettingsProps {
   csrfToken: string;
@@ -24,6 +26,7 @@ type NameData = {
 }
 
 const NameSettings = ({ csrfToken }: NameSettingsProps) => {
+  const dispatch = useAppDispatch();
 
   const formNameSchema = z.object({
     first_name: z.string().trim(),
@@ -59,6 +62,8 @@ const NameSettings = ({ csrfToken }: NameSettingsProps) => {
       const data = await response.json();
 
       if (response.ok) {
+        dispatch(setFirstName(values.first_name));
+        dispatch(setLastName(values.last_name));
         toast.success(data.message);
       }
       else {

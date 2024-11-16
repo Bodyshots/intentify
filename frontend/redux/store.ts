@@ -2,6 +2,7 @@
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
+import nameReducer from './slices/nameSlice';
 import { persistReducer } from 'redux-persist'
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
@@ -31,15 +32,26 @@ const authPersistConfig = {
   whitelist: ["auth"],
 };
 
-const persistedReducer = persistReducer(authPersistConfig, authReducer);
+const namePersistConfig = {
+  key: "names",
+  storage: storage,
+  whitelist: ["firstName", "lastName"],
+}
+
+const authPersistedReducer = persistReducer(authPersistConfig, authReducer);
+const namePersistedReducer = persistReducer(namePersistConfig, nameReducer);
 
 const authPersistReducer = combineReducers({
-  auth_reduce: persistedReducer
+  auth_reduce: authPersistedReducer
+})
+const namePersistReducer = combineReducers({
+  name_reduce: namePersistedReducer
 })
 
 export const store = configureStore({
     reducer: {
       auth_persist: authPersistReducer,
+      name_persist: namePersistReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false }),

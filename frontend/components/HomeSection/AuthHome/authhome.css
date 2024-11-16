@@ -1,3 +1,7 @@
+.greeting_sec {
+  padding: 1em;
+}
+
 .landing_container {
   text-align: center;
   flex-flow: column nowrap;

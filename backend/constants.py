@@ -1,6 +1,7 @@
 # Constants
 ID = 'id'
 LOGIN_VIEW = 'login'
+USER = 'user'
 EMAIL = 'email'
 NEW_EMAIL = 'new_email'
 PASSWORD = 'password'

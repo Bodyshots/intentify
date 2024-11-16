@@ -150,7 +150,8 @@ def login():
         session[CREATED_AT] = datetime.now(utc)
         session[EXPIRED_AT] = datetime.now(utc) + timedelta(SESSION_LIFETIME)
         
-        response = make_response(jsonify({MSG: "Login successful!"}))
+        response = make_response(jsonify({MSG: "Login successful!",
+                                          USER: user.json()}))
         
         return response, OK
       return make_response(jsonify({MSG: "Invalid email or password"}), UNAUTHORIZED)

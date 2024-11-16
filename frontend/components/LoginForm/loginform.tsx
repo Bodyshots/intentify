@@ -21,6 +21,8 @@ import Link from 'next/link';
 
 import getCSRF from '@/lib/GetCSRF';
 import { setAuth } from '@/redux/slices/authSlice';
+import { setFirstName } from '@/redux/slices/nameSlice';
+import { setLastName } from '@/redux/slices/nameSlice';
 import { redirect } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { toast } from "sonner";
@@ -71,6 +73,8 @@ function LoginForm({ className_add }: LoginFormProps) {
   
       if (response.ok) {
         dispatch(setAuth(true));
+        dispatch(setFirstName(data.user.first_name));
+        dispatch(setLastName(data.user.last_name));
         toast.success(data.message);
       }
       else {
