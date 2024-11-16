@@ -11,7 +11,7 @@ function Register() {
   <Head>
     <title>{"Intentify | Register"}</title>
   </Head>
-    <div className="register_container flex flex-wrap lg:pt-24 lg:h-full lg:w-full flex-row items-center justify-evenly p-8">
+    <div className="register_container flex flex-wrap lg:h-full lg:w-full flex-row items-center justify-evenly p-8">
       <RegisterForm/>
       <Testimonials className_add='lg:px-2 py-8'/>
     </div>

@@ -1,11 +1,11 @@
-import { SidebarTrigger, SidebarProvider } from '@//components/ui/sidebar'
+import { SidebarTrigger, SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/AppSidebar/appsidebar'
 import { Gabarito } from 'next/font/google'
 import { ThemeProvider } from '../components/ThemeProvider/themeprovider'
 import { ModeToggle } from '../components/ModeToggle/modetoggle'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { ReduxProvider } from '@/redux/reduxprovider'
-import { Toaster, toast } from 'sonner'
+import { Toaster } from 'sonner'
 import './globals.css'
 
 export const metadata = {

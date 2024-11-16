@@ -29,7 +29,11 @@ const formSchema = z.object({
   password: z.string()
 })
 
-function RegisterForm() {
+interface LoginFormProps {
+  className_add?: string;
+}
+
+function LoginForm({ className_add }: LoginFormProps) {
   const csrfToken = getCSRF();
   const dispatch = useAppDispatch();
   const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
@@ -79,7 +83,8 @@ function RegisterForm() {
   }
 
   return auth ? redirect('/') : (
-    <div className="login_form_comp flex align-center justify-center flex-col flex-nowrap gap-6 lg:w-1/2 rounded-lg p-8">
+    <div className={`login_form_comp flex align-center justify-center flex-col flex-nowrap gap-6 lg:w-1/2 rounded-lg p-8
+                  ${className_add}`}>
       <SiteFullTitle titleClass='text-5xl' sloganClass='text-2xl'/>
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}
@@ -135,4 +140,4 @@ function RegisterForm() {
   )
 }
 
-export default RegisterForm
+export default LoginForm
