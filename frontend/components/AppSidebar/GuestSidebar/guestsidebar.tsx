@@ -26,7 +26,7 @@ const items = [
     icon: Link2,
   },
   {
-    title: "Sign in",
+    title: "Login",
     url: "/login",
     icon: LogIn,
   },

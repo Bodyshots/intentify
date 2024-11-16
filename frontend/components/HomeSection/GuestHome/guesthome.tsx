@@ -38,9 +38,9 @@ const GuestHome = () => {
   const { push } = useRouter();
   
   return (
-  <div className="flex flex-col justify-center text-center px-12">
+  <div className="flex flex-col justify-center text-center px-12 h-full">
     <div className="landing_container flex justify-center py-10 rounded-2xl w-full">
-      <div className="hero_container flex flex-row justify-evenly">
+      <div className="hero_container flex flex-row justify-evenly flex-nowrap">
         <div className="w-9/12 text-center gap-6 p-4 flex justify-center py-10 pl-8 flex-col flex-nowrap">
           <SiteFullTitle titleClass='text-6xl' sloganClass='text-4xl'/>
           <PlaceholdersAndVanishInput onChange={(e) => console.log(e)}
@@ -62,7 +62,7 @@ const GuestHome = () => {
         </div>
       </div>
     </div>
-    <div style={{width: "95%"}} className="mx-auto px-auto py-6 my-4">
+    <div style={{width: "95%", maxHeight: "100vh"}} className="mx-auto px-auto py-6 my-4 h-auto">
       <h1 className="text-5xl">A few questions are all we need</h1>
       <h3 className="text-xl py-4" id="first_subtitle">How does it work?</h3>
         <div className="grid grid-cols-2 pt-2 gap-4 lg:grid-cols-4 sm:gap-8">

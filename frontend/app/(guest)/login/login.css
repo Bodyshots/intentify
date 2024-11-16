@@ -1,4 +1,4 @@
-.register_container > div {
+.login_container > div {
   flex: 1 1 48%; /* Each div takes up the available space, starting from full width */
   display: flex;
   justify-content: center;

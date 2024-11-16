@@ -7,6 +7,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNext,
+  CarouselPrevious
 } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import { Quote } from 'lucide-react';
@@ -66,31 +68,33 @@ interface TestimonialsProps {
 function Testimonials({className_add}: TestimonialsProps) {
 
   return (
-    <div className={`flex text-center justify-center align-center w-full lg:w-1/2
+    <div className={`flex text-center justify-center align-center w-full
         ${className_add ? className_add : ''}
         disappear_carousel`}>
-      <Carousel className="w-full lg:max-w-xs max-w-md"
+      <Carousel className="w-full lg:max-w-3xl max-w-2xl"
                 opts={{loop: true}}
                 plugins={[Autoplay({delay: 5000})]}>
       <CarouselContent>
         {testimonials.map((item, index) => (
           <CarouselItem key={index}>
             <div className="p-1">
-              <Card className="flex justify-center flex-col items-center gap-6 bg-transparent border-0 shadow-none">
-                <Quote/>
-                <CardTitle>{item.header}</CardTitle>
-                <CardContent className="flex aspect-auto sm:aspect-2/1 lg:aspect-square items-center justify-center p-6">
-                  <span className="text-xl">{item.body}</span>
-                </CardContent>
-                <CardFooter className="flex flex-col items-start w-full">
-                  <span className="card_speaker">{item.speaker}</span>
-                  <span className="card_role">{item.role}</span>
-                </CardFooter>
-              </Card>
+            <Card className="flex justify-center flex-col items-center gap-4 bg-transparent border-0 shadow-none">
+              <Quote />
+              <CardTitle>{item.header}</CardTitle>
+              <CardContent className="flex items-center justify-center p-6 max-w-lg">
+                <span className="text-3xl break-words">{item.body}</span>
+              </CardContent>
+              <CardFooter className="flex flex-col items-start w-full">
+                <span className="card_speaker">{item.speaker}</span>
+                <span className="card_role">{item.role}</span>
+              </CardFooter>
+            </Card>
             </div>
           </CarouselItem>
         ))}
       </CarouselContent>
+      <CarouselPrevious/>
+      <CarouselNext />
       </Carousel>
     </div>
   )

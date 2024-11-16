@@ -1,5 +1,4 @@
 .login_form_comp {
   box-shadow: 3px 3px 3px hsl(var(--sidebar-foreground));
   background-color: hsl(var(--sidebar-background));
-  width: 50%;
 }

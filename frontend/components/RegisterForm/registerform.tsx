@@ -20,6 +20,7 @@ import { useAppSelector } from '@/redux/store';
 import './registerform.css';
 import { redirect } from 'next/navigation';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 import getCSRF from '@/lib/GetCSRF';
 
@@ -96,7 +97,7 @@ function RegisterForm({ className_add }: RegisterFormProps) {
   }
 
   return ( auth ? redirect('/') :
-    <div className={`register_form_comp flex align-center justify-center flex-col flex-nowrap gap-6 lg:w-1/2 rounded-lg p-8 ${className_add}`}>
+    <div className={`register_form_comp flex justify-center flex-col flex-nowrap gap-6 rounded-lg p-8 ${className_add}`}>
       <SiteFullTitle titleClass='text-5xl' sloganClass='text-2xl'/>
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}
@@ -161,6 +162,7 @@ function RegisterForm({ className_add }: RegisterFormProps) {
             </FormItem>
           )}
         />
+        <span className="text-center">Already have an account? Click <u className="hover:text-custom_green_hover dark:hover:text-muted-foreground transition-colors"><Link href={'/login'}>here!</Link></u></span>
         <Button type="submit"
                 className="hover:bg-custom_green_hover dark:hover:bg-muted-foreground">
           Submit

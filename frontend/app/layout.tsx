@@ -38,7 +38,7 @@ export default function RootLayout({
       <ReduxProvider>
         <AppSidebar/>
         <ModeToggle/>
-        <SidebarTrigger style={{marginRight: "1em"}}/>
+        <SidebarTrigger/>
         <Toaster richColors position="bottom-center"/>
         {children}
       </ReduxProvider>
