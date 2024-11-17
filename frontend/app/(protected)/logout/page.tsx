@@ -23,13 +23,13 @@ function Logout() {
   const { push } = useRouter();
   const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
   const { data: csrfToken } = useSWR("csrf-token", fetchCSRFToken);
-  const logoutInitiated = useRef(false); // Tracks whether logout has already started
+  const logoutBegin = useRef(false); // Tracks whether logout has already started
 
   useEffect(() => {
     const handleLogout = async () => {
-      if (!csrfToken || !auth || logoutInitiated.current) return;
+      if (!csrfToken || !auth || logoutBegin.current) return;
 
-      logoutInitiated.current = true; // Prevent further logout triggers
+      logoutBegin.current = true; // Prevent further logout triggers
 
       try {
         const response = await fetch("http://localhost:4000/logout", {
@@ -56,7 +56,7 @@ function Logout() {
     };
 
     handleLogout();
-  }, [csrfToken, auth, dispatch, push]);
+  }, [csrfToken]);
 
   return null; // Component does not render anything visible
 }
