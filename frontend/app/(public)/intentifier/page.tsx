@@ -2,7 +2,6 @@ import React from 'react'
 import IdentifierBar from '@/components/IdentifierBar/intentifierbar'
 import { Metadata } from 'next'
 import IntentifierSearch from '@/components/IntentifierSearch/intentifiersearch'
-import './intentifier.css'
 
 export async function generateMetadata(): Promise<Metadata> {
   const pageTitle = 'Intentify | Intentifier';

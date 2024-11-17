@@ -6,7 +6,6 @@ import ThemeSettings from './ThemeSettings/themesettings';
 import EmailSettings from './EmailSettings/emailsettings';
 
 import getCSRF from '@/lib/GetCSRF';
-import { useAppSelector } from '@/redux/store';
 import NameSettings from './NameSettings/namesettings';
 import PasswordSettings from './PasswordSettings/passwordsettings';
 import DeleteAccountDialog from './DeleteAccountDialog/deleteaccountdialog';
@@ -15,13 +14,12 @@ import Loading from '@/app/loading';
 
 export const SettingsCard = () => {
   const csrfToken = getCSRF();
-  const [isLoaded, setIsLoaded] = useState(false); // Check if rendering is on the client
+  const [isLoaded, setIsLoaded] = useState(false); 
 
   useEffect(() => {
-    setIsLoaded(true); // Indicate that we are on the client
+    setIsLoaded(true);
   }, []);
 
-  // Only render after client hydration
   if (!isLoaded) {
     return <Loading />;
   }

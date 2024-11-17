@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import LoginForm from './LoginForm/loginform';
 import Testimonials from '../Testimonials/testimonials'
 import Loading from '@/app/loading';
+import './logincontainer.css'
 
 const LoginContainer = () => {
   const [isLoaded, setIsLoaded] = useState(false); 

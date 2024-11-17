@@ -5,6 +5,7 @@ import RegisterForm from './RegisterForm/registerform'
 import Testimonials from '../Testimonials/testimonials'
 import { useState } from 'react';
 import Loading from '@/app/loading';
+import './registercontainer.css'
 
 const RegisterContainer = () => {
   const [isLoaded, setIsLoaded] = useState(false); 
