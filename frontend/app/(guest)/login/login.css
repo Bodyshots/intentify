@@ -6,7 +6,6 @@
   max-width: 100%; /* Prevent overflow */
 }
 
-/* Optional: Additional tweaks for responsiveness */
 @media (max-width: 1024px) {
   .disappear_carousel {
     display: none;

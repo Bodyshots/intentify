@@ -2,6 +2,7 @@ import React from 'react'
 import LoginForm from '@/components/LoginForm/loginform'
 import Testimonials from '@/components/Testimonials/testimonials'
 import Head from 'next/head'
+import './login.css'
 
 async function Login() {
 
