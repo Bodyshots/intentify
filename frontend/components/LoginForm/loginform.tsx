@@ -92,56 +92,59 @@ function LoginForm({ className_add }: LoginFormProps) {
                   ${className_add}`}>
       <SiteFullTitle titleClass='text-5xl' sloganClass='text-2xl'/>
       <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}
-            className="flex space-y-8 lg:w-full lg:h-auto lg:flex-col lg:flex-nowrap align-center items-center flex-col flex-nowrap">
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem className="w-4/6">
-              <FormControl>
-                <Input placeholder="Email" 
-                       required 
-                       type="email" 
-                       {...field}/>
-              </FormControl>
-              <FormDescription>
-                Enter your email here
-              </FormDescription>
-              <FormMessage>
-              {form.formState.errors.email && form.formState.errors.email.message}
-              </FormMessage>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem className="w-4/6">
-              <FormControl>
-                <Input placeholder="Password"
-                       required
-                       type="password"
-                       {...field}/>
-              </FormControl>
-              <FormDescription>
-                Enter your password here
-              </FormDescription>
-              <FormMessage>
-              {form.formState.errors.password && form.formState.errors.password.message}
-              </FormMessage>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <span className="text-center">Don't have an account? Click <u className="hover:text-custom_green_hover dark:hover:text-muted-foreground transition-colors"><Link href={'/register'}>here!</Link></u></span>
-        <Button type="submit"
-                className="hover:bg-custom_green_hover dark:hover:bg-muted-foreground">
-          Submit
-        </Button>
-      </form>
-    </Form>
+        <form onSubmit={form.handleSubmit(onSubmit)}
+              className="flex space-y-8 lg:w-full lg:h-auto lg:flex-col lg:flex-nowrap align-center items-center flex-col flex-nowrap"
+              name="login_form">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="w-4/6">
+                <FormControl>
+                  <Input placeholder="Email" 
+                        required 
+                        type="email"
+                        autoComplete='on'
+                        {...field}/>
+                </FormControl>
+                <FormDescription>
+                  Enter your email here
+                </FormDescription>
+                <FormMessage>
+                {form.formState.errors.email && form.formState.errors.email.message}
+                </FormMessage>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem className="w-4/6">
+                <FormControl>
+                  <Input placeholder="Password"
+                        required
+                        type="password"
+                        autoComplete='off'
+                        {...field}/>
+                </FormControl>
+                <FormDescription>
+                  Enter your password here
+                </FormDescription>
+                <FormMessage>
+                {form.formState.errors.password && form.formState.errors.password.message}
+                </FormMessage>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <span className="text-center">Don't have an account? Click <u className="hover:text-custom_green_hover dark:hover:text-muted-foreground transition-colors"><Link href={'/register'}>here!</Link></u></span>
+          <Button type="submit"
+                  className="hover:bg-custom_green_hover dark:hover:bg-muted-foreground">
+            Submit
+          </Button>
+        </form>
+      </Form>
     </div>
   )
 }

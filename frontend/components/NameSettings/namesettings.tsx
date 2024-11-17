@@ -77,8 +77,10 @@ const NameSettings = ({ csrfToken }: NameSettingsProps) => {
 
   return (<>
     <Form {...formNames}>
-      <form onSubmit={formNames.handleSubmit(onSubmit)} className="flex flex-col gap-2 w-7/12">
-        <Label htmlFor="names" className="text-xl">First and last names</Label>
+      <form onSubmit={formNames.handleSubmit(onSubmit)}
+            className="flex flex-col gap-2 w-7/12"
+            name="name_form">
+        <Label htmlFor="first_name" className="text-xl">First and last names</Label>
         <p className="text-muted-foreground py-2">Change the first and last names associated with this account. This will only change how
         you are greeted by our home page.</p>
         <FormField
@@ -90,6 +92,8 @@ const NameSettings = ({ csrfToken }: NameSettingsProps) => {
                 <Input placeholder="First name"
                         type="text"
                         className="first_name"
+                        autoComplete='on'
+                        id="first_name"
                         {...field}/>
               </FormControl>
               <FormMessage>
@@ -107,6 +111,7 @@ const NameSettings = ({ csrfToken }: NameSettingsProps) => {
                 <Input placeholder="Last name"  
                         type="text"
                         className="last_name"
+                        autoComplete='on'
                         {...field}/>
               </FormControl>
               <FormMessage>

@@ -73,8 +73,11 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
 
   return (<>
     <Form {...formEmail}>
-      <form onSubmit={formEmail.handleSubmit(onSubmit)} className="flex flex-col gap-2 w-7/12">
-        <Label htmlFor="email" className="text-xl">Email</Label>
+      <form onSubmit={formEmail.handleSubmit(onSubmit)}
+            className="flex flex-col gap-2 w-7/12"
+            name="email_form"
+            autoComplete='on'>
+        <Label htmlFor="current_email" className="text-xl">Email</Label>
         <p className="text-muted-foreground py-2">Change the email address associated with this account.</p>
         <FormField
           name="email"
@@ -86,6 +89,8 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
                         required
                         type="email"
                         className="current_email"
+                        autoComplete='on'
+                        id="current_email"
                         {...field}/>
               </FormControl>
               <FormMessage>
@@ -104,6 +109,7 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
                         required 
                         type="email"
                         className="new_email"
+                        autoComplete='off'
                         {...field}/>
               </FormControl>
               <FormMessage>

@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -23,6 +22,7 @@ import {
 import { Input } from '../ui/input'
 import { useAppSelector, useAppDispatch } from '@/redux/store'
 import { setAuth } from '@/redux/slices/authSlice'
+import { Label } from '../ui/label'
 import { toast } from 'sonner'
 
 interface DeleteAccountDialogProps {
@@ -87,7 +87,11 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
     }
   }
 
-  return (
+  return (<>
+    <div className="flex flex-col gap-4">
+        <p className="text-xl">Delete your account</p>
+        <p className="text-muted-foreground pb-4">You won't be able to recover account once you delete it.</p>
+    </div>
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="destructive">Delete my account</Button>
@@ -101,7 +105,9 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 login_form">
+          <form onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8 login_form"
+                name="delete_account_form">
             <FormField
               control={form.control}
               name="email"
@@ -111,6 +117,7 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
                     <Input placeholder="Email" 
                           required 
                           type="email" 
+                          autoComplete='off'
                           {...field}/>
                   </FormControl>
                   <FormDescription>
@@ -131,6 +138,7 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
                     <Input placeholder="Password"
                           required
                           type="password"
+                          autoComplete='off'
                           {...field}/>
                   </FormControl>
                   <FormDescription>
@@ -149,7 +157,7 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
         </Form>
       </DialogContent>
     </Dialog>
-  )
+  </>)
 }
 
 export default DeleteAccountDialog

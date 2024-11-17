@@ -77,8 +77,10 @@ const PasswordSettings = ({ csrfToken }: PasswordSettingsProps) => {
 
   return (<>
     <Form {...formPassword}>
-      <form onSubmit={formPassword.handleSubmit(onSubmit)} className="flex flex-col gap-2 w-7/12">
-        <Label htmlFor="password" className="text-xl">Password</Label>
+      <form onSubmit={formPassword.handleSubmit(onSubmit)}
+            className="flex flex-col gap-2 w-7/12"
+            name="password_form">
+        <Label htmlFor="current_password" className="text-xl">Password</Label>
         <p className="text-muted-foreground py-2">Change the password used to sign into your account.</p>
         <FormField
           control={formPassword.control}
@@ -90,6 +92,8 @@ const PasswordSettings = ({ csrfToken }: PasswordSettingsProps) => {
                         required 
                         type="password"
                         className="current_password"
+                        autoComplete='off'
+                        id="current_password"
                         {...field}/>
               </FormControl>
               <FormMessage>
@@ -108,6 +112,7 @@ const PasswordSettings = ({ csrfToken }: PasswordSettingsProps) => {
                         required 
                         type="password"
                         className="new_password"
+                        autoComplete='off'
                         {...field}/>
               </FormControl>
               <FormMessage>

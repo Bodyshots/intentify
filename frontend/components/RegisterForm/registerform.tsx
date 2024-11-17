@@ -101,7 +101,8 @@ function RegisterForm({ className_add }: RegisterFormProps) {
       <SiteFullTitle titleClass='text-5xl' sloganClass='text-2xl'/>
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}
-            className="flex space-y-8 lg:w-full lg:h-auto lg:flex-col lg:flex-nowrap align-center items-center flex-col flex-nowrap">
+            className="flex space-y-8 lg:w-full lg:h-auto lg:flex-col lg:flex-nowrap align-center items-center flex-col flex-nowrap"
+            name="register_form">
         <FormField
           control={form.control}
           name="email"
@@ -111,6 +112,7 @@ function RegisterForm({ className_add }: RegisterFormProps) {
                 <Input placeholder="Email" 
                        required 
                        type="email"
+                       autoComplete='on'
                        {...field}/>
               </FormControl>
               <FormDescription>
@@ -131,6 +133,7 @@ function RegisterForm({ className_add }: RegisterFormProps) {
                 <Input placeholder="Password"
                        required
                        type="password"
+                       autoComplete='off'
                        {...field}/>
               </FormControl>
               <FormDescription>
@@ -151,6 +154,7 @@ function RegisterForm({ className_add }: RegisterFormProps) {
                 <Input placeholder="Confirm Password"
                        required
                        type="password"
+                       autoComplete='off'
                        {...field}/>
               </FormControl>
               <FormDescription>
