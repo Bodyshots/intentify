@@ -1,15 +1,17 @@
-import Head from 'next/head'
 import React from 'react'
 import { SettingsCard } from '@/components/SettingsCard/settingscard'
+import { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const pageTitle = 'Intentify | Settings';
+
+  return {
+    title: pageTitle,
+  };
+}
 
 function Settings() {
-  return (
-  (<>
-    <Head>
-      <title>{"Intentify | Settings"}</title>
-    </Head>
-    <SettingsCard/>
-  </>))
+  return ( <SettingsCard/> )
 }
 
 export default Settings
