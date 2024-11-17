@@ -18,7 +18,7 @@ const Loading = () => {
             glassColor="transparent"
             color="rgb(47, 208, 74)"
           />
-          <span className="mt-4 text-lg font-semibold">Loading...</span>
+          <span className="mt-4 text-lg font-medium">Loading...</span>
         </div>
       </div>
     </div>

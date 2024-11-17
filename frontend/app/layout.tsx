@@ -1,12 +1,13 @@
 import { SidebarTrigger, SidebarProvider } from '@/components/ui/sidebar'
-import { AppSidebar } from '@/components/AppSidebar/appsidebar'
+import { AppSidebar } from '@/components/GlobalComps/AppSidebar/appsidebar'
 import { Gabarito } from 'next/font/google'
 import { ThemeProvider } from '../components/ThemeProvider/themeprovider'
-import { ModeToggle } from '../components/ModeToggle/modetoggle'
+import { ModeToggle } from '../components/GlobalComps/ModeToggle/modetoggle'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { ReduxProvider } from '@/redux/reduxprovider'
 import { Toaster } from 'sonner'
 import { Metadata } from 'next'
+import GlobalComps from '@/components/GlobalComps/globalcomps'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -46,8 +47,7 @@ export default function RootLayout({
       <AuthProvider>
       <SidebarProvider>
       <ReduxProvider>
-        <AppSidebar/>
-        <ModeToggle/>
+        <GlobalComps/>
         <SidebarTrigger/>
         <Toaster richColors position="bottom-center"/>
         {children}
