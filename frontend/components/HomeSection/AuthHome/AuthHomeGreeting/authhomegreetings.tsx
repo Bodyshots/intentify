@@ -2,7 +2,9 @@ import React from 'react'
 import { useAppSelector } from '@/redux/store';
 import './authhomegreetings.css'
 
-const greetings = ["Hello again", "Welcome back", "Good to see you"]
+const greetings = ["Hello again", "Welcome back", 
+                   "Good to see you", "Hey there",
+                   "Long time no see", "Great to have you back"]
 
 const AuthHomeGreetings = () => {
   const names = useAppSelector((state) => state.name_persist.name_reduce);

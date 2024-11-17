@@ -102,4 +102,9 @@
 body {
   height: 100%;
   width: 100%;
+  scroll-padding: 0;
+}
+
+.subtitle {
+  color: hsl(130, 63%, 50%);
 }

@@ -64,7 +64,7 @@ const GuestHome = () => {
     </div>
     <div style={{width: "95%", maxHeight: "100vh"}} className="mx-auto px-auto py-6 my-4 h-auto">
       <h1 className="text-5xl">A few questions are all we need</h1>
-      <h3 className="text-xl py-4" id="first_subtitle">How does it work?</h3>
+      <h3 className="text-xl py-4 subtitle">How does it work?</h3>
         <div className="grid grid-cols-2 pt-2 gap-4 lg:grid-cols-4 sm:gap-8">
           {cards.map((item) => {
             return <GuestHomeCard step_title={item.step_title}

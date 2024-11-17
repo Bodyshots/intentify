@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAppDispatch } from "@/redux/store";
 import { setAuth } from "@/redux/slices/authSlice";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/store";
 import { toast } from "sonner";
 import useSWR from "swr";
@@ -22,16 +22,17 @@ function Logout() {
   const dispatch = useAppDispatch();
   const { push } = useRouter();
   const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
-
-  // Use SWR to get the CSRF token
   const { data: csrfToken } = useSWR("csrf-token", fetchCSRFToken);
+  const logoutInitiated = useRef(false); // Tracks whether logout has already started
 
   useEffect(() => {
     const handleLogout = async () => {
-      if (!csrfToken && auth) return;
+      if (!csrfToken || !auth || logoutInitiated.current) return;
+
+      logoutInitiated.current = true; // Prevent further logout triggers
+
       try {
-        const response = await fetch('http://localhost:4000/logout',
-          {
+        const response = await fetch("http://localhost:4000/logout", {
           method: "POST",
           headers: {
             "X-CSRFToken": csrfToken,
@@ -43,20 +44,21 @@ function Logout() {
         if (response.ok) {
           dispatch(setAuth(false));
           toast.success(data.message);
-        }
-        else {
+        } else {
           toast.error(data.message);
         }
-      }
-      catch (error) {
+      } catch (error) {
         console.error("Error during logout process", error);
         toast.error("Error during logout process");
       }
-      push('/');
+
+      push("/");
     };
 
-    handleLogout(); // Trigger logout once CSRF token is available
-  }, [csrfToken]);
+    handleLogout();
+  }, [csrfToken, auth, dispatch, push]);
+
+  return null; // Component does not render anything visible
 }
 
 export default Logout;
