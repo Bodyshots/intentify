@@ -3,10 +3,10 @@
 import { useEffect, useRef } from "react";
 import { useAppDispatch } from "@/redux/store";
 import { setAuth } from "@/redux/slices/authSlice";
-import { useRouter } from "next/navigation";
 import { useAppSelector } from "@/redux/store";
 import { toast } from "sonner";
 import useSWR from "swr";
+import { redirect } from "next/navigation";
 
 const fetchCSRFToken = async () => {
   const res = await fetch("http://localhost:4000/api/get-csrf-token", {
@@ -20,7 +20,6 @@ const fetchCSRFToken = async () => {
 
 function Logout() {
   const dispatch = useAppDispatch();
-  const { push } = useRouter();
   const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
   const { data: csrfToken } = useSWR("csrf-token", fetchCSRFToken);
   const logoutBegin = useRef(false); // Tracks whether logout has already started
@@ -52,7 +51,7 @@ function Logout() {
         toast.error("Error during logout process");
       }
 
-      push("/");
+      redirect("/");
     };
 
     handleLogout();

@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import SiteFullTitle from '../SiteFullTitle/sitefulltitle';
+import SiteFullTitle from '@/components/SiteFullTitle/sitefulltitle';
 import Link from 'next/link';
 
 import getCSRF from '@/lib/GetCSRF';

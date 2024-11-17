@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useRouter } from 'next/navigation';
-import SiteFullTitle from '../SiteFullTitle/sitefulltitle';
+import SiteFullTitle from '../../SiteFullTitle/sitefulltitle';
 import { useAppSelector } from '@/redux/store';
 import './registerform.css';
 import { redirect } from 'next/navigation';

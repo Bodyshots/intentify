@@ -26,6 +26,7 @@ const storage =
     ? createWebStorage("local")
     : createNoopStorage();
 
+// Configs
 const authPersistConfig = {
   key: "auth",
   storage: storage,

@@ -1,6 +1,5 @@
 import React from 'react'
 import { AboutCard } from '@/components/AboutCard/aboutcard'
-import Head from 'next/head'
 import { Metadata } from 'next';
 
 export async function generateMetadata(): Promise<Metadata> {

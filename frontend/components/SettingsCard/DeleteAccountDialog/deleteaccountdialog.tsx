@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react'
 import {
   Dialog,
@@ -7,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Button } from '../ui/button'
+import { Button } from '@/components/ui/button'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -19,10 +21,9 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form"
-import { Input } from '../ui/input'
+import { Input } from '@/components/ui/input'
 import { useAppSelector, useAppDispatch } from '@/redux/store'
 import { setAuth } from '@/redux/slices/authSlice'
-import { Label } from '../ui/label'
 import { toast } from 'sonner'
 
 interface DeleteAccountDialogProps {

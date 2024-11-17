@@ -12,9 +12,10 @@ const AuthHome = () => {
       <div className="auth_title_container relative top-0 w-full py-4">
         <SiteFullTitle sloganClass='text-2xl' titleClass='text-6xl'/>
       </div>
-      <div className="flex flex-col justify-evenly h-full">
+      <div className="flex flex-col justify-evenly">
         <AuthHomeGreetings/>
-        <div className="flex flex-col p-8 justify-evenly auth_search_container">
+      </div>
+        <div className="flex flex-col p-8 px-96 justify-evenly auth_search_container">
           <div className="home_search_text text-center pb-4 text-4xl">
               Ready to try out another URL?
           </div>
@@ -27,7 +28,6 @@ const AuthHome = () => {
           <h3 className="text-xl py-4 subtitle">Check back some other time to see what's here!</h3>
         </div>
       </div>
-    </div>
   )
 }
 

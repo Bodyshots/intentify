@@ -1,6 +1,19 @@
+"use client";
+
 import './aboutcard.css'
+import { useEffect, useState } from 'react';
+import Loading from '@/app/loading';
 
 export const AboutCard = () => {
+  const [isLoaded, setIsLoaded] = useState(false); 
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
+
+  if (!isLoaded) {
+    return <Loading />;
+  }
 
   return (
     <div className="about_container px-10 py-8 rounded-2xl">

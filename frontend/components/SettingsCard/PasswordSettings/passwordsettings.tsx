@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react'
 import {
   Form,
@@ -10,8 +12,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { Label } from '@radix-ui/react-label'
-import { Input } from '../ui/input'
-import { Button } from '../ui/button'
+import { Input } from '../../ui/input'
+import { Button } from '../../ui/button'
 import { toast } from 'sonner'
 
 interface PasswordSettingsProps {
