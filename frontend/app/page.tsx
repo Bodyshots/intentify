@@ -13,7 +13,7 @@ function Home() {
       <title>{"Intentify | Home"}</title>
     </Head>
     <HomeSection auth={auth}/>
-    </>)
+  </>)
 }
 
 export default Home

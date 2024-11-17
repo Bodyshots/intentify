@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 import SiteFullTitle from '@/components/SiteFullTitle/sitefulltitle';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { Link, MessageCircleQuestion, SearchCheck, RefreshCcw } from 'lucide-react';
 import './guesthome.css'
 import GuestHomeCard from './GuestHomeCard/guesthomecard';
@@ -15,22 +14,22 @@ const cards = [
   {
     step_title: "1. Input a URL",
     Icon: Link,
-    desc: "idk"
+    desc: "Pass in a URL for our chatbots to interpret"
   },
   {
     step_title: "2. Answer some questions",
     Icon: MessageCircleQuestion,
-    desc: "idk 2"
+    desc: "Give answers to some questions about your intentions around your given URL"
   },
   {
     step_title: "3. Did we get what you're looking for?",
     Icon: SearchCheck,
-    desc: "idk 3"
+    desc: "You'll be prompted with what our chatbots believe why you're at that URL"
   },
   {
     step_title: "4. Try again!",
     Icon: RefreshCcw,
-    desc: "idk 4"
+    desc: "Did we get it? If not, feel free to try again by answering some more questions!"
   }
 ]
 
@@ -62,7 +61,7 @@ const GuestHome = () => {
         </div>
       </div>
     </div>
-    <div style={{width: "95%", maxHeight: "100vh"}} className="mx-auto px-auto py-6 my-4 h-auto">
+    <div style={{width: "95%"}} className="mx-auto px-auto py-6 my-4 h-auto">
       <h1 className="text-5xl">A few questions are all we need</h1>
       <h3 className="text-xl py-4 subtitle">How does it work?</h3>
         <div className="grid grid-cols-2 pt-2 gap-4 lg:grid-cols-4 sm:gap-8">
