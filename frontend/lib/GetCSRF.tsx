@@ -2,8 +2,10 @@
 
 import useSWR from "swr";
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 const fetcher = async () => {
-  const response = await fetch("http://localhost:4000/api/get-csrf-token",
+  const response = await fetch(`${apiBaseUrl}/api/get-csrf-token`,
     { 
       method: "GET",
       credentials: "include",

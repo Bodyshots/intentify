@@ -40,6 +40,7 @@ function LoginForm({ className_add }: LoginFormProps) {
   const csrfToken = getCSRF();
   const dispatch = useAppDispatch();
   const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   // Defining form defaults
   const form = useForm<z.infer<typeof formSchema>>({
@@ -57,7 +58,7 @@ function LoginForm({ className_add }: LoginFormProps) {
       return;
     }
     try {
-      const response = await fetch('http://localhost:4000/login', {
+      const response = await fetch(`${apiBaseUrl}/login`, {
         method: 'POST',
         headers: {
           'X-CSRFToken': csrfToken,

@@ -48,6 +48,7 @@ function RegisterForm({ className_add }: RegisterFormProps) {
   const { push } = useRouter();
   const csrfToken = getCSRF();
   const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   // Defining form defaults
   const form = useForm<z.infer<typeof formSchema>>({
@@ -67,7 +68,8 @@ function RegisterForm({ className_add }: RegisterFormProps) {
     }
 
     try {
-      const response = await fetch('http://localhost:4000/register', {
+      console.log(`${apiBaseUrl}/register`)
+      const response = await fetch(`${apiBaseUrl}/register`, {
         method: 'POST',
         headers: {
           'X-CSRFToken': csrfToken,

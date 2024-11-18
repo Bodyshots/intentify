@@ -1,6 +1,5 @@
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, EmailField, StringField
+from wtforms import PasswordField, StringField
 from wtforms.validators import DataRequired, Length, ValidationError, EqualTo, Email
 from constants import *
 from models import User

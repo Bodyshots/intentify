@@ -26,6 +26,7 @@ type PasswordData = {
 }
 
 const PasswordSettings = ({ csrfToken }: PasswordSettingsProps) => {
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const formPasswordSchema = z.object({
     password: z.string(),
@@ -50,7 +51,7 @@ const PasswordSettings = ({ csrfToken }: PasswordSettingsProps) => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:4000/api/users/update/password', {
+      const response = await fetch(`${apiBaseUrl}/api/users/update/password`, {
         method: 'PUT',
         headers: {
           'X-CSRFToken': csrfToken,

@@ -26,6 +26,7 @@ type EmailData = {
 }
 
 const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const formEmailSchema = z.object({
     email: z.string().email({ message: 'Please enter a valid email!'}).trim(),
@@ -47,7 +48,7 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:4000/api/users/update/email', {
+      const response = await fetch(`${apiBaseUrl}/api/users/update/email`, {
         method: 'PUT',
         headers: {
           'X-CSRFToken': csrfToken,

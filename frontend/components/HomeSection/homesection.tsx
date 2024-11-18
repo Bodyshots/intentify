@@ -4,17 +4,16 @@ import React, { useEffect, useState } from 'react';
 import AuthHome from './AuthHome/authhome';
 import GuestHome from './GuestHome/guesthome';
 import Loading from '@/app/loading';
+import { useAppSelector } from '@/redux/store';
 
-interface HomeSectionProps {
-  auth: boolean;
-}
-
-const HomeSection = ({ auth }: HomeSectionProps) => {
+const HomeSection = () => {
+  const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
   const [isLoaded, setIsLoaded] = useState(false); 
 
   useEffect(() => {
+    if (auth === null) return;
     setIsLoaded(true);
-  }, []);
+  }, [auth]);
 
   if (!isLoaded) {
     return <Loading />;

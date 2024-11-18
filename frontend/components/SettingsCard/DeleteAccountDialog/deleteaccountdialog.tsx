@@ -44,6 +44,7 @@ const formSchema = z.object({
 const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
   const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
   const dispatch = useAppDispatch();
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const form = useForm<AccountData>({
     resolver: zodResolver(formSchema),
@@ -60,7 +61,7 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:4000/api/user/delete', {
+      const response = await fetch(`${apiBaseUrl}/api/user/delete`, {
         method: 'DELETE',
         headers: {
           'X-CSRFToken': csrfToken,

@@ -11,13 +11,21 @@ import PasswordSettings from './PasswordSettings/passwordsettings';
 import DeleteAccountDialog from './DeleteAccountDialog/deleteaccountdialog';
 import { useEffect, useState } from 'react';
 import Loading from '@/app/loading';
+import { useAppSelector } from '@/redux/store';
+import { redirect } from 'next/navigation';
+import { toast } from 'sonner';
 
 export const SettingsCard = () => {
   const csrfToken = getCSRF();
-  const [isLoaded, setIsLoaded] = useState(false); 
+  const [isLoaded, setIsLoaded] = useState(false);
+  const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
 
   useEffect(() => {
     setIsLoaded(true);
+    if (!auth) {
+      toast.error("You must be signed in to access this page!");
+      redirect('/'); // Redirect unauthenticated users
+    }
   }, []);
 
   if (!isLoaded) {

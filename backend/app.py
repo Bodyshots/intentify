@@ -7,6 +7,7 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_session import Session
 from constants import LOGIN_VIEW
+from dotenv import load_dotenv
 
 db = SQLAlchemy()
 cors = CORS()
@@ -16,6 +17,7 @@ csrf = CSRFProtect()
 
 # App instance
 def create_app():
+  load_dotenv() # Load environment vars
   app = Flask(__name__)
   app.config.from_object(Config)
   

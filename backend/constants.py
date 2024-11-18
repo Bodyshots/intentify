@@ -17,8 +17,8 @@ AUTH = 'isAuth'
 MSG = 'message'
 ERROR = "error"
 CSRF_TOKEN = 'csrf_token'
+SECRET_KEY = 'SECRET_KEY'
 SESSION_LIFETIME = 7
-SECRET_KEY_INT = 42
 
 # Methods
 GET = 'GET'

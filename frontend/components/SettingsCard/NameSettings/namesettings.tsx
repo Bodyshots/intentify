@@ -29,6 +29,7 @@ type NameData = {
 
 const NameSettings = ({ csrfToken }: NameSettingsProps) => {
   const dispatch = useAppDispatch();
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const formNameSchema = z.object({
     first_name: z.string().trim(),
@@ -49,7 +50,7 @@ const NameSettings = ({ csrfToken }: NameSettingsProps) => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:4000/api/users/update/names', {
+      const response = await fetch(`${apiBaseUrl}/api/users/update/names`, {
         method: 'PUT',
         headers: {
           'X-CSRFToken': csrfToken,
