@@ -68,7 +68,6 @@ function RegisterForm({ className_add }: RegisterFormProps) {
     }
 
     try {
-      console.log(`${apiBaseUrl}/register`)
       const response = await fetch(`${apiBaseUrl}/register`, {
         method: 'POST',
         headers: {

@@ -1,4 +1,4 @@
-import { Home, CircleHelp, UserRoundPen, Link2, LogIn} from "lucide-react"
+import { Home, CircleHelp, UserRoundPen, LogIn} from "lucide-react"
 
 import {
   Sidebar,
@@ -9,9 +9,11 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarFooter
 } from "@/components/ui/sidebar"
 import SiteTitle from "@/components/SiteFullTitle/SiteTitle/sitetitle"
 import Link from "next/link"
+import { ModeToggle } from "../../ModeToggle/modetoggle"
 
 // Menu items.
 const items = [
@@ -19,11 +21,6 @@ const items = [
     title: "Home",
     url: "/",
     icon: Home,
-  },
-  {
-    title: "URL Intentifier",
-    url: "/intentifier",
-    icon: Link2,
   },
   {
     title: "Login",
@@ -65,6 +62,9 @@ export function GuestSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <ModeToggle/>
+      </SidebarFooter>
     </Sidebar>
   )
 }

@@ -5,10 +5,11 @@ from constants import *
 from app import db, bcrypt
 from flask_wtf.csrf import generate_csrf
 from forms import LoginForm, RegisterForm, ChangeEmailForm, ChangePasswordForm, ChangeNamesForm, DeleteAccountForm
-from models import User
+from models import User, UserURL
 from datetime import datetime
 from pytz import utc
 from datetime import timedelta
+import requests
 
 main = Blueprint('main', __name__)
 
@@ -23,6 +24,8 @@ def check_auth_status():
         return True and current_user.is_authenticated
   return False
 
+
+###### Users ######
 @main.route('/api/users', methods=[GET])
 def get_users():
   try:
@@ -145,7 +148,7 @@ def login():
       
       user = User.get_by_email(submitted_email)
       if user and bcrypt.check_password_hash(user.password, submitted_password):
-        login_user(user)
+        login_user(user, remember=True)
         session[EMAIL] = submitted_email
         session[CREATED_AT] = datetime.now(utc)
         session[EXPIRED_AT] = datetime.now(utc) + timedelta(SESSION_LIFETIME)
@@ -238,6 +241,92 @@ def logout():
     db.session.rollback()
     return make_response(jsonify({MSG: 'Error logging out user', 
                                   ERROR: str(e)}), INTERNAL_ERR)
+
+###### UserURLs ######
+@main.route('/api/url/create', methods=[POST])
+def create_url():
+  try:
+    data = request.get_json()
+    
+    if current_user and current_user.is_authenticated:
+      new_url = UserURL(user=current_user, url=data[URL], desc=data[DESC])
+      db.session.add(new_url)
+      db.session.commit()
+      return make_response(jsonify({
+        ID: new_url.id,
+        EMAIL: new_url.user_email,
+        URL: new_url.url,
+        DESC: new_url.desc,
+        MSG: "URL Creation successful!"
+      }), CREATED)
+    return make_response(jsonify({MSG: "User not signed in"}), UNAUTHORIZED)
+  except Exception as e:
+    db.session.rollback()
+    return make_response(jsonify({MSG: "Error creating URL entry",
+                                  ERROR: str(e)}), INTERNAL_ERR)
+
+@main.route('/api/url/urls', methods=[GET])
+def get_urls():
+  try:
+    if current_user and current_user.is_authenticated:
+      urls = UserURL.query.filter_by(email=current_user.email)
+      return make_response(jsonify({URLS: urls}), OK)
+    return make_response(jsonify({MSG: 'User is not signed in'}), UNAUTHORIZED)
+  except Exception as e:
+    return make_response(jsonify({MSG: 'Error getting user URLs',
+                                  ERROR: str(e)}), INTERNAL_ERR)
+
+@main.route('/api/url/all_urls', methods=[GET])
+def get_all_urls():
+  try:
+    urls = UserURL.query.all()
+    urls_data = [{ID: url.id,
+                  EMAIL: url.user_email,
+                  URL: url.url,
+                  DESC: url.desc} for url in urls]
+    return make_response(jsonify({URLS: urls_data}), OK)
+  except Exception as e:
+    return make_response(jsonify({MSG: 'Error getting all URLs',
+                                  ERROR: str(e)}), INTERNAL_ERR)
+ 
+@main.route('/api/url/delete/<id>', methods=[DELETE])
+def delete_url(id):
+  try:
+    url = UserURL.get_by_id(id)
+    if url and (url.user_email == current_user.email):
+      db.session.delete(url)
+      db.session.commit()
+      return make_response(jsonify({MSG: 'URL deleted!'}), OK)
+    return make_response(jsonify({MSG: 'Could not delete the URL!'}), FORBIDDEN)
+  except Exception as e:
+    return make_response(jsonify({MSG: 'Error deleting UserURL',
+                                  ERROR: str(e)}), INTERNAL_ERR)
+    
+# @main.route('/api/botpress/create/user', methods=[POST])
+# def create_botpress_user():
+#   try:
+#     url = "https://webhook.botpress.cloud/8e34375f-abc8-4f1e-9d5b-98398c99dbdb/users"
+
+#     payload = { "id": "test1@test1.com" }
+#     headers = {
+#         "accept": "application/json",
+#         "content-type": "application/json"
+#     }
+
+#     response = requests.post(url, json=payload, headers=headers)
+#     if response.status_code == OK:
+#       try:
+#         return make_response(jsonify({MSG: 'Botpress user created!', 
+#                                       RESPONSE: response.json()}), OK)
+#       except ValueError:
+#         return make_response(jsonify({MSG: "Response not valid JSON", RESPONSE: response.text}), INTERNAL_ERR)
+#     else:
+#         return make_response(jsonify({MSG: "Failed to create Botpress user", "STATUS": response.status_code, RESPONSE: response.text}), response.status_code)
+#   except Exception as e:
+#     return make_response(jsonify({MSG: 'Error creating Botpress user',
+#                                   ERROR: str(e)}), INTERNAL_ERR)
+
+###### Other functions ######
 
 @main.route('/api/health', methods=[GET])
 def health_check():

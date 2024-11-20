@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "flask-dev": "FLASK_DEBUG=1 pip3 install -r ../backend/requirements.txt && python3 -m flask --app ../backend/app.py run -p 4000",
     "next-dev": "next dev",
     "dev": "next dev",
@@ -11,7 +12,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
+    "@botpress/webchat": "^2.3.6",
+    "@botpress/webchat-generator": "^0.2.15",
+    "@emotion/react": "^11.13.5",
     "@hookform/resolvers": "^3.9.1",
     "@nextui-org/spinner": "^2.0.34",
     "@radix-ui/react-alert-dialog": "^1.1.2",
@@ -26,21 +29,23 @@
     "@types/react-dom": "18.2.4",
     "@types/react-router-dom": "^5.3.3",
     "autoprefixer": "10.4.14",
+    "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "embla-carousel-autoplay": "^8.4.0",
-    "embla-carousel-react": "^8.4.0",
+    "core-js": "^3.39.0",
+    "embla-carousel-autoplay": "^8.5.1",
+    "embla-carousel-react": "^8.5.1",
     "eslint": "^8.57.1",
     "eslint-config-next": "13.4.2",
     "framer-motion": "^11.11.17",
     "glob": "^11.0.0",
     "lucide-react": "^0.454.0",
-    "next": "latest",
+    "next": "^15.0.3",
     "next-themes": "^0.3.0",
     "node-fetch": "^3.3.2",
     "postcss": "^8.4.49",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.2",
     "react-loader-spinner": "^6.1.6",
     "react-redux": "^9.1.2",
@@ -57,6 +62,6 @@
     "@types/node": "20.1.4",
     "@types/react": "18.3.12",
     "concurrently": "^9.1.0",
-    "typescript": "5.0.4"
+    "typescript": "4.8.4"
   }
 }

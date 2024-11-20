@@ -11,7 +11,6 @@ const HomeSection = () => {
   const [isLoaded, setIsLoaded] = useState(false); 
 
   useEffect(() => {
-    if (auth === null) return;
     setIsLoaded(true);
   }, [auth]);
 
@@ -19,8 +18,7 @@ const HomeSection = () => {
     return <Loading />;
   }
 
-  return ( auth ? <AuthHome/> : <GuestHome/>
-  )
+  return ( auth ? <AuthHome/> : <GuestHome/>)
 }
 
 export default HomeSection

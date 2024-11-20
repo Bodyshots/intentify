@@ -1,7 +1,6 @@
 import React from 'react'
-import IdentifierBar from '@/components/IdentifierBar/intentifierbar'
 import { Metadata } from 'next'
-import IntentifierSearch from '@/components/IntentifierSearch/intentifiersearch'
+import IntentifierContainer from '@/components/IntentifierContainer/intentifiercontainer'
 
 export async function generateMetadata(): Promise<Metadata> {
   const pageTitle = 'Intentify | Intentifier';
@@ -12,12 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 function Intentifier() {
-  return (
-    <div className="prompt_container flex gap-4 flex-col justify-center m-auto">
-      <span className="py-3"><IdentifierBar/></span>
-      <IntentifierSearch/>
-    </div>
-)
+  return (<IntentifierContainer/>)
 }
 
 export default Intentifier

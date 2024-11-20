@@ -15,7 +15,7 @@ const AuthHome = () => {
       <div className="flex flex-col justify-evenly">
         <AuthHomeGreetings/>
       </div>
-        <div className="flex flex-col p-8 px-96 justify-evenly auth_search_container">
+        <div className="flex flex-col p-16 justify-evenly auth_search_container">
           <div className="home_search_text text-center pb-4 text-4xl">
               Ready to try out another URL?
           </div>

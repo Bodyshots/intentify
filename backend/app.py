@@ -8,6 +8,7 @@ from flask_login import LoginManager
 from flask_session import Session
 from constants import LOGIN_VIEW
 from dotenv import load_dotenv
+import os
 
 db = SQLAlchemy()
 cors = CORS()
@@ -20,6 +21,7 @@ def create_app():
   load_dotenv() # Load environment vars
   app = Flask(__name__)
   app.config.from_object(Config)
+  origins = os.getenv('FRONTEND_ORIGIN', '').split(',')
   
   # Initialize login manager
   login_manager.init_app(app)
@@ -34,7 +36,7 @@ def create_app():
   # Frontend port: 3000
   # Backend port: 4000
   # Database port: 5432
-  cors.init_app(app, supports_credentials=True)
+  cors.init_app(app, supports_credentials=True, resources={r"/*": {"origins": "*"}})
   db.init_app(app)
   csrf.init_app(app)
   app.config['SESSION_SQLALCHEMY'] = db

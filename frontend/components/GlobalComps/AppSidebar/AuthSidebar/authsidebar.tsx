@@ -1,8 +1,9 @@
-import { Home, CircleHelp, UserRoundCog, Link2, LogOut } from "lucide-react"
+import { Home, CircleHelp, UserRoundCog, Link2, LogOut, List } from "lucide-react"
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -12,6 +13,7 @@ import {
 } from "@/components/ui/sidebar"
 import SiteTitle from "@/components/SiteFullTitle/SiteTitle/sitetitle"
 import Link from "next/link"
+import { ModeToggle } from "../../ModeToggle/modetoggle"
 
 // Menu items.
 const items = [
@@ -21,9 +23,9 @@ const items = [
     icon: Home,
   },
   {
-    title: "URL Intentifier",
+    title: "Conversation List",
     url: "/intentifier",
-    icon: Link2,
+    icon: List,
   },
   {
     title: "Account Settings",
@@ -65,6 +67,9 @@ export function AuthSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <ModeToggle/>
+      </SidebarFooter>
     </Sidebar>
   )
 }

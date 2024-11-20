@@ -1,8 +1,6 @@
 import { SidebarTrigger, SidebarProvider } from '@/components/ui/sidebar'
-import { AppSidebar } from '@/components/GlobalComps/AppSidebar/appsidebar'
 import { Gabarito } from 'next/font/google'
 import { ThemeProvider } from '../components/ThemeProvider/themeprovider'
-import { ModeToggle } from '../components/GlobalComps/ModeToggle/modetoggle'
 import { AuthProvider } from '@/contexts/AuthContext'
 import { ReduxProvider } from '@/redux/reduxprovider'
 import { Toaster } from 'sonner'
@@ -47,6 +45,10 @@ export default function RootLayout({
       <AuthProvider>
       <SidebarProvider>
       <ReduxProvider>
+        
+      <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+      <script src="https://files.bpcontent.cloud/2024/11/19/00/20241119005939-9TZNTPEW.js"></script>
+    
         <GlobalComps/>
         <SidebarTrigger/>
         <Toaster richColors position="bottom-center"/>
