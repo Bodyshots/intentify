@@ -46,6 +46,12 @@ interface RegisterFormProps {
   className_add?: string;
 }
 
+type RegisterData = {
+  email: string;
+  password: string;
+  conf_password: string;
+}
+
 function RegisterForm({ className_add }: RegisterFormProps) {
   const { push } = useRouter();
   const csrfToken = getCSRF();
@@ -54,7 +60,7 @@ function RegisterForm({ className_add }: RegisterFormProps) {
   const dispatch = useAppDispatch();
 
   // Defining form defaults
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<RegisterData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
@@ -128,7 +134,7 @@ function RegisterForm({ className_add }: RegisterFormProps) {
     }
   }
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: RegisterData) {
     if (!csrfToken) {
       console.error("CSRF token is missing");
       return;

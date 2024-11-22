@@ -36,6 +36,11 @@ interface LoginFormProps {
   className_add?: string;
 }
 
+type LoginData = {
+  email: string;
+  password: string;
+}
+
 function LoginForm({ className_add }: LoginFormProps) {
   const csrfToken = getCSRF();
   const dispatch = useAppDispatch();
@@ -43,7 +48,7 @@ function LoginForm({ className_add }: LoginFormProps) {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   // Defining form defaults
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<LoginData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
@@ -52,7 +57,7 @@ function LoginForm({ className_add }: LoginFormProps) {
     mode: 'onChange',
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: LoginData) {
     if (!csrfToken) {
       console.error("CSRF token is missing");
       return;

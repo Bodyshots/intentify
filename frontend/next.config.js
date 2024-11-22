@@ -6,7 +6,7 @@ const nextConfig = {
         source: '/api/:path*',
         destination:
           process.env.NODE_ENV === 'development'
-            ? 'http://127.0.0.1:5432/api/:path*'
+            ? `${process.env.NEXT_PUBLIC_DB_BASE_URL}/api/:path*`
             : '/api/',
       },
     ]
