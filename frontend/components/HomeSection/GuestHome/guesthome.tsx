@@ -3,12 +3,12 @@
 import React from 'react'
 
 import { useRouter } from 'next/navigation';
-import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 import SiteFullTitle from '@/components/SiteFullTitle/sitefulltitle';
 import { Button } from '@/components/ui/button';
 import { Link, MessageCircleQuestion, SearchCheck, RefreshCcw } from 'lucide-react';
 import './guesthome.css'
 import GuestHomeCard from './GuestHomeCard/guesthomecard';
+import trailer from '../../../public/intentify_trailer.mp4'
 
 const cards = [
   {
@@ -40,14 +40,20 @@ const GuestHome = () => {
   <div className="flex flex-col justify-center text-center px-12 h-full">
     <div className="landing_container flex justify-center py-10 rounded-2xl w-full">
       <div className="hero_container flex flex-row justify-evenly flex-nowrap">
-        <div className="w-9/12 text-center gap-6 p-4 flex justify-center py-10 pl-8 flex-col flex-nowrap">
+        <div className="w-9/12 text-center gap-6 p-4 flex justify-center py-10 pl-8 flex-col flex-nowrap items-center">
           <SiteFullTitle titleClass='text-6xl' sloganClass='text-4xl'/>
-          <PlaceholdersAndVanishInput onChange={(e) => console.log(e)}
-                                      onSubmit={(e) => console.log(e)}/>
-          <span className="text-xl">Type in a URL to see how our chatbots will identify what you're looking for</span>
+          <video 
+            preload="auto"
+            autoPlay
+            loop
+            className="rounded-3xl aspect-auto shadow-2xl w-full border-1 md:border-1 border-base-content/20 xl:w-[80%] justify-center">
+            <source 
+              src={trailer}
+              type="video/mp4" />
+          </video>
         </div>
         <div className="big_text_hero_container">
-          <span className="text-6xl lg:text-right justify-center lg:pr-8">Have a chatbot guess what you're looking for on any website, just for <b>you</b></span>
+          <span className="text-6xl lg:text-right 2xl:text-7xl 4xl:text-9xl justify-center lg:pr-8">Have a chatbot guess what you're looking for on any website, just for <b>you</b></span>
           <div className="flex flex-row gap-x-6 justify-center lg:pr-8">
             <Button className="rounded-full text-lg border border-muted-foreground hover:bg-custom_green_hover dark:hover:bg-muted-foreground"
                     onClick={() => push('/register')}>

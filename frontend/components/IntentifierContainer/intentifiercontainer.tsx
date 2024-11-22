@@ -16,35 +16,32 @@ const IntentifierContainer = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const { email } = useContext(AuthContext) ?? {};
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const botURL = "https://webhook.botpress.cloud/8e34375f-abc8-4f1e-9d5b-98398c99dbdb"
 
   useEffect(() => {
-    async function create_user() {
+    async function send_email() {
       try {
-        const response = await fetch(`${apiBaseUrl}/api/botpress/create/user`, {
+        const response = await fetch(`${botURL}`, {
           method: 'POST',
-          headers: {
-            'X-CSRFToken': csrfToken,
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
+          body: JSON.stringify({
+            email: email
+          })
         });
-
         const data = await response.json();
-        console.log(response);
-        console.log(data);
+
         if (response.ok) {
-          console.log("User created")
+          console.log("Email sent to bot")
         }
         else {
           console.log("Response not ok")
         }
       }
       catch (error) {
-        console.error("Error in create_user", error);
+        console.error("Error in send_email", error);
       }
     }
 
-    create_user();
+    send_email();
 
     setIsLoaded(true);
   }, []);

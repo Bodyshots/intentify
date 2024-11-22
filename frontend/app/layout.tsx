@@ -45,10 +45,6 @@ export default function RootLayout({
       <AuthProvider>
       <SidebarProvider>
       <ReduxProvider>
-        
-      <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
-      <script src="https://files.bpcontent.cloud/2024/11/19/00/20241119005939-9TZNTPEW.js"></script>
-    
         <GlobalComps/>
         <SidebarTrigger/>
         <Toaster richColors position="bottom-center"/>

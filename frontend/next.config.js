@@ -11,7 +11,15 @@ const nextConfig = {
       },
     ]
   },
-  output: `standalone`
-}
+  output: `standalone`,
+  webpack: (config) => {
+    // Add loader for video files
+    config.module.rules.push({
+      test: /\.(mp4)$/,
+      type: 'asset/resource',
+    });
+    return config;
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

@@ -1,0 +1,7 @@
+.guest_card {
+  transition: transform 0.15s ease-in-out;
+}
+
+.guest_card:hover {
+  transform: scale(1.05);
+}

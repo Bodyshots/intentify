@@ -1,8 +1,7 @@
 # Constants
 ID = 'id'
-LIST_ID = 'list_id'
+LST_ID = 'list_id'
 LOGIN_VIEW = 'login'
-USER = 'user'
 USER_ID = 'user_id'
 EMAIL = 'email'
 NEW_EMAIL = 'new_email'
@@ -20,12 +19,17 @@ MSG = 'message'
 ERROR = "error"
 CSRF_TOKEN = 'csrf_token'
 SECRET_KEY = 'SECRET_KEY'
-URL = 'URL'
-URLS = 'URLs'
 DESC = 'desc'
 ROLE = 'role'
+INTENT = 'intent'
 RESPONSE = 'response'
+URLS = 'URLs'
 SESSION_LIFETIME = 7
+
+# Models
+USER = 'user'
+CONVO = 'conversation'
+CONVOS = 'conversations'
 
 # Methods
 GET = 'GET'

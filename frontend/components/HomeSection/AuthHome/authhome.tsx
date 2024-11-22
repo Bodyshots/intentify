@@ -1,5 +1,4 @@
 import React from 'react'
-
 import { PlaceholdersAndVanishInput } from '@/components/ui/placeholders-and-vanish-input';
 import SiteFullTitle from '@/components/SiteFullTitle/sitefulltitle';
 import AuthHomeGreetings from './AuthHomeGreeting/authhomegreetings';

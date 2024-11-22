@@ -3,9 +3,7 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
 import { LucideProps } from 'lucide-react';
 import './guesthomecard.css'
@@ -18,7 +16,7 @@ interface GuestHomeCardProps {
 
 const GuestHomeCard = ({ step_title, Icon, desc }: GuestHomeCardProps) => {
   return (
-    <Card className="w-auto">
+    <Card className="guest_card w-auto">
       <CardHeader className="flex flex-row text-wrap justify-center align-middle">
         <Icon size={50} 
               className='bg-[#d9f1df] rounded-xl p-1'
