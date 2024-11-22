@@ -21,6 +21,8 @@ import './registerform.css';
 import { redirect } from 'next/navigation';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { setAuth } from '@/redux/slices/authSlice';
+import { useAppDispatch } from '@/redux/store';
 
 import getCSRF from '@/lib/GetCSRF';
 
@@ -49,6 +51,7 @@ function RegisterForm({ className_add }: RegisterFormProps) {
   const csrfToken = getCSRF();
   const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const dispatch = useAppDispatch();
 
   // Defining form defaults
   const form = useForm<z.infer<typeof formSchema>>({
@@ -61,12 +64,9 @@ function RegisterForm({ className_add }: RegisterFormProps) {
     mode: 'onChange',
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!csrfToken) {
-      console.error("CSRF token is missing");
-      return;
-    }
-
+  async function register_req(email: string, 
+                              password: string, 
+                              conf_password: string) {
     try {
       const response = await fetch(`${apiBaseUrl}/register`, {
         method: 'POST',
@@ -75,9 +75,9 @@ function RegisterForm({ className_add }: RegisterFormProps) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: values.email,
-          password: values.password,
-          conf_password: values.conf_password,
+          email: email,
+          password: password,
+          conf_password: conf_password,
         }),
         credentials: 'include',
       });
@@ -95,6 +95,46 @@ function RegisterForm({ className_add }: RegisterFormProps) {
       console.error("Error registering", error);
       toast.success("Error registering");
     }
+  }
+
+  async function login_req(email: string, password: string) {
+    try {
+      const response = await fetch(`${apiBaseUrl}/login`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': csrfToken,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+        credentials: 'include',
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        dispatch(setAuth(true));
+        toast.success(data.message);
+      }
+      else {
+        dispatch(setAuth(false));
+        toast.error(data.message);
+      }
+    }
+    catch (error) {
+    console.error("Error logging in", error);
+    toast.error("Error logging in");
+    }
+  }
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!csrfToken) {
+      console.error("CSRF token is missing");
+      return;
+    }
+    await register_req(values.email, values.password, values.conf_password)
+    await login_req(values.email, values.password)
   }
 
   return ( auth ? redirect('/') :

@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { Link, MessageCircleQuestion, SearchCheck, RefreshCcw } from 'lucide-react';
 import './guesthome.css'
 import GuestHomeCard from './GuestHomeCard/guesthomecard';
-import trailer from '../../../public/intentify_trailer.mp4'
 
 const cards = [
   {
@@ -45,11 +44,11 @@ const GuestHome = () => {
           <video 
             preload="auto"
             autoPlay
+            controls
             loop
             className="rounded-3xl aspect-auto shadow-2xl w-full border-1 md:border-1 border-base-content/20 xl:w-[80%] justify-center">
-            <source 
-              src={trailer}
-              type="video/mp4" />
+            <source src="/intentify_trailer.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
           </video>
         </div>
         <div className="big_text_hero_container">

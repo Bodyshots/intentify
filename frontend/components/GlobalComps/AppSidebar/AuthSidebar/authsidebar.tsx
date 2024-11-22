@@ -23,8 +23,8 @@ const items = [
     icon: Home,
   },
   {
-    title: "Conversation List",
-    url: "/intentifier",
+    title: "Your Conversations",
+    url: "/conversations",
     icon: List,
   },
   {

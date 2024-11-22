@@ -80,6 +80,8 @@ function LoginForm({ className_add }: LoginFormProps) {
       }
       else {
         dispatch(setAuth(false));
+        dispatch(setFirstName(''));
+        dispatch(setLastName(''));
         toast.error(data.message);
       }
     } catch (error) {
