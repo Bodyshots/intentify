@@ -15,6 +15,9 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
+import { ErrorConstants } from '@/constants/errors'
+import { APIConstants } from '@/constants/api'
+import { FieldConstants } from '@/constants/fields'
 
 interface EmailSettingsProps {
   csrfToken: string;
@@ -29,8 +32,14 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const formEmailSchema = z.object({
-    email: z.string().email({ message: 'Please enter a valid email!'}).trim(),
-    new_email: z.string().email({ message: 'Please enter a valid email!'}).trim()
+    email: z.string().email({ message: ErrorConstants.EMAIL_VALID})
+    .max(FieldConstants.EMAIL_MAX, {
+      message: ErrorConstants.EMAIL_LONG
+    }).trim(),
+    new_email: z.string().email({ message: ErrorConstants.EMAIL_VALID})
+    .max(FieldConstants.EMAIL_MAX, {
+      message: ErrorConstants.EMAIL_LONG
+    }).trim(),
   })
 
   const formEmail = useForm<EmailData>({
@@ -44,21 +53,21 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
 
   async function onSubmit(values: EmailData) {
     if (!csrfToken) {
-      console.error("CSRF token is missing");
+      console.error(ErrorConstants.CSRF);
       return;
     }
     try {
       const response = await fetch(`${apiBaseUrl}/api/users/update/email`, {
-        method: 'PUT',
+        method: APIConstants.PUT,
         headers: {
           'X-CSRFToken': csrfToken,
-          'Content-Type': 'application/json',
+          'Content-Type': APIConstants.CONTENT_JSON,
         },
         body: JSON.stringify({
           email: values.email,
           new_email: values.new_email
         }),
-        credentials: 'include',
+        credentials: APIConstants.CRED_INCLUDE,
       });
       const data = await response.json();
 
@@ -69,13 +78,14 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
         toast.error(data.message);
       }
     } catch (error) {
-      console.error("Error updating email", error);
-      toast.error("Error updating email");
+      console.error(ErrorConstants.EMAIL_UPDATE, error);
+      toast.error(ErrorConstants.EMAIL_UPDATE);
     }
   }
 
   const renderEmailField = (name: keyof EmailData,
-                            id: string, placeholder: string) => {
+                            id: string, placeholder: string,
+                            inputClass: string) => {
     return <FormField
       name={name}
       control={formEmail.control}
@@ -85,7 +95,7 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
             <Input placeholder={placeholder}
                     required
                     type="email"
-                    className="current_email"
+                    className={inputClass}
                     autoComplete='on'
                     id={id}
                     {...field}/>
@@ -106,8 +116,8 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
             autoComplete='on'>
         <Label htmlFor="current_email" className="text-xl">Email</Label>
         <p className="text-muted-foreground py-2">Change the email address associated with this account.</p>
-        {renderEmailField("email", "current_email", "Current email")}
-        {renderEmailField("new_email", "new_email", "New email")}
+        {renderEmailField("email", "current_email", "Current email", "current_email")}
+        {renderEmailField("new_email", "new_email", "New email", "new_email")}
         <Button type="submit"
                 className="self-start inline-flex w-auto my-4 hover:bg-custom_green_hover dark:hover:bg-muted-foreground">
                   Save changes

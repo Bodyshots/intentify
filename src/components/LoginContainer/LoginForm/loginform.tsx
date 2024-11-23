@@ -26,9 +26,11 @@ import { setLastName } from '@/redux/slices/nameSlice';
 import { redirect } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { toast } from "sonner";
+import { ErrorConstants } from '@/constants/errors';
+import { APIConstants } from '@/constants/api';
 
 const formSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email!'}).trim(),
+  email: z.string().email({ message: ErrorConstants.EMAIL_VALID}).trim(),
   password: z.string()
 })
 
@@ -59,21 +61,21 @@ function LoginForm({ className_add }: LoginFormProps) {
 
   async function onSubmit(values: LoginData) {
     if (!csrfToken) {
-      console.error("CSRF token is missing");
+      console.error(ErrorConstants.CSRF);
       return;
     }
     try {
       const response = await fetch(`${apiBaseUrl}/login`, {
-        method: 'POST',
+        method: APIConstants.POST,
         headers: {
           'X-CSRFToken': csrfToken,
-          'Content-Type': 'application/json',
+          'Content-Type': APIConstants.CONTENT_JSON,
         },
         body: JSON.stringify({
           email: values.email,
           password: values.password,
         }),
-        credentials: 'include',
+        credentials: APIConstants.CRED_INCLUDE,
       });
       const data = await response.json();
   
@@ -90,8 +92,8 @@ function LoginForm({ className_add }: LoginFormProps) {
         toast.error(data.message);
       }
     } catch (error) {
-      console.error("Error logging in", error);
-      toast.error("Error logging in");
+      console.error(ErrorConstants.LOGIN, error);
+      toast.error(ErrorConstants.LOGIN);
     }
   }
 

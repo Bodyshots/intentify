@@ -21,7 +21,7 @@ const AuthHome = () => {
             preload="auto"
             autoPlay
             loop
-            controls
+            muted
             className="rounded-3xl aspect-auto shadow-2xl border-1 md:border-1 border-base-content/20 xl:w-[50%] justify-center">
             <source src="/intentify_trailer.mp4" type="video/mp4" />
             Your browser does not support the video tag.

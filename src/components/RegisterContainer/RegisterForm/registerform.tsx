@@ -14,7 +14,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useRouter } from 'next/navigation';
 import SiteFullTitle from '../../SiteFullTitle/sitefulltitle';
 import { useAppSelector } from '@/redux/store';
 import './registerform.css';
@@ -24,21 +23,27 @@ import Link from 'next/link';
 import { setAuth } from '@/redux/slices/authSlice';
 import { useAppDispatch } from '@/redux/store';
 
+import { ErrorConstants } from '@/constants/errors';
+import { FieldConstants } from '@/constants/fields';
 import getCSRF from '@/lib/GetCSRF';
+import { APIConstants } from '@/constants/api';
 
 const formSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email!'}).trim(),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
-  }).max(255, {
-    message: "Password must be less than 255 characters."
-  }),
+  email: z.string().email({ message: ErrorConstants.EMAIL_VALID})
+  .max(FieldConstants.EMAIL_MAX, {
+    message: ErrorConstants.EMAIL_LONG
+  }).trim(),
+  password: z.string().min(FieldConstants.PASS_MIN, {
+    message: ErrorConstants.PASS_SHORT,
+  }).max(FieldConstants.PASS_MAX, {
+    message: ErrorConstants.PASS_LONG
+  }).trim(),
   conf_password: z.string(),
 }).refine((values) => {
     return values.password === values.conf_password;
   },
   {
-    message: "Passwords do not match",
+    message: ErrorConstants.PASS_MISMATCH,
     path: ["conf_password"],
 });
 
@@ -53,7 +58,6 @@ type RegisterData = {
 }
 
 function RegisterForm({ className_add }: RegisterFormProps) {
-  const { push } = useRouter();
   const csrfToken = getCSRF();
   const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -75,47 +79,49 @@ function RegisterForm({ className_add }: RegisterFormProps) {
                               conf_password: string) {
     try {
       const response = await fetch(`${apiBaseUrl}/register`, {
-        method: 'POST',
+        method: APIConstants.POST,
         headers: {
           'X-CSRFToken': csrfToken,
-          'Content-Type': 'application/json',
+          'Content-Type': APIConstants.CONTENT_JSON,
         },
         body: JSON.stringify({
           email: email,
           password: password,
           conf_password: conf_password,
         }),
-        credentials: 'include',
+        credentials: APIConstants.CRED_INCLUDE,
       });
       const data = await response.json();
 
       if (response.ok) {
         toast.success(data.message);
-        push('/login');
+        return true;
       }
       else {
         toast.error(data.message);
+        return false;
       }
     } 
     catch (error) {
-      console.error("Error registering", error);
-      toast.success("Error registering");
+      console.error(ErrorConstants.REGISTER, error);
+      toast.success(ErrorConstants.REGISTER);
+      return false;
     }
   }
 
   async function login_req(email: string, password: string) {
     try {
       const response = await fetch(`${apiBaseUrl}/login`, {
-        method: 'POST',
+        method: APIConstants.POST,
         headers: {
           'X-CSRFToken': csrfToken,
-          'Content-Type': 'application/json',
+          'Content-Type': APIConstants.CONTENT_JSON,
         },
         body: JSON.stringify({
           email: email,
           password: password,
         }),
-        credentials: 'include',
+        credentials: APIConstants.CRED_INCLUDE,
       });
       const data = await response.json();
 
@@ -129,18 +135,20 @@ function RegisterForm({ className_add }: RegisterFormProps) {
       }
     }
     catch (error) {
-    console.error("Error logging in", error);
-    toast.error("Error logging in");
+    console.error(ErrorConstants.LOGIN, error);
+    toast.error(ErrorConstants.LOGIN);
     }
   }
 
   async function onSubmit(values: RegisterData) {
     if (!csrfToken) {
-      console.error("CSRF token is missing");
+      console.error(ErrorConstants.CSRF);
       return;
     }
-    await register_req(values.email, values.password, values.conf_password)
-    await login_req(values.email, values.password)
+    const registered = await register_req(values.email, values.password, values.conf_password);
+    if (registered) {
+      await login_req(values.email, values.password)
+    }
   }
 
   return ( auth ? redirect('/') :

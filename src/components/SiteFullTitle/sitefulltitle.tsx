@@ -1,5 +1,3 @@
-"use client";
-
 import SiteSlogan from './SiteSlogan/siteslogan'
 import SiteTitle from './SiteTitle/sitetitle'
 

@@ -13,6 +13,7 @@ import Loading from '@/app/loading';
 import { useAppSelector } from '@/redux/store';
 import { redirect } from 'next/navigation';
 import { toast } from 'sonner';
+import { ErrorConstants } from '@/constants/errors';
 
 export const SettingsCard = () => {
   const csrfToken = getCSRF();
@@ -22,7 +23,7 @@ export const SettingsCard = () => {
   useEffect(() => {
     setIsLoaded(true);
     if (!auth) {
-      toast.error("You must be signed in to access this page!");
+      toast.error(ErrorConstants.AUTH_PROTECTED);
       redirect('/'); // Redirect unauthenticated users
     }
   }, []);

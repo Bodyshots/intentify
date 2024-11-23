@@ -12,11 +12,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { Label } from '@/components/ui/label'
-import { Input } from '../../ui/input'
-import { Button } from '../../ui/button'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import { setFirstName, setLastName } from '@/redux/slices/nameSlice'
 import { useAppDispatch } from '@/redux/store'
+import { ErrorConstants } from '@/constants/errors'
+import { APIConstants } from '@/constants/api'
+import { FieldConstants } from '@/constants/fields'
 
 interface NameSettingsProps {
   csrfToken: string;
@@ -32,8 +35,12 @@ const NameSettings = ({ csrfToken }: NameSettingsProps) => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const formNameSchema = z.object({
-    first_name: z.string().trim(),
-    last_name: z.string().trim()
+    first_name: z.string().max(FieldConstants.NAME_MAX, {
+      message: ErrorConstants.NAME_LONG
+    }).trim(),
+    last_name: z.string().max(FieldConstants.NAME_MAX, {
+      message: ErrorConstants.NAME_LONG
+    }).trim()
   })
 
   const formNames = useForm<NameData>({
@@ -46,21 +53,21 @@ const NameSettings = ({ csrfToken }: NameSettingsProps) => {
 
   async function onSubmit(values: NameData) {
     if (!csrfToken) {
-      console.error("CSRF token is missing");
+      console.error(ErrorConstants.CSRF);
       return;
     }
     try {
       const response = await fetch(`${apiBaseUrl}/api/users/update/names`, {
-        method: 'PUT',
+        method: APIConstants.PUT,
         headers: {
           'X-CSRFToken': csrfToken,
-          'Content-Type': 'application/json',
+          'Content-Type': APIConstants.CONTENT_JSON,
         },
         body: JSON.stringify({
           first_name: values.first_name,
           last_name: values.last_name
         }),
-        credentials: 'include',
+        credentials: APIConstants.CRED_INCLUDE,
       });
       const data = await response.json();
 
@@ -73,8 +80,8 @@ const NameSettings = ({ csrfToken }: NameSettingsProps) => {
         toast.error(data.message);
       }
     } catch (error) {
-      console.error("Error updating first or last name", error);
-      toast.error("Error updating first or last name");
+      console.error(ErrorConstants.NAME_UPDATE, error);
+      toast.error(ErrorConstants.NAME_UPDATE);
     }
   }
 

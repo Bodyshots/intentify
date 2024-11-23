@@ -4,5 +4,6 @@ export const APIConstants = Object.freeze({
   PUT: 'PUT',
   PATCH: 'PATCH',
   DELETE: 'DELETE',
-  CSRFERROR: 'CSRF token is missing'
+  CRED_INCLUDE: 'include',
+  CONTENT_JSON: 'application/json'
 })

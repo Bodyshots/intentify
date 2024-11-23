@@ -44,8 +44,8 @@ const GuestHome = () => {
           <video 
             preload="auto"
             autoPlay
-            controls
             loop
+            muted
             className="rounded-3xl aspect-auto shadow-2xl w-full border-1 md:border-1 border-base-content/20 xl:w-[80%] justify-center">
             <source src="/intentify_trailer.mp4" type="video/mp4" />
             Your browser does not support the video tag.

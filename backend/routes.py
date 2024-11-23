@@ -195,7 +195,7 @@ def register():
         PASSWORD: new_user.password,
         MSG: "Registration successful!"
       }), CREATED)
-    return make_response(jsonify({MSG: "Invalid email or password"}), UNAUTHORIZED)
+    return make_response(jsonify({MSG: "Account already exists or invalid email or password"}), UNAUTHORIZED)
 
   except Exception as e:
     db.session.rollback()

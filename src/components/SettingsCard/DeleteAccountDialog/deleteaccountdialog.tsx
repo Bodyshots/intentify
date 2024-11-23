@@ -25,6 +25,8 @@ import { Input } from '@/components/ui/input'
 import { useAppSelector, useAppDispatch } from '@/redux/store'
 import { setAuth } from '@/redux/slices/authSlice'
 import { toast } from 'sonner'
+import { ErrorConstants } from '@/constants/errors'
+import { APIConstants } from '@/constants/api'
 
 interface DeleteAccountDialogProps {
   csrfToken: string;
@@ -36,10 +38,9 @@ type AccountData = {
 }
 
 const formSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email!'}).trim(),
+  email: z.string().email({ message: ErrorConstants.EMAIL_VALID }).trim(),
   password: z.string()
 })
-
 
 const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
   const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
@@ -57,7 +58,7 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
 
   async function onSubmit(values: AccountData) {
     if (!csrfToken && auth) {
-      console.error("CSRF token is missing");
+      console.error(ErrorConstants.CSRF);
       return;
     }
     try {
@@ -65,13 +66,13 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
         method: 'DELETE',
         headers: {
           'X-CSRFToken': csrfToken,
-          'Content-Type': 'application/json'
+          'Content-Type': APIConstants.CONTENT_JSON
         },
         body: JSON.stringify({
           email: values.email,
           password: values.password,
         }),
-        credentials: 'include',
+        credentials: APIConstants.CRED_INCLUDE,
       });
       const data = await response.json();
   
@@ -84,8 +85,8 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
       }
 
     } catch (error) {
-      console.error("Error deleting account", error);
-      toast.error("Error deleting account");
+      console.error(ErrorConstants.ACC_DELETE, error);
+      toast.error(ErrorConstants.ACC_DELETE);
     }
   }
 

@@ -12,9 +12,12 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { Label } from '@radix-ui/react-label'
-import { Input } from '../../ui/input'
-import { Button } from '../../ui/button'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
+import { ErrorConstants } from '@/constants/errors'
+import { APIConstants } from '@/constants/api'
+import { FieldConstants } from '@/constants/fields'
 
 interface PasswordSettingsProps {
   csrfToken: string;
@@ -30,10 +33,10 @@ const PasswordSettings = ({ csrfToken }: PasswordSettingsProps) => {
 
   const formPasswordSchema = z.object({
     password: z.string(),
-    new_password: z.string().min(8, {
-      message: "Password must be at least 8 characters.",
-    }).max(80, {
-      message: "Password must be less than 80 characters."
+    new_password: z.string().min(FieldConstants.PASS_MIN, {
+      message: ErrorConstants.PASS_SHORT,
+    }).max(FieldConstants.PASS_MAX, {
+      message: ErrorConstants.PASS_LONG
     })})
 
   const formPassword = useForm<PasswordData>({
@@ -47,21 +50,21 @@ const PasswordSettings = ({ csrfToken }: PasswordSettingsProps) => {
 
   async function onSubmit(values: PasswordData) {
     if (!csrfToken) {
-      console.error("CSRF token is missing");
+      console.error(ErrorConstants.CSRF);
       return;
     }
     try {
       const response = await fetch(`${apiBaseUrl}/api/users/update/password`, {
-        method: 'PUT',
+        method: APIConstants.PUT,
         headers: {
           'X-CSRFToken': csrfToken,
-          'Content-Type': 'application/json',
+          'Content-Type': APIConstants.CONTENT_JSON,
         },
         body: JSON.stringify({
           email: values.password,
           new_email: values.new_password
         }),
-        credentials: 'include',
+        credentials: APIConstants.CRED_INCLUDE,
       });
       const data = await response.json();
       
@@ -73,8 +76,8 @@ const PasswordSettings = ({ csrfToken }: PasswordSettingsProps) => {
       }
 
     } catch (error) {
-      console.error("Error updating password", error);
-      toast.error("Error updating password");
+      console.error(ErrorConstants.PASS_UPDATE, error);
+      toast.error(ErrorConstants.PASS_UPDATE);
     }
   }
 
