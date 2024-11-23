@@ -45,12 +45,12 @@ services:
     image: nextapp:1.0.0
     stdin_open: true
     build:
-      context: ./frontend
+      context: ./src
       dockerfile: next.dockerfile
     ports:
       - 3000:3000
     volumes:
-      - ./frontend:/app
+      - ./src:/app
     command: ["npm", "run", "dev"]
 
 volumes:

@@ -1,15 +1,15 @@
 from flask import jsonify, request, make_response, Blueprint, session
 from flask_login import login_user, login_required, logout_user, current_user
-from constants import *
-
-from app import db, bcrypt
 from flask_wtf.csrf import generate_csrf
-from forms import LoginForm, RegisterForm, ChangeEmailForm, ChangePasswordForm, ChangeNamesForm, DeleteAccountForm
-from models import User, Conversation
+
 from datetime import datetime
 from pytz import utc
 from datetime import timedelta
-import requests
+
+from constants import *
+from app import db, bcrypt
+from models import User, Conversation
+from forms import LoginForm, RegisterForm, ChangeEmailForm, ChangePasswordForm, ChangeNamesForm, DeleteAccountForm
 
 main = Blueprint('main', __name__)
 
@@ -108,7 +108,7 @@ def update_names():
                                                          data.get(LAST_NAME, ""))
       db.session.commit()
       return make_response(jsonify({MSG: 'First and last name updated!'}), OK)
-    return make_response(jsonify({MSG: form.errors}), BAD_REQUEST)
+    return make_response(jsonify({MSG: str(form.errors)}), BAD_REQUEST)
   except Exception as e:
     db.session.rollback()
     return make_response(jsonify({MSG: 'Error updating user first and last names',
@@ -156,7 +156,7 @@ def login():
                                           USER: user.json()}))
         
         return response, OK
-      return make_response(jsonify({MSG: form.errors}), UNAUTHORIZED)
+      return make_response(jsonify({MSG: "Invalid email or password"}), UNAUTHORIZED)
 
   except Exception as e:
     db.session.rollback()
@@ -172,9 +172,13 @@ def register():
     data = request.get_json()
     form = RegisterForm(data=data)
     
-    if form.validate(): # Checks existing emails as well
+    if form.validate():
       submitted_email = data.get(EMAIL)
       submitted_password = data.get(PASSWORD)
+      
+      user = User.get_by_email(submitted_email)
+      if user: # Found existing user => User already exists
+        return make_response(jsonify({MSG: "Account with this email already exists"}), UNAUTHORIZED)
 
       hash_password = bcrypt.generate_password_hash(submitted_password).decode('utf-8')
       
@@ -191,7 +195,7 @@ def register():
         PASSWORD: new_user.password,
         MSG: "Registration successful!"
       }), CREATED)
-    return make_response(jsonify({MSG: form.errors}), UNAUTHORIZED)
+    return make_response(jsonify({MSG: "Invalid email or password"}), UNAUTHORIZED)
 
   except Exception as e:
     db.session.rollback()
