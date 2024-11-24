@@ -19,6 +19,7 @@ import getCSRF from '@/lib/GetCSRF';
 import { APIConstants } from '@/constants/api';
 import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom';
 import SubmitBtn from '@/components/SubmitBtn/submitbtn';
+import { OtherConstants } from '@/constants/other';
 
 const formSchema = z.object({
   email: z.string().email({ message: ErrorConstants.EMAIL_VALID})
@@ -144,7 +145,7 @@ function RegisterForm() {
     }
   }
 
-  return ( auth ? redirect('/') :
+  return (
     <div className={`register_form_comp flex justify-center flex-col flex-nowrap gap-6 rounded-lg p-8`}>
       <SiteFullTitle titleClass='text-5xl' sloganClass='text-2xl'/>
       <Form {...form}>
@@ -189,8 +190,8 @@ function RegisterForm() {
         />
         <span className="text-center">Already have an account? Click <u className="hover:text-custom_green_hover dark:hover:text-muted-foreground transition-colors"><Link href={'/login'}>here!</Link></u></span>
         <SubmitBtn
-          baseText='Submit'
-          loadingText='Submitting...'
+          baseText={OtherConstants.SUBMIT}
+          loadingText={OtherConstants.SUBMIT_LOAD}
           loadingSubmit={loadingSubmit}
           btnClassName='hover:bg-custom_green_hover dark:hover:bg-muted-foreground'
         />

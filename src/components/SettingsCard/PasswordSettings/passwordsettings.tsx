@@ -10,6 +10,7 @@ import { toast } from 'sonner'
 import { ErrorConstants } from '@/constants/errors'
 import { APIConstants } from '@/constants/api'
 import { FieldConstants } from '@/constants/fields'
+import { OtherConstants } from '@/constants/other'
 import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom'
 import SubmitBtn from '@/components/SubmitBtn/submitbtn'
 
@@ -110,8 +111,8 @@ const PasswordSettings = ({ csrfToken }: PasswordSettingsProps) => {
         />
         <SubmitBtn
           loadingSubmit={loadingSubmit} 
-          baseText={"Save Changes"}
-          loadingText={"Saving..."}
+          baseText={OtherConstants.SAVE}
+          loadingText={OtherConstants.SAVE_LOAD}
           btnClassName='self-start inline-flex w-auto my-4 hover:bg-custom_green_hover dark:hover:bg-muted-foreground'
         />
       </form>

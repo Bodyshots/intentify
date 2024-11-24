@@ -5,13 +5,22 @@ import RegisterForm from './RegisterForm/registerform'
 import Testimonials from '../Testimonials/testimonials'
 import { useState } from 'react';
 import Loading from '@/app/loading';
+import { redirect } from 'next/navigation';
+import { useAppSelector } from '@/redux/store';
+import { toast } from 'sonner';
+import { ErrorConstants } from '@/constants/errors';
 import './registercontainer.css'
 
 const RegisterContainer = () => {
-  const [isLoaded, setIsLoaded] = useState(false); 
+  const [isLoaded, setIsLoaded] = useState(false);
+  const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
 
   useEffect(() => {
     setIsLoaded(true);
+    if (!auth) {
+      toast.error(ErrorConstants.AUTH_GUEST);
+      redirect('/'); // Redirect authenticated users
+    }
   }, []);
 
   if (!isLoaded) {

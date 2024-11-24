@@ -19,6 +19,7 @@ import { ErrorConstants } from '@/constants/errors';
 import { APIConstants } from '@/constants/api';
 import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom';
 import SubmitBtn from '@/components/SubmitBtn/submitbtn';
+import { OtherConstants } from '@/constants/other';
 
 const formSchema = z.object({
   email: z.string().email({ message: ErrorConstants.EMAIL_VALID}).trim(),
@@ -88,7 +89,7 @@ function LoginForm() {
     setLoadingSubmit(false);
   }
 
-  return auth ? redirect('/') : (
+  return (
     <div className={`login_form_comp flex justify-center flex-col flex-nowrap gap-6 rounded-lg p-8`}>
       <SiteFullTitle titleClass='text-5xl' sloganClass='text-2xl'/>
       <Form {...form}>
@@ -121,8 +122,8 @@ function LoginForm() {
           />
           <span className="text-center">Don't have an account? Click <u className="hover:text-custom_green_hover dark:hover:text-muted-foreground transition-colors"><Link href={'/register'}>here!</Link></u></span>
           <SubmitBtn
-            baseText='Submit'
-            loadingText='Submitting...'
+            baseText={OtherConstants.SUBMIT}
+            loadingText={OtherConstants.SUBMIT_LOAD}
             loadingSubmit={loadingSubmit}
             btnClassName='hover:bg-custom_green_hover dark:hover:bg-muted-foreground'
           />

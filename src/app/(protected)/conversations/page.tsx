@@ -1,6 +1,6 @@
 import React from 'react'
 import { Metadata } from 'next'
-import IntentifierContainer from '@/components/IntentifierContainer/intentifiercontainer'
+import ConversationContainer from '@/components/ConversationContainer/conversationcontainer'
 
 export async function generateMetadata(): Promise<Metadata> {
   const pageTitle = 'Intentify | Conversations';
@@ -11,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 function Conversations() {
-  return (<IntentifierContainer/>)
+  return (<ConversationContainer/>)
 }
 
 export default Conversations

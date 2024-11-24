@@ -1,4 +1,4 @@
-import { Home, CircleHelp, UserRoundCog, Link2, LogOut, List } from "lucide-react"
+import { Home, CircleHelp, UserRoundCog, LogOut, List, Mail} from "lucide-react"
 
 import {
   Sidebar,
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sidebar"
 import SiteTitle from "@/components/SiteFullTitle/SiteTitle/sitetitle"
 import Link from "next/link"
-import { ModeToggle } from "../../ModeToggle/modetoggle"
+import { ModeToggle } from "../ModeToggle/modetoggle"
 
 // Menu items.
 const items = [
@@ -33,14 +33,19 @@ const items = [
     icon: UserRoundCog,
   },
   {
+    title: "Feedback",
+    url: "/feedback",
+    icon: Mail
+  },
+  {
+    title: "About Us",
+    url: "/about",
+    icon: CircleHelp,
+  },
+  {
     title: "Logout",
     url: "/logout",
     icon: LogOut,
-  },
-  {
-    title: "About us",
-    url: "/about",
-    icon: CircleHelp,
   },
 ]
 

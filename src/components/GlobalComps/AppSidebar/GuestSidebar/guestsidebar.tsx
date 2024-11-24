@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sidebar"
 import SiteTitle from "@/components/SiteFullTitle/SiteTitle/sitetitle"
 import Link from "next/link"
-import { ModeToggle } from "../../ModeToggle/modetoggle"
+import { ModeToggle } from "../ModeToggle/modetoggle"
 
 // Menu items.
 const items = [
@@ -33,7 +33,7 @@ const items = [
     icon: UserRoundPen,
   },
   {
-    title: "About us",
+    title: "About Us",
     url: "/about",
     icon: CircleHelp,
   }

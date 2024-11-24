@@ -22,6 +22,7 @@ import { APIConstants } from '@/constants/api'
 import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom'
 import { redirect } from 'next/navigation'
 import SubmitBtn from '@/components/SubmitBtn/submitbtn'
+import { OtherConstants } from '@/constants/other'
 
 interface DeleteAccountDialogProps {
   csrfToken: string;
@@ -137,8 +138,8 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
             />
             <SubmitBtn
               variant={"destructive"}
-              baseText='Delete my account'
-              loadingText='Deleting...'
+              baseText={OtherConstants.DELETE_ACC}
+              loadingText={OtherConstants.DELETE_ACC_LOAD}
               loadingSubmit={loadingSubmit}
             />
           </form>

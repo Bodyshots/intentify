@@ -8,15 +8,17 @@ import { toast } from "sonner";
 import useSWR from "swr";
 import { redirect } from "next/navigation";
 import Loading from "@/app/loading";
+import { ErrorConstants } from "@/constants/errors";
+import { APIConstants } from "@/constants/api";
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const fetchCSRFToken = async () => {
   const res = await fetch(`${apiBaseUrl}/api/get-csrf-token`, {
-    method: "GET",
-    credentials: "include",
+    method: APIConstants.GET,
+    credentials: APIConstants.CRED_INCLUDE,
   });
-  if (!res.ok) throw new Error("Failed to fetch CSRF token");
+  if (!res.ok) throw new Error(ErrorConstants.AUTH_PROTECTED);
   const data = await res.json();
   return data.csrf_token;
 };
@@ -27,10 +29,11 @@ function Logout() {
   const { data: csrfToken } = useSWR("csrf-token", fetchCSRFToken);
   const logoutBegin = useRef(false); // Tracks whether logout has already started
   const [isLoaded, setIsLoaded] = useState(false);
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   useEffect(() => {
     if (!auth) {
-      toast.error("You must be signed in to access this page!");
+      toast.error(ErrorConstants.AUTH_PROTECTED);
       redirect('/'); // Redirect unauthenticated users
     }
 
@@ -40,12 +43,12 @@ function Logout() {
       logoutBegin.current = true; // Prevent further logout triggers
 
       try {
-        const response = await fetch("http://localhost:4000/logout", {
-          method: "POST",
+        const response = await fetch(`${apiBaseUrl}/logout`, {
+          method: APIConstants.POST,
           headers: {
             "X-CSRFToken": csrfToken,
           },
-          credentials: "include",
+          credentials: APIConstants.CRED_INCLUDE,
         });
         const data = await response.json();
 
@@ -56,8 +59,8 @@ function Logout() {
           toast.error(data.message);
         }
       } catch (error) {
-        console.error("Error during logout process", error);
-        toast.error("Error during logout process");
+        console.error(ErrorConstants.LOGOUT, error);
+        toast.error(ErrorConstants.LOGOUT);
       }
 
       redirect("/");

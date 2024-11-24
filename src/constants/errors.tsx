@@ -12,5 +12,7 @@ export const ErrorConstants = Object.freeze({
   ACC_DELETE: 'Error deleting account',
   AUTH_PROTECTED: 'You must be signed in to access this page!',
   LOGIN: 'Error logging in',
-  REGISTER: 'Error registering'
+  REGISTER: 'Error registering',
+  LOGOUT: 'Error during logout process',
+  AUTH_GUEST: 'You cannot access this page when you are signed in!'
 })

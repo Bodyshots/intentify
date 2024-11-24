@@ -15,6 +15,7 @@ import { FieldConstants } from '@/constants/fields'
 import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom'
 import { useAppSelector } from '@/redux/store'
 import SubmitBtn from '@/components/SubmitBtn/submitbtn'
+import { OtherConstants } from '@/constants/other'
 
 interface NameSettingsProps {
   csrfToken: string;
@@ -118,8 +119,8 @@ const NameSettings = ({ csrfToken }: NameSettingsProps) => {
         />
         <SubmitBtn
           loadingSubmit={loadingSubmit} 
-          baseText={"Save Changes"}
-          loadingText={"Saving..."}
+          baseText={OtherConstants.SAVE}
+          loadingText={OtherConstants.SAVE_LOAD}
           btnClassName="self-start inline-flex w-auto my-4 hover:bg-custom_green_hover dark:hover:bg-muted-foreground"
         />
       </form>
