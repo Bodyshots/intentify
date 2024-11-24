@@ -1,8 +1,14 @@
 from app import db
 from constants import *
 from flask_login import UserMixin
+from constants import DARK, LIGHT
+import enum
 
 # Models
+class Theme(enum.Enum):
+    LIGHT = LIGHT
+    DARK = DARK
+
 class User(db.Model, UserMixin):
   __tablename__ = 'users'
   id = db.Column(db.Integer, primary_key=True)
@@ -15,6 +21,7 @@ class User(db.Model, UserMixin):
                                   backref='user',
                                   lazy=True,
                                   cascade='all, delete-orphan')
+  theme = db.Column(db.Enum(Theme), default=Theme.LIGHT)
   
   @staticmethod
   def get_by_id(id: int):

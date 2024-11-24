@@ -26,6 +26,10 @@ RESPONSE = 'response'
 URLS = 'URLs'
 SESSION_LIFETIME = 7
 
+# Themes
+LIGHT = 'light'
+DARK = 'dark'
+
 # Models
 USER = 'user'
 CONVO = 'conversation'
