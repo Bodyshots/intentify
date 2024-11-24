@@ -1,25 +1,20 @@
 "use client"
 
-import React from 'react'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form"
+import React, { useState } from 'react'
+import { Form } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import { setFirstName, setLastName } from '@/redux/slices/nameSlice'
 import { useAppDispatch } from '@/redux/store'
 import { ErrorConstants } from '@/constants/errors'
 import { APIConstants } from '@/constants/api'
 import { FieldConstants } from '@/constants/fields'
+import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom'
+import { useAppSelector } from '@/redux/store'
+import SubmitBtn from '@/components/SubmitBtn/submitbtn'
 
 interface NameSettingsProps {
   csrfToken: string;
@@ -33,6 +28,9 @@ type NameData = {
 const NameSettings = ({ csrfToken }: NameSettingsProps) => {
   const dispatch = useAppDispatch();
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const firstName = useAppSelector((state) => state.name_persist.name_reduce.firstName);
+  const lastName = useAppSelector((state) => state.name_persist.name_reduce.lastName);
 
   const formNameSchema = z.object({
     first_name: z.string().max(FieldConstants.NAME_MAX, {
@@ -46,14 +44,16 @@ const NameSettings = ({ csrfToken }: NameSettingsProps) => {
   const formNames = useForm<NameData>({
     resolver: zodResolver(formNameSchema),
     defaultValues: {
-      first_name: "",
-      last_name: "",
+      first_name: firstName,
+      last_name: lastName,
     }
   })
 
   async function onSubmit(values: NameData) {
+    setLoadingSubmit(true);
     if (!csrfToken) {
       console.error(ErrorConstants.CSRF);
+      setLoadingSubmit(false);
       return;
     }
     try {
@@ -83,6 +83,7 @@ const NameSettings = ({ csrfToken }: NameSettingsProps) => {
       console.error(ErrorConstants.NAME_UPDATE, error);
       toast.error(ErrorConstants.NAME_UPDATE);
     }
+    setLoadingSubmit(false);
   }
 
   return (<>
@@ -93,47 +94,34 @@ const NameSettings = ({ csrfToken }: NameSettingsProps) => {
         <Label htmlFor="first_name" className="text-xl">First and last names</Label>
         <p className="text-muted-foreground py-2">Change the first and last names associated with this account. This will only change how
         you are greeted by our home page.</p>
-        <FormField
+        <FormFieldCustom
           name="first_name"
           control={formNames.control}
-          render={({ field }) => (
-            <FormItem className="w-4/6">
-              <FormControl>
-                <Input placeholder="First name"
-                        type="text"
-                        className="first_name"
-                        autoComplete='on'
-                        id="first_name"
-                        {...field}/>
-              </FormControl>
-              <FormMessage>
-              {formNames.formState.errors.first_name?.message}
-              </FormMessage>
-            </FormItem>
-          )}
+          formItemClass='w-4/6'
+          placeholder='First name'
+          type="text"
+          autoComplete='on'
+          id="first_name_form"
+          errors={formNames.formState.errors}
+          required={false}
         />
-        <FormField
-          control={formNames.control}
+        <FormFieldCustom
           name="last_name"
-          render={({ field }) => (
-            <FormItem className="w-4/6">
-              <FormControl>
-                <Input placeholder="Last name"  
-                        type="text"
-                        className="last_name"
-                        autoComplete='on'
-                        {...field}/>
-              </FormControl>
-              <FormMessage>
-              {formNames.formState.errors.last_name?.message}
-              </FormMessage>
-            </FormItem>
-          )}
+          control={formNames.control}
+          formItemClass='w-4/6'
+          placeholder='Last name'
+          type="text"
+          autoComplete='on'
+          id="last_name_form"
+          errors={formNames.formState.errors}
+          required={false}
         />
-        <Button type="submit"
-                className="self-start inline-flex w-auto my-4 hover:bg-custom_green_hover dark:hover:bg-muted-foreground">
-                  Save changes
-        </Button>
+        <SubmitBtn
+          loadingSubmit={loadingSubmit} 
+          baseText={"Save Changes"}
+          loadingText={"Saving..."}
+          btnClassName="self-start inline-flex w-auto my-4 hover:bg-custom_green_hover dark:hover:bg-muted-foreground"
+        />
       </form>
     </Form>
   </>)

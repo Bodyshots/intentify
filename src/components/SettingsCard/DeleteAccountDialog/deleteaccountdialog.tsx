@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -13,20 +13,15 @@ import { Button } from '@/components/ui/button'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from '@/components/ui/input'
+import { Form } from "@/components/ui/form"
 import { useAppSelector, useAppDispatch } from '@/redux/store'
 import { setAuth } from '@/redux/slices/authSlice'
 import { toast } from 'sonner'
 import { ErrorConstants } from '@/constants/errors'
 import { APIConstants } from '@/constants/api'
+import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom'
+import { redirect } from 'next/navigation'
+import SubmitBtn from '@/components/SubmitBtn/submitbtn'
 
 interface DeleteAccountDialogProps {
   csrfToken: string;
@@ -45,6 +40,7 @@ const formSchema = z.object({
 const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
   const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
   const dispatch = useAppDispatch();
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const form = useForm<AccountData>({
@@ -57,13 +53,15 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
   })
 
   async function onSubmit(values: AccountData) {
+    setLoadingSubmit(true);
     if (!csrfToken && auth) {
       console.error(ErrorConstants.CSRF);
+      setLoadingSubmit(false);
       return;
     }
     try {
       const response = await fetch(`${apiBaseUrl}/api/user/delete`, {
-        method: 'DELETE',
+        method: APIConstants.DELETE,
         headers: {
           'X-CSRFToken': csrfToken,
           'Content-Type': APIConstants.CONTENT_JSON
@@ -88,6 +86,8 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
       console.error(ErrorConstants.ACC_DELETE, error);
       toast.error(ErrorConstants.ACC_DELETE);
     }
+    setLoadingSubmit(false);
+    redirect('/');
   }
 
   return (<>
@@ -111,51 +111,36 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
           <form onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-8 login_form"
                 name="delete_account_form">
-            <FormField
+            <FormFieldCustom
+              name={"email"}
+              id="delete_email"
+              placeholder="Email"
+              type="email"
+              autoComplete='off'
+              desc="Enter your email here"
               control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className="w-4/6">
-                  <FormControl>
-                    <Input placeholder="Email" 
-                          required 
-                          type="email" 
-                          autoComplete='off'
-                          {...field}/>
-                  </FormControl>
-                  <FormDescription>
-                    Enter your email here
-                  </FormDescription>
-                  <FormMessage>
-                  {form.formState.errors.email && form.formState.errors.email.message}
-                  </FormMessage>
-                </FormItem>
-              )}
+              errors={form.formState.errors}
+              formItemClass='w-4/6'
+              required={true}
             />
-            <FormField
+            <FormFieldCustom
+              name={"password"}
+              id="delete_password"
+              placeholder="Password"
+              type="password"
+              autoComplete='off'
+              desc="Enter your email here"
               control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem className="w-4/6">
-                  <FormControl>
-                    <Input placeholder="Password"
-                          required
-                          type="password"
-                          autoComplete='off'
-                          {...field}/>
-                  </FormControl>
-                  <FormDescription>
-                    Enter your password here
-                  </FormDescription>
-                  <FormMessage>
-                  {form.formState.errors.password && form.formState.errors.password.message}
-                  </FormMessage>
-                  <FormMessage />
-                </FormItem>
-              )}
+              errors={form.formState.errors}
+              formItemClass='w-4/6'
+              required={true}
             />
-            <Button variant="destructive" 
-                  type="submit">Yes, delete my account</Button>
+            <SubmitBtn
+              variant={"destructive"}
+              baseText='Delete my account'
+              loadingText='Deleting...'
+              loadingSubmit={loadingSubmit}
+            />
           </form>
         </Form>
       </DialogContent>

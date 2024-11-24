@@ -1,23 +1,17 @@
 "use client"
 
-import React from 'react'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form"
+import React, { useState } from 'react'
+import { Form } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { Label } from '@radix-ui/react-label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import { ErrorConstants } from '@/constants/errors'
 import { APIConstants } from '@/constants/api'
 import { FieldConstants } from '@/constants/fields'
+import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom'
+import SubmitBtn from '@/components/SubmitBtn/submitbtn'
 
 interface PasswordSettingsProps {
   csrfToken: string;
@@ -30,6 +24,7 @@ type PasswordData = {
 
 const PasswordSettings = ({ csrfToken }: PasswordSettingsProps) => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
 
   const formPasswordSchema = z.object({
     password: z.string(),
@@ -49,8 +44,10 @@ const PasswordSettings = ({ csrfToken }: PasswordSettingsProps) => {
   })
 
   async function onSubmit(values: PasswordData) {
+    setLoadingSubmit(true);
     if (!csrfToken) {
       console.error(ErrorConstants.CSRF);
+      setLoadingSubmit(false);
       return;
     }
     try {
@@ -79,6 +76,7 @@ const PasswordSettings = ({ csrfToken }: PasswordSettingsProps) => {
       console.error(ErrorConstants.PASS_UPDATE, error);
       toast.error(ErrorConstants.PASS_UPDATE);
     }
+    setLoadingSubmit(false);
   }
 
   return (<>
@@ -88,49 +86,34 @@ const PasswordSettings = ({ csrfToken }: PasswordSettingsProps) => {
             name="password_form">
         <Label htmlFor="current_password" className="text-xl">Password</Label>
         <p className="text-muted-foreground py-2">Change the password used to sign into your account.</p>
-        <FormField
-          control={formPassword.control}
+        <FormFieldCustom
           name="password"
-          render={({ field }) => (
-            <FormItem className="w-4/6">
-              <FormControl>
-                <Input placeholder="Current password" 
-                        required 
-                        type="password"
-                        className="current_password"
-                        autoComplete='off'
-                        id="current_password"
-                        {...field}/>
-              </FormControl>
-              <FormMessage>
-              {formPassword.formState.errors.password && formPassword.formState.errors.password.message}
-              </FormMessage>
-            </FormItem>
-          )}
-        />
-        <FormField
+          formItemClass='w-4/6'
+          placeholder='Current password'
+          type="password"
+          autoComplete='off'
+          id="current_password_form"
           control={formPassword.control}
-          name="new_password"
-          render={({ field }) => (
-            <FormItem className="w-4/6">
-              <FormControl>
-                <Input placeholder="New password" 
-                        required 
-                        type="password"
-                        className="new_password"
-                        autoComplete='off'
-                        {...field}/>
-              </FormControl>
-              <FormMessage>
-              {formPassword.formState.errors.new_password && formPassword.formState.errors.new_password.message}
-              </FormMessage>
-            </FormItem>
-          )}
+          errors={formPassword.formState.errors}
+          required={true}
         />
-        <Button type="submit"
-                className="self-start inline-flex w-auto p-4 my-4 hover:bg-custom_green_hover dark:hover:bg-muted-foreground">
-                  Save changes
-        </Button>
+        <FormFieldCustom
+          name="new_password"
+          formItemClass='w-4/6'
+          placeholder='New password'
+          type="password"
+          autoComplete='off'
+          id="new_password_form"
+          control={formPassword.control}
+          errors={formPassword.formState.errors}
+          required={true}
+        />
+        <SubmitBtn
+          loadingSubmit={loadingSubmit} 
+          baseText={"Save Changes"}
+          loadingText={"Saving..."}
+          btnClassName='self-start inline-flex w-auto my-4 hover:bg-custom_green_hover dark:hover:bg-muted-foreground'
+        />
       </form>
     </Form>
   </>)

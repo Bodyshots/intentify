@@ -1,24 +1,13 @@
 "use client"
 
-import React from 'react';
+import './loginform.css'
+import React, { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import './loginform.css'
- 
-import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
+import { Form} from "@/components/ui/form"
 import SiteFullTitle from '@/components/SiteFullTitle/sitefulltitle';
 import Link from 'next/link';
-
 import getCSRF from '@/lib/GetCSRF';
 import { setAuth } from '@/redux/slices/authSlice';
 import { setFirstName } from '@/redux/slices/nameSlice';
@@ -28,26 +17,26 @@ import { useAppDispatch, useAppSelector } from '@/redux/store';
 import { toast } from "sonner";
 import { ErrorConstants } from '@/constants/errors';
 import { APIConstants } from '@/constants/api';
+import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom';
+import SubmitBtn from '@/components/SubmitBtn/submitbtn';
 
 const formSchema = z.object({
   email: z.string().email({ message: ErrorConstants.EMAIL_VALID}).trim(),
   password: z.string()
 })
 
-interface LoginFormProps {
-  className_add?: string;
-}
-
 type LoginData = {
   email: string;
   password: string;
 }
 
-function LoginForm({ className_add }: LoginFormProps) {
+function LoginForm() {
   const csrfToken = getCSRF();
   const dispatch = useAppDispatch();
   const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+
 
   // Defining form defaults
   const form = useForm<LoginData>({
@@ -60,6 +49,7 @@ function LoginForm({ className_add }: LoginFormProps) {
   })
 
   async function onSubmit(values: LoginData) {
+    setLoadingSubmit(true);
     if (!csrfToken) {
       console.error(ErrorConstants.CSRF);
       return;
@@ -95,64 +85,47 @@ function LoginForm({ className_add }: LoginFormProps) {
       console.error(ErrorConstants.LOGIN, error);
       toast.error(ErrorConstants.LOGIN);
     }
+    setLoadingSubmit(false);
   }
 
   return auth ? redirect('/') : (
-    <div className={`login_form_comp flex justify-center flex-col flex-nowrap gap-6 rounded-lg p-8
-                  ${className_add}`}>
+    <div className={`login_form_comp flex justify-center flex-col flex-nowrap gap-6 rounded-lg p-8`}>
       <SiteFullTitle titleClass='text-5xl' sloganClass='text-2xl'/>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}
               className="flex space-y-8 lg:w-full lg:h-auto lg:flex-col lg:flex-nowrap align-center items-center flex-col flex-nowrap"
               name="login_form">
-          <FormField
+          <FormFieldCustom
             control={form.control}
             name="email"
-            render={({ field }) => (
-              <FormItem className="w-4/6">
-                <FormControl>
-                  <Input placeholder="Email" 
-                        required 
-                        type="email"
-                        autoComplete='on'
-                        {...field}/>
-                </FormControl>
-                <FormDescription>
-                  Enter your email here
-                </FormDescription>
-                <FormMessage>
-                {form.formState.errors.email && form.formState.errors.email.message}
-                </FormMessage>
-              </FormItem>
-            )}
+            autoComplete='on'
+            type="email"
+            formItemClass='w-4/6'
+            errors={form.formState.errors}
+            id="login_email"
+            desc="Enter your email here"
+            required={true}
+            placeholder='Email'
           />
-          <FormField
+          <FormFieldCustom
             control={form.control}
             name="password"
-            render={({ field }) => (
-              <FormItem className="w-4/6">
-                <FormControl>
-                  <Input placeholder="Password"
-                        required
-                        type="password"
-                        autoComplete='off'
-                        {...field}/>
-                </FormControl>
-                <FormDescription>
-                  Enter your password here
-                </FormDescription>
-                <FormMessage>
-                {form.formState.errors.password && form.formState.errors.password.message}
-                </FormMessage>
-                <FormMessage />
-              </FormItem>
-            )}
+            autoComplete='off'
+            type="password"
+            formItemClass='w-4/6'
+            errors={form.formState.errors}
+            id="login_password"
+            desc="Enter your password here"
+            required={true}
+            placeholder='Password'
           />
           <span className="text-center">Don't have an account? Click <u className="hover:text-custom_green_hover dark:hover:text-muted-foreground transition-colors"><Link href={'/register'}>here!</Link></u></span>
-          <Button type="submit"
-                  className="hover:bg-custom_green_hover dark:hover:bg-muted-foreground">
-            Submit
-          </Button>
+          <SubmitBtn
+            baseText='Submit'
+            loadingText='Submitting...'
+            loadingSubmit={loadingSubmit}
+            btnClassName='hover:bg-custom_green_hover dark:hover:bg-muted-foreground'
+          />
         </form>
       </Form>
     </div>

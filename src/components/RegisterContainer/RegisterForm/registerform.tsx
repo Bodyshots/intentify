@@ -1,20 +1,11 @@
 "use client"
 
-import React from 'react';
+import React, { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import SiteFullTitle from '../../SiteFullTitle/sitefulltitle';
+import { Form } from "@/components/ui/form"
+import SiteFullTitle from '@/components/SiteFullTitle/sitefulltitle';
 import { useAppSelector } from '@/redux/store';
 import './registerform.css';
 import { redirect } from 'next/navigation';
@@ -22,11 +13,12 @@ import { toast } from 'sonner';
 import Link from 'next/link';
 import { setAuth } from '@/redux/slices/authSlice';
 import { useAppDispatch } from '@/redux/store';
-
 import { ErrorConstants } from '@/constants/errors';
 import { FieldConstants } from '@/constants/fields';
 import getCSRF from '@/lib/GetCSRF';
 import { APIConstants } from '@/constants/api';
+import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom';
+import SubmitBtn from '@/components/SubmitBtn/submitbtn';
 
 const formSchema = z.object({
   email: z.string().email({ message: ErrorConstants.EMAIL_VALID})
@@ -47,21 +39,18 @@ const formSchema = z.object({
     path: ["conf_password"],
 });
 
-interface RegisterFormProps {
-  className_add?: string;
-}
-
 type RegisterData = {
   email: string;
   password: string;
   conf_password: string;
 }
 
-function RegisterForm({ className_add }: RegisterFormProps) {
+function RegisterForm() {
   const csrfToken = getCSRF();
   const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const dispatch = useAppDispatch();
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
 
   // Defining form defaults
   const form = useForm<RegisterData>({
@@ -110,6 +99,7 @@ function RegisterForm({ className_add }: RegisterFormProps) {
   }
 
   async function login_req(email: string, password: string) {
+    setLoadingSubmit(true);
     try {
       const response = await fetch(`${apiBaseUrl}/login`, {
         method: APIConstants.POST,
@@ -135,97 +125,75 @@ function RegisterForm({ className_add }: RegisterFormProps) {
       }
     }
     catch (error) {
-    console.error(ErrorConstants.LOGIN, error);
-    toast.error(ErrorConstants.LOGIN);
+      console.error(ErrorConstants.LOGIN, error);
+      toast.error(ErrorConstants.LOGIN);
     }
+    setLoadingSubmit(false);
   }
 
   async function onSubmit(values: RegisterData) {
+    setLoadingSubmit(true);
     if (!csrfToken) {
       console.error(ErrorConstants.CSRF);
       return;
     }
     const registered = await register_req(values.email, values.password, values.conf_password);
+    setLoadingSubmit(false);
     if (registered) {
       await login_req(values.email, values.password)
     }
   }
 
   return ( auth ? redirect('/') :
-    <div className={`register_form_comp flex justify-center flex-col flex-nowrap gap-6 rounded-lg p-8 ${className_add}`}>
+    <div className={`register_form_comp flex justify-center flex-col flex-nowrap gap-6 rounded-lg p-8`}>
       <SiteFullTitle titleClass='text-5xl' sloganClass='text-2xl'/>
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}
             className="flex space-y-8 lg:w-full lg:h-auto lg:flex-col lg:flex-nowrap align-center items-center flex-col flex-nowrap"
             name="register_form">
-        <FormField
-          control={form.control}
+        <FormFieldCustom
           name="email"
-          render={({ field }) => (
-            <FormItem className="w-4/6">
-              <FormControl>
-                <Input placeholder="Email" 
-                       required 
-                       type="email"
-                       autoComplete='on'
-                       {...field}/>
-              </FormControl>
-              <FormDescription>
-                Enter your email here
-              </FormDescription>
-              <FormMessage>
-              {form.formState.errors.email && form.formState.errors.email.message}
-              </FormMessage>
-            </FormItem>
-          )}
-        />
-        <FormField
+          type="email"
+          id="register_email"
+          autoComplete='on'
+          placeholder='Email'
+          desc="Enter your email here"
           control={form.control}
+          errors={form.formState.errors}
+          required={true}
+          formItemClass='w-4/6'
+        />
+        <FormFieldCustom
           name="password"
-          render={({ field }) => (
-            <FormItem className="w-4/6">
-              <FormControl>
-                <Input placeholder="Password"
-                       required
-                       type="password"
-                       autoComplete='off'
-                       {...field}/>
-              </FormControl>
-              <FormDescription>
-                Enter your password here
-              </FormDescription>
-              <FormMessage>
-              {form.formState.errors.password && form.formState.errors.password.message}
-              </FormMessage>
-            </FormItem>
-          )}
-        />
-        <FormField
+          type="password"
+          id="register_password"
+          autoComplete='off'
+          placeholder='Password'
+          desc="Enter your password here"
           control={form.control}
+          errors={form.formState.errors}
+          required={true}
+          formItemClass='w-4/6'
+        />
+        <FormFieldCustom
           name="conf_password"
-          render={({ field }) => (
-            <FormItem className="w-4/6 focus:bg-red-600">
-              <FormControl>
-                <Input placeholder="Confirm Password"
-                       required
-                       type="password"
-                       autoComplete='off'
-                       {...field}/>
-              </FormControl>
-              <FormDescription>
-                Confirm your password here
-              </FormDescription>
-              <FormMessage>
-              {form.formState.errors.conf_password && form.formState.errors.conf_password.message}
-              </FormMessage>
-            </FormItem>
-          )}
+          type="password"
+          id="register_conf_password"
+          autoComplete='off'
+          placeholder='Confirm Password'
+          desc="Confirm your password here"
+          control={form.control}
+          errors={form.formState.errors}
+          required={true}
+          formItemClass='w-4/6'
         />
         <span className="text-center">Already have an account? Click <u className="hover:text-custom_green_hover dark:hover:text-muted-foreground transition-colors"><Link href={'/login'}>here!</Link></u></span>
-        <Button type="submit"
-                className="hover:bg-custom_green_hover dark:hover:bg-muted-foreground">
-          Submit
-        </Button>
+        <SubmitBtn
+          baseText='Submit'
+          loadingText='Submitting...'
+          loadingSubmit={loadingSubmit}
+          btnClassName='hover:bg-custom_green_hover dark:hover:bg-muted-foreground'
+        />
       </form>
     </Form>
     </div>

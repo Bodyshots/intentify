@@ -1,23 +1,17 @@
 "use client"
 
-import React from 'react'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form"
+import React, { useState } from 'react'
+import { Form } from "@/components/ui/form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import { ErrorConstants } from '@/constants/errors'
 import { APIConstants } from '@/constants/api'
 import { FieldConstants } from '@/constants/fields'
+import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom'
+import SubmitBtn from '@/components/SubmitBtn/submitbtn'
 
 interface EmailSettingsProps {
   csrfToken: string;
@@ -30,6 +24,7 @@ type EmailData = {
 
 const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
 
   const formEmailSchema = z.object({
     email: z.string().email({ message: ErrorConstants.EMAIL_VALID})
@@ -52,8 +47,10 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
   });
 
   async function onSubmit(values: EmailData) {
+    setLoadingSubmit(true);
     if (!csrfToken) {
       console.error(ErrorConstants.CSRF);
+      setLoadingSubmit(false);
       return;
     }
     try {
@@ -81,31 +78,7 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
       console.error(ErrorConstants.EMAIL_UPDATE, error);
       toast.error(ErrorConstants.EMAIL_UPDATE);
     }
-  }
-
-  const renderEmailField = (name: keyof EmailData,
-                            id: string, placeholder: string,
-                            inputClass: string) => {
-    return <FormField
-      name={name}
-      control={formEmail.control}
-      render={({ field }) => (
-        <FormItem className="w-4/6">
-          <FormControl>
-            <Input placeholder={placeholder}
-                    required
-                    type="email"
-                    className={inputClass}
-                    autoComplete='on'
-                    id={id}
-                    {...field}/>
-          </FormControl>
-          <FormMessage>
-          {formEmail.formState.errors[name]?.message}
-          </FormMessage>
-        </FormItem>
-      )}
-    />          
+    setLoadingSubmit(false);
   }
 
   return (<>
@@ -116,12 +89,36 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
             autoComplete='on'>
         <Label htmlFor="current_email" className="text-xl">Email</Label>
         <p className="text-muted-foreground py-2">Change the email address associated with this account.</p>
-        {renderEmailField("email", "current_email", "Current email", "current_email")}
-        {renderEmailField("new_email", "new_email", "New email", "new_email")}
-        <Button type="submit"
-                className="self-start inline-flex w-auto my-4 hover:bg-custom_green_hover dark:hover:bg-muted-foreground">
-                  Save changes
-        </Button>
+        <FormFieldCustom 
+          name={"email"} 
+          id={"current_email"}
+          placeholder={"Current email"}
+          type={"email"}
+          autoComplete={"on"}
+          desc=""
+          control={formEmail.control}
+          errors={formEmail.formState.errors}
+          formItemClass='w-4/6'
+          required={true}
+        />
+        <FormFieldCustom 
+          name={"new_email"} 
+          id={"new_email"}
+          placeholder={"New email"}
+          type={"email"}
+          autoComplete={"on"}
+          desc=""
+          control={formEmail.control}
+          errors={formEmail.formState.errors}
+          formItemClass='w-4/6'
+          required={true}
+        />
+        <SubmitBtn
+          loadingSubmit={loadingSubmit} 
+          baseText={"Save Changes"}
+          loadingText={"Saving..."}
+          btnClassName="self-start inline-flex w-auto my-4 hover:bg-custom_green_hover dark:hover:bg-muted-foreground"
+        />
       </form>
     </Form>
   </>)
