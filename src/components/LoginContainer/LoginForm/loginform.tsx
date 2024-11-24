@@ -12,14 +12,14 @@ import getCSRF from '@/lib/GetCSRF';
 import { setAuth } from '@/redux/slices/authSlice';
 import { setFirstName } from '@/redux/slices/nameSlice';
 import { setLastName } from '@/redux/slices/nameSlice';
-import { redirect } from 'next/navigation';
-import { useAppDispatch, useAppSelector } from '@/redux/store';
+import { useAppDispatch } from '@/redux/store';
 import { toast } from "sonner";
 import { ErrorConstants } from '@/constants/errors';
 import { APIConstants } from '@/constants/api';
 import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom';
 import SubmitBtn from '@/components/SubmitBtn/submitbtn';
 import { OtherConstants } from '@/constants/other';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   email: z.string().email({ message: ErrorConstants.EMAIL_VALID}).trim(),
@@ -34,10 +34,9 @@ type LoginData = {
 function LoginForm() {
   const csrfToken = getCSRF();
   const dispatch = useAppDispatch();
-  const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [loadingSubmit, setLoadingSubmit] = useState(false);
-
+  const { push } = useRouter();
 
   // Defining form defaults
   const form = useForm<LoginData>({
@@ -75,6 +74,7 @@ function LoginForm() {
         dispatch(setFirstName(data.user.first_name));
         dispatch(setLastName(data.user.last_name));
         toast.success(data.message);
+        push('/');
       }
       else {
         dispatch(setAuth(false));
@@ -83,7 +83,7 @@ function LoginForm() {
         toast.error(data.message);
       }
     } catch (error) {
-      console.error(ErrorConstants.LOGIN, error);
+      console.error(error);
       toast.error(ErrorConstants.LOGIN);
     }
     setLoadingSubmit(false);

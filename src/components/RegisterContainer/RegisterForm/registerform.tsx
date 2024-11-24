@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Form } from "@/components/ui/form"
 import SiteFullTitle from '@/components/SiteFullTitle/sitefulltitle';
-import { useAppSelector } from '@/redux/store';
 import './registerform.css';
 import { redirect } from 'next/navigation';
 import { toast } from 'sonner';
@@ -20,6 +19,7 @@ import { APIConstants } from '@/constants/api';
 import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom';
 import SubmitBtn from '@/components/SubmitBtn/submitbtn';
 import { OtherConstants } from '@/constants/other';
+import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
   email: z.string().email({ message: ErrorConstants.EMAIL_VALID})
@@ -48,10 +48,10 @@ type RegisterData = {
 
 function RegisterForm() {
   const csrfToken = getCSRF();
-  const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const dispatch = useAppDispatch();
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const { push } = useRouter();
 
   // Defining form defaults
   const form = useForm<RegisterData>({
@@ -93,8 +93,8 @@ function RegisterForm() {
       }
     } 
     catch (error) {
-      console.error(ErrorConstants.REGISTER, error);
-      toast.success(ErrorConstants.REGISTER);
+      console.error(error);
+      toast.error(ErrorConstants.REGISTER);
       return false;
     }
   }
@@ -119,17 +119,19 @@ function RegisterForm() {
       if (response.ok) {
         dispatch(setAuth(true));
         toast.success(data.message);
+        return true;
       }
       else {
         dispatch(setAuth(false));
         toast.error(data.message);
+        return false;
       }
     }
     catch (error) {
       console.error(ErrorConstants.LOGIN, error);
       toast.error(ErrorConstants.LOGIN);
+      return false;
     }
-    setLoadingSubmit(false);
   }
 
   async function onSubmit(values: RegisterData) {
@@ -140,9 +142,11 @@ function RegisterForm() {
     }
     const registered = await register_req(values.email, values.password, values.conf_password);
     setLoadingSubmit(false);
-    if (registered) {
-      await login_req(values.email, values.password)
+    if (registered && await login_req(values.email, values.password)) {
+      setLoadingSubmit(false);
+      push('/');
     }
+    setLoadingSubmit(false);
   }
 
   return (
