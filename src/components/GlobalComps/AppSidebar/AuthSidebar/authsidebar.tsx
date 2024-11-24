@@ -1,4 +1,4 @@
-import { Home, CircleHelp, UserRoundCog, LogOut, List, Mail} from "lucide-react"
+import { Home, CircleHelp, UserRoundCog, LogOut, List} from "lucide-react"
 
 import {
   Sidebar,
@@ -31,11 +31,6 @@ const items = [
     title: "Account Settings",
     url: "/settings",
     icon: UserRoundCog,
-  },
-  {
-    title: "Feedback",
-    url: "/feedback",
-    icon: Mail
   },
   {
     title: "About Us",
