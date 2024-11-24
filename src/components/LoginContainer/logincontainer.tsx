@@ -16,7 +16,7 @@ const LoginContainer = () => {
 
   useEffect(() => {
     setIsLoaded(true);
-    if (!auth) {
+    if (auth) {
       toast.error(ErrorConstants.AUTH_GUEST);
       redirect('/'); // Redirect authenticated users
     }

@@ -25,8 +25,8 @@ const ConversationContainer = () => {
 
   return (
     <div className="flex flex-col text-center p-16 w-full justify-center">
-      <h1 className="text-6xl font-normal">More features coming soon</h1>
-      <h3 className="text-xl py-4 subtitle">Check back some other time to see what's here!</h3>
+      <h1 className="text-6xl font-normal">Under Construction</h1>
+      <h3 className="text-xl py-4 subtitle">Check back to see what's here!</h3>
     </div>
   )
 }

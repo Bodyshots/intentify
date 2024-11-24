@@ -3,7 +3,7 @@ services:
   # db service
   db:
     container_name: db
-    image: postgres:13
+    image: postgres:16
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -28,7 +28,7 @@ services:
     ports:
       - 4000:4000
     environment:
-      FLASK_APP: run.py
+      FLASK_APP: app.py
       DATABASE_URL: postgresql://postgres:postgres@db:5432/postgres
     depends_on:
       db:
