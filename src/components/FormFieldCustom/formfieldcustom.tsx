@@ -1,5 +1,5 @@
 import React from 'react';
-import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { Control, Controller, FieldErrors, Merge, FieldError, FieldErrorsImpl } from 'react-hook-form';
 import { Input } from '../ui/input';
 import {
   Form,
@@ -23,6 +23,12 @@ interface FormFieldCustomProps {
   formItemClass?: string;
 }
 
+const getErrorMessage = (
+  error: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined
+): string | undefined => {
+  return typeof error === 'string' ? error : undefined;
+};
+
 const FormFieldCustom: React.FC<FormFieldCustomProps> = ({
   name,
   id,
@@ -36,8 +42,7 @@ const FormFieldCustom: React.FC<FormFieldCustomProps> = ({
   formItemClass,
 }) => {
   // Errors must be a string
-  const errorMessage =
-    typeof errors[name]?.message === 'string' ? errors[name]?.message : undefined;
+  const errorMessage = getErrorMessage(errors[name]?.message);
 
   return (
     <Controller
@@ -56,7 +61,7 @@ const FormFieldCustom: React.FC<FormFieldCustomProps> = ({
             />
           </FormControl>
           {desc && <FormDescription>{desc}</FormDescription>}
-          <FormMessage>{errorMessage}</FormMessage>
+          {errorMessage && <FormMessage>{errorMessage}</FormMessage>}
         </FormItem>
       )}
     />
@@ -64,4 +69,3 @@ const FormFieldCustom: React.FC<FormFieldCustomProps> = ({
 };
 
 export default FormFieldCustom;
-
