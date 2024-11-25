@@ -24,7 +24,6 @@ def check_auth_status():
         return True and current_user.is_authenticated
   return False
 
-
 ###### Users ######
 @main.route('/api/users', methods=[GET])
 def get_users():
@@ -219,16 +218,6 @@ def logout():
     return make_response(jsonify({MSG: 'Error logging out user', 
                                   ERROR: str(e)}), INTERNAL_ERR)
 
-@main.route('/api/send/id', methods=[GET])
-def get_id():
-  try:
-    if current_user and current_user.is_authenticated:
-      return make_response(jsonify({MSG: 'User id sent', USER_ID: current_user.id}), OK)
-    return make_response(jsonify({MSG: 'User not signed in'}), UNAUTHORIZED)
-  except Exception as e:
-    return make_response(jsonify({MSG: 'Error in getting user id', 
-                                  ERROR: str(e)}), INTERNAL_ERR)
-
 ###### Conversations ######
 @main.route('/api/conversation/create', methods=[POST])
 def create_conversation():
@@ -264,7 +253,6 @@ def create_conversation():
         ERROR: str(e)
     }), INTERNAL_ERR)
 
-@login_required
 @main.route('/api/conversation/delete/<int:id>', methods=[DELETE])
 def delete_conversation(id: int):
   try:
@@ -301,16 +289,6 @@ def get_conversations():
 @main.route('/api/health', methods=[GET])
 def health_check():
   return make_response(jsonify(status=HEALTHY), OK)
-  
-@main.route('/api/auth/status', methods=[GET])
-def auth_check():
-  try:
-    return make_response(jsonify({AUTH: check_auth_status()}), OK)
-
-  except Exception as e:
-    db.session.rollback()
-    return make_response(jsonify({MSG: 'Error checking authorization', 
-                                  ERROR: str(e)}), INTERNAL_ERR)
   
 @main.route('/api/get-csrf-token', methods=[GET])
 def get_csrf_token():

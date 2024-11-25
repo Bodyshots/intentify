@@ -1,4 +1,4 @@
-import { Home, CircleHelp, UserRoundPen, LogIn} from "lucide-react"
+import { Home, CircleHelp, UserRoundPen, LogIn, FileText, } from "lucide-react"
 
 import {
   Sidebar,
@@ -31,6 +31,11 @@ const items = [
     title: "Register",
     url: "/register",
     icon: UserRoundPen,
+  },
+  {
+    title: "Documentation",
+    url: "/docs/introduction",
+    icon: FileText,
   },
   {
     title: "About Us",
