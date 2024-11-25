@@ -1,10 +1,30 @@
 ---
 title: "Health check"
-description: "GET - Health check"
+description: "GET - Check the Health Status of the API"
 ---
 ```
 GET {{NEXT_PUBLIC_API_BASE_URL}}/api/health
 ```
 # Health check
 If the Flask service is running, return the status 'healthy' as a JSON. This API route is only
-used during local development. 
+used during local development to indicate that the service is operational.
+
+## Request Headers
+
+No special headers are required for this endpoint.
+
+## Request Body
+
+No body is required for this endpoint.
+
+## Responses
+
+### 200
+The API is operational and healthy.  
+
+**Example**:  
+```json
+{
+  "status": "healthy"
+}
+```

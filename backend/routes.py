@@ -7,7 +7,7 @@ from pytz import utc
 from datetime import timedelta
 
 from constants import *
-from app import db, bcrypt
+from app import db, bcrypt, csrf
 from models import User, Conversation
 from forms import LoginForm, RegisterForm, ChangeEmailForm, ChangePasswordForm, ChangeNamesForm, DeleteAccountForm
 
@@ -21,7 +21,7 @@ def check_auth_status():
     if expiry and expiry.tzinfo is None:
         expiry = utc.localize(expiry)
     if datetime.now(tz=utc) < expiry:
-        return True and current_user.is_authenticated
+        return current_user and current_user.is_authenticated
   return False
 
 ###### Users ######
@@ -67,10 +67,10 @@ def update_email():
   try:
     data = request.get_json()
     form = ChangeEmailForm(data=data)
+    new_email = data.get(NEW_EMAIL)
   
     if (form.validate() and current_user and (data.get(EMAIL) == current_user.email)):
-      current_user.email = data.get(NEW_EMAIL)
-      session[EMAIL] = data.get(NEW_EMAIL)
+      current_user.email, session[EMAIL] = new_email, new_email
       db.session.commit()
       return make_response(jsonify({MSG: 'Email updated!'}), OK)
     return make_response(jsonify({MSG: 'Current email does not match or email already exists'}), BAD_REQUEST)
@@ -205,7 +205,7 @@ def register():
 @login_required
 def logout():
   try:
-    if current_user and current_user.is_authenticated:
+    if check_auth_status():
       response = make_response(jsonify({MSG: 'Logged out successfully!'}), OK)
 
       logout_user()
@@ -220,13 +220,13 @@ def logout():
 
 ###### Conversations ######
 @main.route('/api/conversation/create', methods=[POST])
+@csrf.exempt
 def create_conversation():
   try:
     data = request.get_json()
-
-    if current_user and current_user.is_authenticated:
+    if (User.get_by_email(email=data.get(EMAIL))):
       # Create a new conversation for the authenticated user
-      new_convo = Conversation(user_id=data.get(USER_ID),
+      new_convo = Conversation(email=data.get(EMAIL),
                                urls=data.get(URLS),
                                user_role=data.get(ROLE),
                                user_intent=data.get(INTENT))
@@ -237,14 +237,15 @@ def create_conversation():
 
       return make_response(jsonify({
         ID: new_convo.id,
-        USER_ID: new_convo.user_id,
+        EMAIL: new_convo.email,
         URLS: new_convo.urls,
         ROLE: new_convo.user_role,
         INTENT: new_convo.user_intent,
         MSG: "Conversation created successfully!"
       }), CREATED)
-
-    return make_response(jsonify({MSG: "User not signed in"}), UNAUTHORIZED)
+    return make_response(jsonify({
+        MSG: "Account with email does not exist"
+      }), NOT_FOUND)
 
   except Exception as e:
     db.session.rollback()  # Rollback in case of error
@@ -253,12 +254,13 @@ def create_conversation():
         ERROR: str(e)
     }), INTERNAL_ERR)
 
-@main.route('/api/conversation/delete/<int:id>', methods=[DELETE])
-def delete_conversation(id: int):
+@main.route('/api/conversation/delete/<int:convo_id>', methods=[DELETE])
+def delete_conversation(convo_id: int):
   try:
-    convo = Conversation.get_by_id(id)
-    if (current_user and convo) and (current_user.is_authenticated and
-        current_user.id == convo.user_id):
+    data = request.get_json()
+    convo = Conversation.get_by_id(convo_id)
+    if convo and (check_auth_status() and
+        current_user.email == data.get(EMAIL) and convo_id == convo.id):
       db.session.delete(convo)
       db.session.commit()
       return make_response(jsonify({MSG: 'Conversation deleted!'}), OK)
@@ -273,6 +275,22 @@ def delete_conversation(id: int):
         ERROR: str(e)
     }), INTERNAL_ERR)
     
+@main.route('/api/conversation/update/notes/<int:convo_id>', methods=[PUT])
+def update_conversation_notes(convo_id: int):
+  try:
+    data = request.get_json()
+    convo = Conversation.get_by_id(convo_id)
+    if (check_auth_status() and convo and (data.get(EMAIL) == current_user.email)):
+      convo.notes = data.get(NOTES)
+      db.session.commit()
+      return make_response(jsonify({MSG: 'Conversation notes updated'}), OK)
+    return make_response(jsonify({MSG: "Current email does not match or conversation does not exist"}), 
+                                  UNAUTHORIZED)
+  except Exception as e:
+    db.session.rollback()
+    return make_response(jsonify({MSG: 'Error updating conversation notes',
+                                  ERROR: str(e)}), INTERNAL_ERR)
+    
 @main.route('/api/conversations', methods=[GET])
 def get_conversations():
   try:
@@ -281,7 +299,21 @@ def get_conversations():
     return make_response(jsonify(convos_data), OK)
   except Exception as e:
     db.session.rollback()
-    return make_response(jsonify({MSG: 'Error getting users',
+    return make_response(jsonify({MSG: 'Error getting conversations',
+                                  ERROR: str(e)}), INTERNAL_ERR)
+    
+@main.route('/api/conversations/email', methods=[POST])
+def get_conversations_email():
+  try:
+    data = request.get_json()
+    if check_auth_status():
+      convos = Conversation.get_by_email(email=data.get(EMAIL))
+      convos_data = [{CONVO: convo.json()} for convo in convos]
+      return make_response(jsonify(convos_data), OK)
+    return make_response(jsonify({MSG: "User not signed in"}), UNAUTHORIZED)
+  except Exception as e:
+    db.session.rollback()
+    return make_response(jsonify({MSG: 'Error getting conversations',
                                   ERROR: str(e)}), INTERNAL_ERR)
 
 ###### Other functions ######

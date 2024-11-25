@@ -1,8 +1,41 @@
 ---
-title: "Get CSRF token"
-description: "GET - Get CSRF token"
+title: "Get CSRF Token"
+description: "GET - Retrieve a CSRF Token for Secure Requests"
 ---
 ```
 GET {{NEXT_PUBLIC_API_BASE_URL}}/api/get-csrf-token
 ```
-# Get CSRF token
+
+# Get CSRF Token
+
+Generates and retrieves a CSRF token for use in secure, state-changing requests.
+
+## Request Headers
+
+No special headers are required for this endpoint.
+
+## Request Body
+
+No body is required for this endpoint.
+
+## Responses
+
+### 200
+A CSRF token is successfully generated and returned.  
+
+**Example**:  
+```json
+{
+  "csrf_token": "generated_csrf_token_value"
+}
+```
+
+### 500
+An error occurred while generating the CSRF token.  
+
+**Example**:  
+```json
+{
+  "error": "Some descriptive error message"
+}
+```

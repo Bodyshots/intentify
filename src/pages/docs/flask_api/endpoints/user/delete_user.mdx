@@ -1,7 +1,62 @@
 ---
-title: "Delete User"
-description: "DELETE - Delete User"
+title: "Delete User Account"
+description: "DELETE - Delete the Current User's Account"
 ---
 ```
 DELETE {{NEXT_PUBLIC_API_BASE_URL}}/api/user/delete
+```
+
+# Delete User Account
+
+Allows a logged-in user to delete their account permanently. The user must confirm their email and password to proceed.
+
+## Request Headers
+
+- **Content-Type**: application/json  
+- **X-CSRFToken**: The CSRF token of the user  
+
+## Request Body
+
+- **email** (string, required): The email address of the user.  
+- **password** (string, required): The current password of the user.  
+
+**Example**:  
+```json
+{
+  "email": "user@example.com",
+  "password": "securePassword123"
+}
+```
+
+## Responses
+
+### 200
+The user's account is successfully deleted.  
+
+**Example**:  
+```json
+{
+  "message": "Account deleted!"
+}
+```
+
+### 400
+The email or password is invalid, or does not match the logged-in user's credentials.  
+
+**Example**:  
+```json
+{
+  "message": "Invalid email or password"
+}
+```
+
+### 500
+An error occurred while deleting the user's account.  
+
+**Example**:  
+```json
+{
+  "message": "Error deleting user",
+  "error": "Some descriptive error message"
+}
 ```

@@ -7,5 +7,45 @@ POST {{NEXT_PUBLIC_API_BASE_URL}}/api/register
 ```
 # Create User
 
-Creates a new user. When creating a new user, a unique email is required as well
-as a password that is at least 8 characters long. Both fields cannot be null.
+Creates a new user, utilizing an email, password, and confirmation password. The email must be unique.
+The password and confirmation password must be equal to each other and must be at least 8 characters long.
+All fields need to be less than 255 characters.
+
+## Request Headers
+
+- **Content-Type**: application/json
+
+- **X-CSRFToken**: The CSRF token of the user
+
+## Request Body
+
+- **email** (string, required): The email of the user.
+    
+- **password** (string, required): The password for the user account.
+    
+- **conf_password** (string, required): The confirmation of the password.
+    
+
+**Example**:
+
+``` json
+{
+  "email": "test1@test1.com",
+  "password": "test1test1",
+  "conf_password": "test1test1"
+}
+
+ ```
+
+## Responses
+
+### 201
+Creates a new User object with the provided email and password. The password
+is encrypted with the SECRET_KEY in the web application's environment variables.
+
+### 401
+An account with the email already exists, one field is not within 255 characters,
+or the provided password is not at least 8 characters long.
+    
+### 500
+An error occurred during User creation.

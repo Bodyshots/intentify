@@ -1,7 +1,54 @@
 ---
-title: "Logout user"
-description: "POST - Logout user"
+title: "Logout User"
+description: "POST - Logout User"
 ---
 ```
 POST {{NEXT_PUBLIC_API_BASE_URL}}/api/logout
+```
+
+# Logout User
+
+Logs out the currently authenticated user. This endpoint requires the user to be logged in and will terminate the session upon success.
+
+## Request Headers
+
+- **Content-Type**: application/json  
+- **X-CSRFToken**: The CSRF token of the user  
+
+## Request Body
+
+No body is required for this endpoint.
+
+## Responses
+
+### 200
+The user is successfully logged out.  
+
+**Example**:  
+```json
+{
+  "message": "Logged out successfully!"
+}
+```
+
+### 401
+The user is not logged in.  
+
+**Example**:  
+```json
+{
+  "message": "You need to be logged in",
+  "error": "Some descriptive error message"
+}
+```
+
+### 500
+An error occurred during the logout process.  
+
+**Example**:  
+```json
+{
+  "message": "Error logging out user",
+  "error": "Some descriptive error message"
+}
 ```

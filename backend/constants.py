@@ -24,6 +24,7 @@ ROLE = 'role'
 INTENT = 'intent'
 RESPONSE = 'response'
 URLS = 'URLs'
+NOTES = 'notes'
 SESSION_LIFETIME = 7
 
 # Models

@@ -3,3 +3,17 @@ title: "Settings"
 description: "Intentify's Settings page"
 ---
 # Settings
+The main account customization page.
+
+The following attributes can be modified by users on this page:
+- Theme (also modifiable by unauthenticated users)
+- First and last names
+  - These attributes change how the authenticated home view greets users, using the user's first and last name.
+  If only a last name is saved, the authenticated home view's greeting remains generic and unchanged
+  - Both of these fields need to be less than 255 characters
+- Email
+  - The email must be unique and less than 255 characters
+- Password
+  - The password must be at least 8 characters long, but also less than 255 characters
+
+Unauthenticated users cannot access this page, as they should have no account to edit.

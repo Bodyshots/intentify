@@ -5,3 +5,44 @@ description: "POST - Login user"
 ```
 POST {{NEXT_PUBLIC_API_BASE_URL}}/api/login
 ```
+# Login user
+
+## Request Body
+
+- `email` (text): The email of the user for authentication.
+    
+- `password` (text): The password associated with the provided email.
+    
+
+## API Response
+
+### 201
+
+The response to this request is in JSON format and includes the following schema:
+
+``` json
+{
+    "message": "",
+    "user": {
+        "conversations": [
+            {
+                "URLs": [""],
+                "created_at": "",
+                "email": "",
+                "id": 0,
+                "intent": "",
+                "notes": "",
+                "role": ""
+            }
+        ],
+        "email": "",
+        "first_name": "",
+        "id": 0,
+        "last_name": "",
+        "password": ""
+    }
+}
+
+ ```
+
+The response includes a `message` field and a `user` object with various attributes such as `conversations`, `email`, `first_name`, `id`, `last_name`, and `password`.
