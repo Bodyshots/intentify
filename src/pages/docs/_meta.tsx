@@ -1,7 +1,6 @@
 export default {
-  "introduction": "Introduction",
-  "local": "Installing and running locally",
-  "globals": "Global components",
-  "pages": "Pages",
-  "flask_api": "Flask API",
+  "getting_started": "Getting Started",
+  "app_structure": "Application Structure",
+  "flask_api": "Backend (Flask API)",
+  "redux": "Redux",
 }

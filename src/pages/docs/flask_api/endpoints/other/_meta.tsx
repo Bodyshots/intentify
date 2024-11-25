@@ -1,4 +1,4 @@
 export default {
-  "health": "Health check",
-  "csrf": "Get CSRF token",
+  "health": "GET - Health check",
+  "csrf": "GET - Get CSRF token",
 }

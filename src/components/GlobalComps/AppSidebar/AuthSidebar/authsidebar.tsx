@@ -34,7 +34,7 @@ const items = [
   },
   {
     title: "Documentation",
-    url: "/docs/introduction",
+    url: "/docs/getting_started/introduction",
     icon: FileText,
   },
   {
