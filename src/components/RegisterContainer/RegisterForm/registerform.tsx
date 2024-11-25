@@ -7,7 +7,6 @@ import { z } from "zod"
 import { Form } from "@/components/ui/form"
 import SiteFullTitle from '@/components/SiteFullTitle/sitefulltitle';
 import './registerform.css';
-import { redirect } from 'next/navigation';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import { setAuth } from '@/redux/slices/authSlice';
@@ -68,7 +67,7 @@ function RegisterForm() {
                               password: string, 
                               conf_password: string) {
     try {
-      const response = await fetch(`${apiBaseUrl}/register`, {
+      const response = await fetch(`${apiBaseUrl}/api/register`, {
         method: APIConstants.POST,
         headers: {
           'X-CSRFToken': csrfToken,
@@ -102,7 +101,7 @@ function RegisterForm() {
   async function login_req(email: string, password: string) {
     setLoadingSubmit(true);
     try {
-      const response = await fetch(`${apiBaseUrl}/login`, {
+      const response = await fetch(`${apiBaseUrl}/api/login`, {
         method: APIConstants.POST,
         headers: {
           'X-CSRFToken': csrfToken,

@@ -43,7 +43,7 @@ function Logout() {
       logoutBegin.current = true; // Prevent further logout triggers
 
       try {
-        const response = await fetch(`${apiBaseUrl}/logout`, {
+        const response = await fetch(`${apiBaseUrl}/api/logout`, {
           method: APIConstants.POST,
           headers: {
             "X-CSRFToken": csrfToken,

@@ -21,7 +21,6 @@ def create_app():
   load_dotenv() # Load environment vars
   app = Flask(__name__)
   app.config.from_object(Config)
-  origins = os.getenv('FRONTEND_ORIGIN', '').split(',')
   
   # Initialize login manager
   login_manager.init_app(app)

@@ -50,7 +50,7 @@ def get_curr_user():
     return make_response(jsonify({MSG: "Error getting user information",
                                   ERROR: str(e)}), BAD_REQUEST)
 
-@main.route('/api/users/<int:id>', methods=[GET])
+@main.route('/api/user/<int:id>', methods=[GET])
 def get_user(id: int):
   try:
     user = User.get_by_id(id)
@@ -62,7 +62,7 @@ def get_user(id: int):
     return make_response(jsonify({MSG: 'Error getting user',
                                   ERROR: str(e)}), INTERNAL_ERR)
   
-@main.route('/api/users/update/email', methods=[PUT])
+@main.route('/api/user/update/email', methods=[PUT])
 def update_email():
   try:
     data = request.get_json()
@@ -79,7 +79,7 @@ def update_email():
     return make_response(jsonify({MSG: 'Error updating user email',
                                   ERROR: str(e)}), INTERNAL_ERR)
   
-@main.route('/api/users/update/password', methods=[PUT])
+@main.route('/api/user/update/password', methods=[PUT])
 def update_password():
   try:
     data = request.get_json()
@@ -96,7 +96,7 @@ def update_password():
     return make_response(jsonify({MSG: 'Error updating user password',
                                   ERROR: str(e)}), INTERNAL_ERR)
   
-@main.route('/api/users/update/names', methods=[PUT])
+@main.route('/api/user/update/names', methods=[PUT])
 def update_names():
   try:
     data = request.get_json()
@@ -132,7 +132,7 @@ def delete_curr_user():
     return make_response(jsonify({MSG: 'Error deleting user',
                                   ERROR: str(e)}), INTERNAL_ERR)
   
-@main.route('/login', methods=[POST])
+@main.route('/api/login', methods=[POST])
 def login():
   try:
     if (check_auth_status()):
@@ -162,7 +162,7 @@ def login():
     return make_response(jsonify({MSG: 'Error logging in user',
                                   ERROR: str(e)}), INTERNAL_ERR)
 
-@main.route('/register', methods=[POST])
+@main.route('/api/register', methods=[POST])
 def register():
   try:
     if (check_auth_status()):
@@ -201,7 +201,7 @@ def register():
     return make_response(jsonify({MSG: 'Error registering user', 
                                   ERROR: str(e)}), INTERNAL_ERR)
 
-@main.route('/logout', methods=[POST])
+@main.route('/api/logout', methods=[POST])
 @login_required
 def logout():
   try:

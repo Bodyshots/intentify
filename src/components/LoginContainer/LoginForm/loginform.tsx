@@ -55,7 +55,7 @@ function LoginForm() {
       return;
     }
     try {
-      const response = await fetch(`${apiBaseUrl}/login`, {
+      const response = await fetch(`${apiBaseUrl}/api/login`, {
         method: APIConstants.POST,
         headers: {
           'X-CSRFToken': csrfToken,

@@ -1,0 +1,17 @@
+---
+title: "Flask API - Introduction"
+description: "An introduction to Intentify's Flask API"
+---
+# Flask API - Introduction
+Intentify's backend relies on Flask for its API endpoints and models. More details can be found in each respective section.
+
+## Models
+Currently, Intentify only uses one model: **User**. This model is created once a user registers an account with a unique email
+and a password that is at least 8 characters long. Another model, **Conversation**, was planned to be integrated into this
+web application, but was not used due to time constraints.
+
+## Endpoints
+Most endpoints interact with Intentify's User model, fulfilling all basic CRUD operations. In a similar way, Intentify's
+Conversation model has creation, reading, and delete operations fully implemented, despite not being used by this web application.
+
+The base URL used to access these endpoints http://localhost:4000, or what will be referred to as \{\{NEXT_PUBLIC_API_BASE_URL}}.

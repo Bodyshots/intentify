@@ -1,5 +1,6 @@
 export default {
+  "introduction": "Introduction",
   "models": "Models",
-  "routes": "Routes",
-  "db_cloud": "Database + Cloud",
+  "endpoints": "Endpoints",
+  "db_cloud": "Databases and Cloud",
 }

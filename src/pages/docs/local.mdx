@@ -1,0 +1,49 @@
+---
+title: "Installing and running locally"
+description: "How to install Intentify's dependencies and run the website locally"
+---
+# Installing and running locally
+
+## Getting started
+
+First, clone the git repository. Before running the web application, you'll need to
+set up a few services and variables.
+
+### Environment Variables
+Intentify's frontend and backend both require environment variables that need to be set
+in a .env file.
+
+#### Frontend (src)
+- **NEXT_PUBLIC_API_BASE_URL**: The location of the Flask server. Set this to http://localhost:4000
+- **NEXT_PUBLIC_DB_BASE_URL**: The location of the database. Set this to http://127.0.0.1:5432
+
+#### Backend
+- **SECRET_KEY**: A randomly generated secret key for encryption.
+
+### Scripts
+
+Inside, there are four scripts that help you with the lifecycle of this web application.
+
+### setup.sh
+Sets up and activates the virtual environment "venv" to install the required dependencies
+for the backend.
+
+### setup_docker.sh
+Removes any existing docker containers and volumes. Thereafter, the script installs
+the necessary frontend dependencies in the virtual environment and rebuilds the web
+application's containers.<br/><br/>
+The web application depends on three services:
+- db - A PostgreSQL database that runs on port 5432
+- flaskapp - The Flask backend of the web application, running on port 4000
+- nextapp - The Next.JS frontend of the web application, running on port 3000
+
+### run.sh
+Runs the web application, utilizing the virtual environment.
+
+### shutdown.sh
+Stops all running docker containers.
+
+---
+In general, start Intentify by running (in order), setup.sh, setup_docker.sh, and run.sh.
+Once done, run shutdown.sh to stop all running services. You do not have to set
+the application back up again after it has been stopped; just run run.sh to start it back up.
