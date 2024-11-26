@@ -21,7 +21,7 @@ const ConversationContainer = () => {
   useEffect(() => {
     if (!auth) {
       toast.error(ErrorConstants.AUTH_PROTECTED);
-      redirect('/'); // Redirect unauthenticated users
+      redirect('/');
     }
     dispatch(fetchConversations({email, csrfToken})).finally(() => setIsLoaded(true));
   }, [csrfToken]);
@@ -30,12 +30,12 @@ const ConversationContainer = () => {
     return <Loading/>
   }
 
-  return ( convos ?
-    <div className="flex flex-col text-center p-8 w-full justify-center convo_page">
+  return ( convos.length ?
+    <div className="flex flex-col text-center p-8 w-full justify-center convo_page pr-16">
     <h1 className="text-6xl font-normal">Your Conversations</h1>
     <div className="convo_container flex flex-col justify-center my-8">
       {/* Header Row */}
-      <div className="p-2 flex flex-row justify-between gap-4">
+      <div className="p-2 flex flex-row justify-between items-center gap-4">
         <span className="convo_date w-1/5 text-sm flex-shrink-0">Date</span>
         <span className="convo_urls w-1/5 text-sm flex-shrink-0">URLs</span>
         <span className="convo_role w-1/5 text-sm flex-shrink-0">Predicted Role</span>
@@ -44,7 +44,7 @@ const ConversationContainer = () => {
       </div>
 
       {/* Conversations */}
-      <div className="p-4 pt-0 flex flex-col justify-center">
+      <div className="py-2 px-0 flex flex-col justify-center">
         {convos && convos.map((convo, index) => (
           <ConvoItem key={index} convo={convo} />
         ))}
@@ -52,8 +52,9 @@ const ConversationContainer = () => {
     </div>
   </div>
   :
-  <div>
-    Hmmm... There's nothing here!
+  <div className="flex flex-col text-center p-16 w-full justify-center">
+    <h1 className="text-6xl font-normal">Hmm... There's nothing here!</h1>
+    <h3 className="text-xl py-4 subtitle">Chat with our chatbots to save your conversations here!</h3>
   </div>)
 }
 

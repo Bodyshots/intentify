@@ -11,7 +11,7 @@ const ConvoItem: React.FC<ConvoItemProps> = ({ convo }) => {
   return (
     <div
       key={convo.id}
-      className="p-2 flex flex-row gap-4 justify-between items-center border-b border-gray-300"
+      className="p-2 py-3 flex flex-row gap-4 justify-between items-center border-b border-gray-300"
     >
       {/* Date */}
       <span className="convo_date w-1/5 text-sm flex-shrink-0">{convo.created_at}</span>

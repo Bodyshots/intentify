@@ -10,6 +10,9 @@ import { redirect } from "next/navigation";
 import Loading from "@/app/loading";
 import { ErrorConstants } from "@/constants/errors";
 import { APIConstants } from "@/constants/api";
+import { setEmail } from "@/redux/slices/emailSlice";
+import { setConversations } from "@/redux/slices/convoSlice";
+import { setFirstName, setLastName } from "@/redux/slices/nameSlice";
 
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -54,6 +57,10 @@ function Logout() {
 
         if (response.ok) {
           dispatch(setAuth(false));
+          dispatch(setEmail(''));
+          dispatch(setFirstName(''));
+          dispatch(setLastName(''));
+          dispatch(setConversations([]));
           toast.success(data.message);
         } else {
           toast.error(data.message);

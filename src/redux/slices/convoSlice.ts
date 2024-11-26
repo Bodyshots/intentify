@@ -48,7 +48,6 @@ export const fetchConversations = createAsyncThunk(
         credentials: APIConstants.CRED_INCLUDE
       });
       const data = await response.json()
-      console.log(data);
   
       if (response.ok) {
         return data
@@ -79,12 +78,10 @@ const convosSlice = createSlice({
       .addCase(fetchConversations.pending, (state) => {
         state.loading = true;
         state.error = null;
-        console.log("pending");
       })
       .addCase(fetchConversations.fulfilled, (state, action) => {
         state.loading = false;
         state.convos = action.payload;
-        console.log("fulfilled");
       })
       .addCase(fetchConversations.rejected, (state, action) => {
         state.loading = false;
