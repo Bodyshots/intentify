@@ -20,6 +20,7 @@ import SubmitBtn from '@/components/SubmitBtn/submitbtn';
 import { OtherConstants } from '@/constants/other';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/redux/store';
+import { setEmail } from '@/redux/slices/emailSlice';
 
 const formSchema = z.object({
   email: z.string().email({ message: ErrorConstants.EMAIL_VALID})
@@ -120,11 +121,13 @@ function RegisterForm() {
       // Note: New accounts shouldn't have any new convos or any names set
       if (response.ok) {
         dispatch(setAuth(true));
+        dispatch(setEmail(email));
         toast.success(data.message);
         return true;
       }
       else {
         dispatch(setAuth(false));
+        dispatch(setEmail(''));
         toast.error(data.message);
         return false;
       }

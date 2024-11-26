@@ -50,7 +50,6 @@ class Conversation(db.Model):
   urls = db.Column(db.ARRAY(db.Text))
   user_role = db.Column(db.Text, default="")
   user_intent = db.Column(db.Text, default="")
-  notes = db.Column(db.Text, default="")
   created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
 
   @staticmethod
@@ -68,6 +67,5 @@ class Conversation(db.Model):
       URLS: self.urls,
       INTENT: self.user_intent,
       ROLE: self.user_role,
-      NOTES: self.notes,
       CREATED_AT: self.created_at
     }

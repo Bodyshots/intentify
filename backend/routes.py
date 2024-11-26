@@ -29,7 +29,7 @@ def check_auth_status():
 def get_users():
   try:
     users = User.query.all()
-    users_data = [{USER: user.json()} for user in users]
+    users_data = [user.json() for user in users]
     return make_response(jsonify(users_data), OK)
   except Exception as e:
     db.session.rollback()
@@ -275,27 +275,11 @@ def delete_conversation(convo_id: int):
         ERROR: str(e)
     }), INTERNAL_ERR)
     
-@main.route('/api/conversation/update/notes/<int:convo_id>', methods=[PUT])
-def update_conversation_notes(convo_id: int):
-  try:
-    data = request.get_json()
-    convo = Conversation.get_by_id(convo_id)
-    if (check_auth_status() and convo and (data.get(EMAIL) == current_user.email)):
-      convo.notes = data.get(NOTES)
-      db.session.commit()
-      return make_response(jsonify({MSG: 'Conversation notes updated'}), OK)
-    return make_response(jsonify({MSG: "Current email does not match or conversation does not exist"}), 
-                                  UNAUTHORIZED)
-  except Exception as e:
-    db.session.rollback()
-    return make_response(jsonify({MSG: 'Error updating conversation notes',
-                                  ERROR: str(e)}), INTERNAL_ERR)
-    
 @main.route('/api/conversations', methods=[GET])
 def get_conversations():
   try:
     convos = Conversation.query.all()
-    convos_data = [{CONVO: convo.json()} for convo in convos]
+    convos_data = [convo.json() for convo in convos]
     return make_response(jsonify(convos_data), OK)
   except Exception as e:
     db.session.rollback()
@@ -308,7 +292,7 @@ def get_conversations_email():
     data = request.get_json()
     if check_auth_status():
       convos = Conversation.get_by_email(email=data.get(EMAIL))
-      convos_data = [{CONVO: convo.json()} for convo in convos]
+      convos_data = [convo.json() for convo in convos]
       return make_response(jsonify(convos_data), OK)
     return make_response(jsonify({MSG: "User not signed in"}), UNAUTHORIZED)
   except Exception as e:

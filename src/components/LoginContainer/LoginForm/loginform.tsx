@@ -12,7 +12,6 @@ import getCSRF from '@/lib/GetCSRF';
 import { setAuth } from '@/redux/slices/authSlice';
 import { setFirstName, setLastName } from '@/redux/slices/nameSlice';
 import { setEmail } from '@/redux/slices/emailSlice';
-import { setConversations } from '@/redux/slices/convoSlice';
 import { useAppDispatch } from '@/redux/store';
 import { toast } from "sonner";
 import { ErrorConstants } from '@/constants/errors';
@@ -21,6 +20,7 @@ import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom';
 import SubmitBtn from '@/components/SubmitBtn/submitbtn';
 import { OtherConstants } from '@/constants/other';
 import { useRouter } from 'next/navigation';
+import { setConversations } from '@/redux/slices/convoSlice';
 
 const formSchema = z.object({
   email: z.string().email({ message: ErrorConstants.EMAIL_VALID}).trim(),

@@ -4,7 +4,7 @@ import { createSlice, PayloadAction, createAsyncThunk  } from '@reduxjs/toolkit'
 import { APIConstants } from '@/constants/api';
 import { ErrorConstants } from '@/constants/errors';
 
-interface Conversation {
+export interface Conversation {
   URLs: string[];
   created_at: string;
   email: string;
@@ -73,6 +73,24 @@ const convosSlice = createSlice({
         (convo) => convo.id !== action.payload
       );
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchConversations.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        console.log("pending");
+      })
+      .addCase(fetchConversations.fulfilled, (state, action) => {
+        state.loading = false;
+        state.convos = action.payload;
+        console.log("fulfilled");
+      })
+      .addCase(fetchConversations.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || ErrorConstants.CONVO_GET
+        console.error(state.error);
+      })
   }
 });
 
