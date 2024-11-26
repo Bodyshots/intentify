@@ -3,25 +3,17 @@
 import { createSlice, PayloadAction, createAsyncThunk  } from '@reduxjs/toolkit';
 import { APIConstants } from '@/constants/api';
 import { ErrorConstants } from '@/constants/errors';
-
-export interface Conversation {
-  URLs: string[];
-  created_at: string;
-  email: string;
-  id: number;
-  intent: string;
-  notes: string;
-  role: string;
-}
-
-export interface ConvosState {
-  convos: Conversation[];
-  loading: boolean;
-  error: string | null;
-}
+import { toast } from 'sonner';
+import { Conversation, ConvosState } from './types';
 
 interface fetchConvoParams {
   email: string;
+  csrfToken: string;
+}
+
+interface deleteConvoParams {
+  email: string;
+  convo_id: number;
   csrfToken: string;
 }
 
@@ -31,11 +23,12 @@ const initialState: ConvosState = {
   error: null,
 };
 
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 export const fetchConversations = createAsyncThunk(
   'convos/fetchConversations',
   async ({email, csrfToken}: fetchConvoParams) => {
     if (email && csrfToken) {
-      const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
       const response = await fetch(`${apiBaseUrl}/api/conversations/email`, {
         method: APIConstants.POST,
         headers: {
@@ -60,17 +53,40 @@ export const fetchConversations = createAsyncThunk(
   }
 );
 
+export const deleteConversation = createAsyncThunk(
+  'convos/deleteConversation',
+  async ({email, convo_id, csrfToken}: deleteConvoParams) => {
+    if (email && csrfToken) {
+      const response = await fetch(`${apiBaseUrl}/api/conversation/delete/${convo_id}`, {
+        method: APIConstants.DELETE,
+        headers: {
+          'X-CSRFToken': csrfToken,
+          'Content-Type': APIConstants.CONTENT_JSON,
+        },
+        body: JSON.stringify({
+          email: email,
+        }),
+        credentials: APIConstants.CRED_INCLUDE
+      });
+      const data = await response.json()
+
+      if (response.ok) {
+        return data
+      }
+      else {
+        console.error(response);
+      }
+    }
+    return [];
+  }
+)
+
 const convosSlice = createSlice({
   name: 'convos',
   initialState,
   reducers: {
     setConversations: (state, action: PayloadAction<Conversation[]>) => {
       state.convos = action.payload;
-    },
-    deleteConversation: (state, action: PayloadAction<number>) => {
-      state.convos = state.convos.filter(
-        (convo) => convo.id !== action.payload
-      );
     },
   },
   extraReducers: (builder) => {
@@ -86,10 +102,27 @@ const convosSlice = createSlice({
       .addCase(fetchConversations.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || ErrorConstants.CONVO_GET
+        toast.error(state.error)
+        console.error(state.error);
+      })
+      .addCase(deleteConversation.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteConversation.fulfilled, (state, action) => {
+        const data = action.payload
+        state.loading = false;
+        state.convos = data.conversations
+        toast.success(data.message);
+      })
+      .addCase(deleteConversation.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || ErrorConstants.CONVO_GET
+        toast.error(state.error);
         console.error(state.error);
       })
   }
 });
 
-export const { setConversations, deleteConversation } = convosSlice.actions;
+export const { setConversations } = convosSlice.actions;
 export default convosSlice.reducer;

@@ -23,6 +23,9 @@ import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom'
 import { redirect } from 'next/navigation'
 import SubmitBtn from '@/components/SubmitBtn/submitbtn'
 import { OtherConstants } from '@/constants/other'
+import { setEmail } from '@/redux/slices/emailSlice'
+import { setFirstName, setLastName } from '@/redux/slices/nameSlice'
+import { setConversations } from '@/redux/slices/convoSlice'
 
 interface DeleteAccountDialogProps {
   csrfToken: string;
@@ -39,7 +42,6 @@ const formSchema = z.object({
 })
 
 const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
-  const auth = useAppSelector((state) => state.auth_persist.auth);
   const dispatch = useAppDispatch();
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -55,7 +57,7 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
 
   async function onSubmit(values: AccountData) {
     setLoadingSubmit(true);
-    if (!csrfToken && auth) {
+    if (!csrfToken) {
       console.error(ErrorConstants.CSRF);
       setLoadingSubmit(false);
       return;
@@ -77,6 +79,10 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
   
       if (response.ok) {
         dispatch(setAuth(false));
+        dispatch(setEmail(''));
+        dispatch(setFirstName(''));
+        dispatch(setLastName(''));
+        dispatch(setConversations([]));
         toast.success(data.message);
       }
       else {
@@ -139,7 +145,7 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
             <SubmitBtn
               variant={"destructive"}
               baseText={OtherConstants.DELETE_ACC}
-              loadingText={OtherConstants.DELETE_ACC_LOAD}
+              loadingText={OtherConstants.DELETE_LOAD}
               loadingSubmit={loadingSubmit}
             />
           </form>

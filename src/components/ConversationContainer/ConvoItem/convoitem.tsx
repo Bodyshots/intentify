@@ -1,7 +1,7 @@
 import React from 'react';
-import { Conversation } from '@/redux/slices/convoSlice';
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import DeleteConvoBtn from './DeleteConvoBtn/deleteconvobtn';
+import { Conversation } from '@/redux/slices/types';
 
 interface ConvoItemProps {
   convo: Conversation;
@@ -14,7 +14,7 @@ const ConvoItem = ({ convo, index }: ConvoItemProps) => {
       key={convo.id}
       className="p-6 py-3 flex flex-row gap-4 justify-between items-center border-b border-x border-gray-300"
     >
-      <span className="convo_index text-sm flex-shrink-0 w-1/6">{index}</span>
+      <span className="convo_index text-sm flex-shrink-0 w-1/6">{index + 1}</span>
 
       {/* Date */}
       <span className="convo_date w-1/6 text-sm flex-shrink-0">{convo.created_at}</span>
@@ -23,14 +23,14 @@ const ConvoItem = ({ convo, index }: ConvoItemProps) => {
       <div className="convo_urls w-1/6 text-sm flex-shrink-0">
         {convo.URLs.map((url, index) => (
           <u key={index} className="block">
-            <a
+            <Link
               className="hover:text-custom_green_hover dark:hover:text-muted-foreground transition-colors break-words"
               href={url}
               target="_blank"
               rel="noopener noreferrer"
             >
               {url}
-            </a>
+            </Link>
           </u>
         ))}
       </div>
@@ -44,9 +44,7 @@ const ConvoItem = ({ convo, index }: ConvoItemProps) => {
       </span>
 
       {/* Delete Button */}
-      <div className="convo_delete w-1/6 text-sm flex justify-center">
-        <Button variant={"destructive"}>Delete</Button>
-      </div>
+      <DeleteConvoBtn convo_id={convo.id}/>
     </div>
   );
 };

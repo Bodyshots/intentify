@@ -2,8 +2,11 @@ import React from 'react';
 import SiteFullTitle from '@/components/SiteFullTitle/sitefulltitle';
 import AuthHomeGreetings from './AuthHomeGreeting/authhomegreetings';
 import './authhome.css'
+import { useAppSelector } from '@/redux/store';
 
 const AuthHome = () => {
+
+  const convos = useAppSelector((state) => state.convos_persist.convos);
 
   return (
     <div className="flex flex-col flex-nowrap w-full justify-between items-center p-4 py-8 pt-0 px-12">
@@ -14,9 +17,11 @@ const AuthHome = () => {
         <AuthHomeGreetings/>
       </div>
         <div className="flex flex-col p-16 justify-evenly auth_search_container items-center">
-          <div className="home_search_text text-center pb-16 text-5xl font-medium">
-              Ready to try out another URL?
-          </div>
+          {convos.length ?
+          <><h1 className="home_search_text text-center text-5xl font-medium">Ready to try out another URL?</h1>
+          <h3 className="text-xl subtitle py-4 pb-16">Our chatbots would love to have a conversation with you!</h3></> : 
+          <><h1 className="home_search_text text-center text-5xl font-medium">Try out our chatbots today!</h1>
+          <h3 className="text-xl subtitle py-4 pb-16">Just give a URL and we'll do all the work for you</h3></>}
           <video 
             preload="auto"
             autoPlay

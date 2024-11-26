@@ -4,5 +4,6 @@ export const OtherConstants = Object.freeze({
   SAVE: 'Save Changes',
   SAVE_LOAD: 'Saving...',
   DELETE_ACC: 'Delete my account',
-  DELETE_ACC_LOAD: 'Deleting...',
+  DELETE_CONVO: 'Delete this conversation',
+  DELETE_LOAD: 'Deleting...',
 })

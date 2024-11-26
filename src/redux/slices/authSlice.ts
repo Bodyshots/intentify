@@ -1,10 +1,7 @@
 "use client"
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface AuthState {
-  auth: boolean;
-}
+import { AuthState } from './types';
 
 const initialState: AuthState = {
   auth: false,

@@ -7,15 +7,17 @@ interface SubmitBtnProps {
   loadingText: string;
   baseText: string;
   btnClassName?: string
+  onClickHandle?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const SubmitBtn = ({ variant, loadingSubmit, loadingText, baseText, btnClassName }: SubmitBtnProps) => {
+const SubmitBtn = ({ variant, loadingSubmit, loadingText, baseText, btnClassName, onClickHandle }: SubmitBtnProps) => {
   return (
     <Button variant={variant}
             type="submit"
             className={btnClassName}
-            disabled={loadingSubmit}>
-              {loadingSubmit ? loadingText : baseText}
+            disabled={loadingSubmit}
+            onClick={onClickHandle}>
+            {loadingSubmit ? loadingText : baseText}
     </Button>
   )
 }

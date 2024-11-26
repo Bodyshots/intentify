@@ -263,7 +263,9 @@ def delete_conversation(convo_id: int):
         current_user.email == data.get(EMAIL) and convo_id == convo.id):
       db.session.delete(convo)
       db.session.commit()
-      return make_response(jsonify({MSG: 'Conversation deleted!'}), OK)
+      new_convos = Conversation.get_by_email(email=data.get(EMAIL))
+      return make_response(jsonify({MSG: 'Conversation deleted!',
+                                    CONVOS: [new_convo.json() for new_convo in new_convos]}), OK)
 
     return make_response(jsonify({MSG: "User not signed in or conversation does not exist"}),
                                   UNAUTHORIZED)

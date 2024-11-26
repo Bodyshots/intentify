@@ -1,10 +1,7 @@
 "use client"
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface EmailState {
-  email: string;
-}
+import { EmailState } from './types';
 
 const initialState: EmailState = {
   email: '',

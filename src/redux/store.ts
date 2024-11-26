@@ -1,10 +1,11 @@
 'use client';
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import authReducer, { AuthState } from './slices/authSlice';
-import nameReducer, { NameState } from './slices/nameSlice';
-import convosReducer, { ConvosState } from './slices/convoSlice';
-import emailReducer, { EmailState } from './slices/emailSlice';
+import authReducer from './slices/authSlice';
+import nameReducer from './slices/nameSlice';
+import convosReducer from './slices/convoSlice';
+import emailReducer from './slices/emailSlice';
+import { AuthState, NameState, ConvosState, EmailState } from './slices/types';
 import { persistReducer, PersistedState } from 'redux-persist';
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";

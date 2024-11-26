@@ -1,11 +1,7 @@
 "use client"
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface NameState {
-  firstName: string;
-  lastName: string;
-}
+import { NameState } from './types';
 
 const initialState: NameState = {
   firstName: "",

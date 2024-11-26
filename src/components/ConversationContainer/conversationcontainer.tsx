@@ -55,7 +55,7 @@ const ConversationContainer = () => {
   :
   <div className="flex flex-col text-center p-16 w-full justify-center">
     <h1 className="text-6xl font-normal">Hmm... There's nothing here!</h1>
-    <h3 className="text-xl py-4 subtitle">Chat with our chatbots to save your conversations here!</h3>
+    <h3 className="text-xl py-4 subtitle">Chat with one of our chatbots to save your conversations here!</h3>
   </div>)
 }
 
