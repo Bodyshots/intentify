@@ -197,7 +197,9 @@ function RegisterForm() {
           required={true}
           formItemClass='w-4/6'
         />
-        <span className="text-center">Already have an account? Click <u className="hover:text-custom_green_hover dark:hover:text-muted-foreground transition-colors"><Link href={'/login'}>here!</Link></u></span>
+        <span className="text-center">Already have an account? Click <u className="hover:text-custom_green_hover dark:hover:text-muted-foreground transition-colors">
+          <Link href={'/login'} rel="noopener noreferrer">here!</Link></u>
+        </span>
         <SubmitBtn
           baseText={OtherConstants.SUBMIT}
           loadingText={OtherConstants.SUBMIT_LOAD}

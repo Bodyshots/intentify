@@ -125,7 +125,9 @@ function LoginForm() {
             required={true}
             placeholder='Password'
           />
-          <span className="text-center">Don't have an account? Click <u className="hover:text-custom_green_hover dark:hover:text-muted-foreground transition-colors"><Link href={'/register'}>here!</Link></u></span>
+          <span className="text-center">Don't have an account? Click <u className="hover:text-custom_green_hover dark:hover:text-muted-foreground transition-colors">
+            <Link href={'/register'} rel="noopener noreferrer">here!</Link></u>
+          </span>
           <SubmitBtn
             baseText={OtherConstants.SUBMIT}
             loadingText={OtherConstants.SUBMIT_LOAD}

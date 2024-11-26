@@ -35,18 +35,19 @@ const ConversationContainer = () => {
     <h1 className="text-6xl font-normal">Your Conversations</h1>
     <div className="convo_container flex flex-col justify-center my-8">
       {/* Header Row */}
-      <div className="p-2 flex flex-row justify-between items-center gap-4">
-        <span className="convo_date w-1/5 text-sm flex-shrink-0">Date</span>
-        <span className="convo_urls w-1/5 text-sm flex-shrink-0">URLs</span>
-        <span className="convo_role w-1/5 text-sm flex-shrink-0">Predicted Role</span>
-        <span className="convo_intent w-1/5 text-sm overflow-hidden break-words">Predicted Intention</span>
-        <span className="convo_delete w-1/5 text-sm flex justify-center"></span>
+      <div className="p-6 flex flex-row justify-between items-center gap-4 border rounded-lg rounded-bl-none rounded-br-none border-gray-300">
+      <span className="convo_date w-1/6 text-sm flex-shrink-0">Conversation #</span>
+        <span className="convo_date w-1/6 text-sm flex-shrink-0">Date</span>
+        <span className="convo_urls w-1/6 text-sm flex-shrink-0">URLs</span>
+        <span className="convo_role w-1/6 text-sm flex-shrink-0">Predicted Role</span>
+        <span className="convo_intent w-1/6 text-sm overflow-hidden break-words">Predicted Intention</span>
+        <span className="convo_delete w-1/6 text-sm flex justify-center"></span>
       </div>
 
       {/* Conversations */}
-      <div className="py-2 px-0 flex flex-col justify-center">
+      <div className="flex flex-col justify-center">
         {convos && convos.map((convo, index) => (
-          <ConvoItem key={index} convo={convo} />
+          <ConvoItem key={index} convo={convo} index={index} />
         ))}
       </div>
     </div>

@@ -5,19 +5,22 @@ import Link from 'next/link';
 
 interface ConvoItemProps {
   convo: Conversation;
+  index: number;
 }
 
-const ConvoItem: React.FC<ConvoItemProps> = ({ convo }) => {
+const ConvoItem = ({ convo, index }: ConvoItemProps) => {
   return (
     <div
       key={convo.id}
-      className="p-2 py-3 flex flex-row gap-4 justify-between items-center border-b border-gray-300"
+      className="p-6 py-3 flex flex-row gap-4 justify-between items-center border-b border-x border-gray-300"
     >
+      <span className="convo_index text-sm flex-shrink-0 w-1/6">{index}</span>
+
       {/* Date */}
-      <span className="convo_date w-1/5 text-sm flex-shrink-0">{convo.created_at}</span>
+      <span className="convo_date w-1/6 text-sm flex-shrink-0">{convo.created_at}</span>
 
       {/* URLs */}
-      <div className="convo_urls w-1/5 text-sm flex-shrink-0">
+      <div className="convo_urls w-1/6 text-sm flex-shrink-0">
         {convo.URLs.map((url, index) => (
           <u key={index} className="block">
             <a
@@ -33,15 +36,15 @@ const ConvoItem: React.FC<ConvoItemProps> = ({ convo }) => {
       </div>
 
       {/* Role */}
-      <span className="convo_role w-1/5 text-sm flex-shrink-0">{convo.role}</span>
+      <span className="convo_role w-1/6 text-sm flex-shrink-0">{convo.role}</span>
 
       {/* Predicted Intention */}
-      <span className="convo_intent w-1/5 text-sm overflow-hidden break-words">
+      <span className="convo_intent w-1/6 text-sm overflow-hidden break-words">
         {convo.intent}
       </span>
 
       {/* Delete Button */}
-      <div className="convo_delete w-1/5 text-sm flex justify-center">
+      <div className="convo_delete w-1/6 text-sm flex justify-center">
         <Button variant={"destructive"}>Delete</Button>
       </div>
     </div>

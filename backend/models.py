@@ -50,7 +50,7 @@ class Conversation(db.Model):
   urls = db.Column(db.ARRAY(db.Text))
   user_role = db.Column(db.Text, default="")
   user_intent = db.Column(db.Text, default="")
-  created_at = db.Column(db.DateTime, default=datetime.now(timezone.utc))
+  created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
   @staticmethod
   def get_by_id(convo_id: int):
