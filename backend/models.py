@@ -1,4 +1,4 @@
-from app import db
+from app import db, bcrypt
 from constants import *
 from flask_login import UserMixin
 from datetime import datetime, timezone
@@ -22,11 +22,16 @@ class User(db.Model, UserMixin):
     return User.query.get(int(id))
   
   @staticmethod
-  def get_url_list(id: int):
-    user = User.get_by_id(id)
-    if user:
-        return user.url_lst
-    return None
+  def get_by_email(email: str):
+    return User.query.filter_by(email=email.lower()).first()
+  
+  @staticmethod
+  def check_passwords(current_password: str, inputted_password: str) -> bool:
+    return bcrypt.check_password_hash(current_password, inputted_password)
+  
+  @staticmethod
+  def hash_password(password: str) -> str:
+    return bcrypt.generate_password_hash(password).decode('utf-8')
 
   def json(self):
     conversations_data = [conversation.json() for conversation in self.conversations]
@@ -38,10 +43,6 @@ class User(db.Model, UserMixin):
       LAST_NAME: self.last_name,
       CONVOS: conversations_data
     }
-
-  @staticmethod
-  def get_by_email(email: str):
-    return User.query.filter_by(email=email.lower()).first()
 
 class Conversation(db.Model):
   __tablename__ = 'conversations'

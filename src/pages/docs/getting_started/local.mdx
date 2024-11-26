@@ -7,7 +7,7 @@ description: "How to install Intentify's dependencies and run the website locall
 ## Getting started
 
 First, clone the git repository. Before running the web application, you'll need to
-set up a few services and variables.
+set up a few services and environment variables.
 
 ### Environment Variables
 Intentify's frontend and backend both require environment variables that need to be set
@@ -22,7 +22,7 @@ in a .env file.
 
 ### Scripts
 
-Inside, there are four scripts that help you with the lifecycle of this web application.
+Inside, there are four scripts that help you with this web application's lifecycle.
 
 ### setup.sh
 Sets up and activates the virtual environment "venv" to install the required dependencies
@@ -45,5 +45,5 @@ Stops all running docker containers.
 
 ---
 In general, start Intentify by running (in order), setup.sh, setup_docker.sh, and run.sh.
-Once done, run shutdown.sh to stop all running services. You do not have to set
-the application back up again after it has been stopped; just run run.sh to start it back up.
+Once done, run shutdown.sh to stop all running services. You don't have to set
+the application back up after you stop it; just run run.sh to start it back up.

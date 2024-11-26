@@ -2,3 +2,53 @@
 title: "Conversation"
 description: "Details about Intentify's Conversation model"
 ---
+# Conversation
+The Conversation model is created once a user decides to save a conversation by interacting with Intentify's embedded chatbot.
+A User can have many Conversations.
+
+## Fields
+- **id**: Integer (Primary key)
+  - A unique identifier for the Conversation model
+- **email**: String (Foreign key referencing an existing user's email, not nullable)
+  - The email associated with this conversation
+- **urls**: An array of Text
+  - An array of URLs given by the User during the conversation. Intentify's AI can often
+  determine the contents of a webpage from a URL alone.
+- **user_role**: Text
+  - The predicted role of the user during this conversation
+  - Default: An empty string
+- **user_intent**: Text
+  - The predicted intention(s) of the User for why they are exploring their URLs
+  - Default: An empty string
+- **created_at**: Datetime
+  - A timestamp (UTC) indicating when this conversation was created
+  - Automatically set
+
+## Methods
+- **get_by_id(convo_id: int) -> Conversation**
+  - Args:
+    - **convo_id**: The conversation ID of the Conversation model
+  - Returns:
+    - The Conversation with the corresponding ID. Returns None otherwise
+- **get_by_email(email: str) -> Conversation**
+  - Args:
+    - **email**: A User's email
+  - Returns:
+    - A list of all Conversations corresponding to the User's email
+- **json() -> dict**
+  - Returns:
+    - The dictionary representation of a Conversation, containing a Conversation's ID, user email, URLs, predicted intention, predicted role, and creation date
+  - Example output:
+    ```
+    {
+    "URLs": [
+        "https://en.wikipedia.org/wiki/Circular_reasoning",
+        "https://helpfulprofessor.com/circular-logic/"
+    ],
+    "created_at": "Tue, 26 Nov 2024 21:11:20 GMT",
+    "email": "viktorfrankl@gmail.com",
+    "id": 8,
+    "intent": "The user is likely exploring the URLs to gain a deeper understanding of circular logic, particularly its implications in psychology and how it manifests in everyday reasoning, despite not being interested in the relationship between premises and conclusions.",
+    "role": "Psychologist or Academic Researcher"
+    }
+    ```

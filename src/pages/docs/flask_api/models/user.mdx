@@ -2,3 +2,63 @@
 title: "User"
 description: "Details about Intentify's User model"
 ---
+# User
+The User model is created once a user registers an account with a unique email and a password that is at least 8 characters long. The
+password is hashed and stored as the User's password attribute. All User models are stored in a table called "users".
+
+## Fields
+- **id**: Integer (Primary key)
+  - A unique identifier for the User model
+- **email**: String (unique, not nullable, less than 255 characters)
+  - The user's email address
+- **password**: String (not nullable, less than 255 characters)
+  - The user's hashed password
+- **first_name**: String (optional, less than 255 characters)
+  - The user's first name
+  - The authenticated home page will greet the user with this name
+  - Default value: An empty string
+- **last_name**: String (optional, less than 255 characters)
+  - The user's last name
+  - If a first name has been filled, the authenticated home page will use this name with the first name to greet the user
+  - Default value: An empty string
+
+## Relationships
+- **conversations**
+  - A one-to-many relationship to the Conversation model, where one User can have many Conversations.
+
+## Methods
+- **get_by_id(id: int) -> Optional[User]**
+  - Args:
+    - **id**: The user ID to search for
+  - Returns:
+    - The user with the corresponding ID. Returns None otherwise
+- **get_by_email(email: str) -> Optional[User]**
+  - Args:
+    - **email**: The user email to search for
+  - Returns:
+    - The user with the corresponding email. Returns None otherwise
+- **check_passwords(current_password: str, inputted_password: str) -> bool**
+  - Args:
+    - **current_password**: The user's current hashed password.
+    - **inputted_password**: The non-hashed password to compare to
+  - Returns:
+    - Return True if the passwords match. Return False otherwise
+- **hash_password(password: str) -> str**
+  - Args:
+    - **password**: The user's non-hashed password
+  - Returns:
+    - The hashed version of the user's password. This hash depends on the web application's SECRET_KEY
+- json() -> dict:
+  - Returns:
+    - The dictionary representation of a User, containing a User's ID, email, password, first and last names, and conversations
+  - Example output:
+    ```
+    {
+      "conversations": [],
+      "email": "john@gmail.com",
+      "first_name": "",
+      "id": 1,
+      "last_name": "",
+      "password": "$2b$12$6APqdTz6usybpOylyxFr3OEbI8kAqXJ2TM.vq3ywKsRL1TVrFN9t."
+    }
+    ```

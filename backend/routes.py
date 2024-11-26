@@ -7,7 +7,7 @@ from pytz import utc
 from datetime import timedelta
 
 from constants import *
-from app import db, bcrypt, csrf
+from app import db, csrf
 from models import User, Conversation
 from forms import LoginForm, RegisterForm, ChangeEmailForm, ChangePasswordForm, ChangeNamesForm, DeleteAccountForm
 
@@ -40,11 +40,7 @@ def get_users():
 def get_curr_user():
   try:
     if (check_auth_status()):
-      return make_response(jsonify({ID: current_user.id,
-                                    EMAIL: current_user.email,
-                                    FIRST_NAME: current_user.first_name,
-                                    LAST_NAME: current_user.last_name,
-                                    PASSWORD: current_user.password}), OK)
+      return make_response(jsonify(current_user.json()), OK)
     return make_response(jsonify({MSG: "User not signed in"}), UNAUTHORIZED)
   except Exception as e:
     return make_response(jsonify({MSG: "Error getting user information",
@@ -85,9 +81,8 @@ def update_password():
     data = request.get_json()
     form = ChangePasswordForm(data=data)
 
-    if (form.validate() and current_user and (bcrypt.check_password_hash(current_user.password, 
-                                                                         data.get(PASSWORD)))):
-      current_user.password = bcrypt.generate_password_hash(data.get(NEW_PASSWORD)).decode('utf-8')
+    if (form.validate() and current_user and (User.check_passwords(current_user.password, data.get(PASSWORD)))):
+      current_user.password = User.hash_password(data.get(NEW_PASSWORD))
       db.session.commit()
       return make_response(jsonify({MSG: 'Password updated!'}), OK)
     return make_response(jsonify({MSG: 'Current password does not match'}), BAD_REQUEST)
@@ -121,8 +116,7 @@ def delete_curr_user():
     
     if (form.validate() and current_user and (current_user.email == data.get(EMAIL)
                                               and 
-                                              (bcrypt.check_password_hash(current_user.password,
-                                                                          data.get(PASSWORD))))):
+                                              (User.check_passwords(current_user.password, data.get(PASSWORD))))):
       db.session.delete(current_user)
       db.session.commit()
       return make_response(jsonify({MSG: 'Account deleted!'}), OK)
@@ -145,7 +139,7 @@ def login():
       submitted_password = data.get(PASSWORD)
       
       user = User.get_by_email(submitted_email)
-      if user and bcrypt.check_password_hash(user.password, submitted_password):
+      if user and User.check_passwords(user.password, submitted_password):
         login_user(user, remember=True)
         session[EMAIL] = submitted_email
         session[CREATED_AT] = datetime.now(utc)
@@ -179,7 +173,7 @@ def register():
       if user: # Found existing user => User already exists
         return make_response(jsonify({MSG: "Account with this email already exists"}), UNAUTHORIZED)
 
-      hash_password = bcrypt.generate_password_hash(submitted_password).decode('utf-8')
+      hash_password = User.hash_password(submitted_password)
       
       # Add the user to the database
       new_user = User(email=submitted_email,
