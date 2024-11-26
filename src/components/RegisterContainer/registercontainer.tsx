@@ -13,14 +13,14 @@ import './registercontainer.css'
 
 const RegisterContainer = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
+  const auth = useAppSelector((state) => state.auth_persist.auth);
 
   useEffect(() => {
-    setIsLoaded(true);
     if (auth) {
       toast.error(ErrorConstants.AUTH_GUEST);
       redirect('/'); // Redirect authenticated users
     }
+    setIsLoaded(true);
   }, []);
 
   if (!isLoaded) {

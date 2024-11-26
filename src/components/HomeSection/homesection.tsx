@@ -7,7 +7,7 @@ import Loading from '@/app/loading';
 import { useAppSelector } from '@/redux/store';
 
 const HomeSection = () => {
-  const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
+  const auth = useAppSelector((state) => state.auth_persist.auth);
   const [isLoaded, setIsLoaded] = useState(false); 
 
   useEffect(() => {

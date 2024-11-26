@@ -13,9 +13,11 @@ import { FieldConstants } from '@/constants/fields'
 import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom'
 import SubmitBtn from '@/components/SubmitBtn/submitbtn'
 import { OtherConstants } from '@/constants/other'
+import { useAppDispatch } from '@/redux/store'
+import { setEmail } from '@/redux/slices/emailSlice'
 
 interface EmailSettingsProps {
-  csrfToken: string;
+  csrfToken: string | null;
 }
 
 type EmailData = {
@@ -26,6 +28,7 @@ type EmailData = {
 const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const dispatch = useAppDispatch();
 
   const formEmailSchema = z.object({
     email: z.string().email({ message: ErrorConstants.EMAIL_VALID})
@@ -55,7 +58,7 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
       return;
     }
     try {
-      const response = await fetch(`${apiBaseUrl}/api/users/update/email`, {
+      const response = await fetch(`${apiBaseUrl}/api/user/update/email`, {
         method: APIConstants.PUT,
         headers: {
           'X-CSRFToken': csrfToken,
@@ -70,6 +73,7 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
       const data = await response.json();
 
       if (response.ok) {
+        dispatch(setEmail(values.new_email));
         toast.success(data.message);
       }
       else {
@@ -95,7 +99,7 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
           id={"current_email"}
           placeholder={"Current email"}
           type={"email"}
-          autoComplete={"on"}
+          autoComplete={"off"}
           desc=""
           control={formEmail.control}
           errors={formEmail.formState.errors}

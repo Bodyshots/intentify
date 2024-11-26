@@ -8,18 +8,20 @@ import { redirect } from 'next/navigation';
 import { useAppSelector } from '@/redux/store';
 import { toast } from 'sonner';
 import { ErrorConstants } from '@/constants/errors';
+import getCSRF from '@/lib/GetCSRF';
 import './logincontainer.css'
 
 const LoginContainer = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
+  const auth = useAppSelector((state) => state.auth_persist.auth);
+  const csrfToken = getCSRF();
 
   useEffect(() => {
-    setIsLoaded(true);
     if (auth) {
       toast.error(ErrorConstants.AUTH_GUEST);
       redirect('/'); // Redirect authenticated users
     }
+    setIsLoaded(true);
   }, []);
 
   if (!isLoaded) {

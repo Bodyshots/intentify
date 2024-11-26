@@ -15,7 +15,7 @@ import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom'
 import SubmitBtn from '@/components/SubmitBtn/submitbtn'
 
 interface PasswordSettingsProps {
-  csrfToken: string;
+  csrfToken: string | null;
 }
 
 type PasswordData = {
@@ -52,15 +52,15 @@ const PasswordSettings = ({ csrfToken }: PasswordSettingsProps) => {
       return;
     }
     try {
-      const response = await fetch(`${apiBaseUrl}/api/users/update/password`, {
+      const response = await fetch(`${apiBaseUrl}/api/user/update/password`, {
         method: APIConstants.PUT,
         headers: {
           'X-CSRFToken': csrfToken,
           'Content-Type': APIConstants.CONTENT_JSON,
         },
         body: JSON.stringify({
-          email: values.password,
-          new_email: values.new_password
+          password: values.password,
+          new_password: values.new_password
         }),
         credentials: APIConstants.CRED_INCLUDE,
       });

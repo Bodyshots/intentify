@@ -19,6 +19,7 @@ import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom';
 import SubmitBtn from '@/components/SubmitBtn/submitbtn';
 import { OtherConstants } from '@/constants/other';
 import { useRouter } from 'next/navigation';
+import { useAppSelector } from '@/redux/store';
 
 const formSchema = z.object({
   email: z.string().email({ message: ErrorConstants.EMAIL_VALID})
@@ -51,6 +52,7 @@ function RegisterForm() {
   const dispatch = useAppDispatch();
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const { push } = useRouter();
+  const auth = useAppSelector((state) => state.auth_persist.auth)
 
   // Defining form defaults
   const form = useForm<RegisterData>({
@@ -115,6 +117,7 @@ function RegisterForm() {
       });
       const data = await response.json();
 
+      // Note: New accounts shouldn't have any new convos or any names set
       if (response.ok) {
         dispatch(setAuth(true));
         toast.success(data.message);

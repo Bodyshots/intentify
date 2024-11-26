@@ -7,7 +7,7 @@ const greetings = ["Hello again", "Welcome back",
                    "Long time no see", "Great to have you back"]
 
 const AuthHomeGreetings = () => {
-  const names = useAppSelector((state) => state.name_persist.name_reduce);
+  const names = useAppSelector((state) => state.name_persist);
 
   return (
     <div className="flex greeting_sec text-7xl text-center w-full h-auto justify-center items-center">

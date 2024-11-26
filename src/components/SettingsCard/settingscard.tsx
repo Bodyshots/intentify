@@ -15,17 +15,17 @@ import { redirect } from 'next/navigation';
 import { toast } from 'sonner';
 import { ErrorConstants } from '@/constants/errors';
 
-export const SettingsCard = () => {
+export const SettingsCard = async () => {
   const csrfToken = getCSRF();
   const [isLoaded, setIsLoaded] = useState(false);
-  const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
+  const auth = useAppSelector((state) => state.auth_persist.auth);
 
   useEffect(() => {
-    setIsLoaded(true);
     if (!auth) {
       toast.error(ErrorConstants.AUTH_PROTECTED);
       redirect('/'); // Redirect unauthenticated users
     }
+    setIsLoaded(true);
   }, []);
 
   if (!isLoaded) {

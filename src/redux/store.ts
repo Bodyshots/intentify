@@ -1,9 +1,11 @@
 'use client';
 
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import authReducer from './slices/authSlice';
-import nameReducer from './slices/nameSlice';
-import { persistReducer } from 'redux-persist'
+import authReducer, { AuthState } from './slices/authSlice';
+import nameReducer, { NameState } from './slices/nameSlice';
+import convosReducer, { ConvosState } from './slices/convoSlice';
+import emailReducer, { EmailState } from './slices/emailSlice';
+import { persistReducer, PersistedState } from 'redux-persist';
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 
@@ -26,39 +28,42 @@ const storage =
     ? createWebStorage("local")
     : createNoopStorage();
 
-// Configs
-const authPersistConfig = {
-  key: "auth",
-  storage: storage,
-  whitelist: ["auth"],
-};
+//// Helpers
+// Helper for creating persistent configs
+const createPersistConfig = (key: string, whitelist: string[]) => ({
+  key,
+  storage,
+  whitelist,
+});
 
-const namePersistConfig = {
-  key: "names",
-  storage: storage,
-  whitelist: ["firstName", "lastName"],
-}
+// Helper to create persistent reducers
+const createPersistedReducer = (sliceReducer: any, persistConfig: any) => 
+  persistReducer(persistConfig, sliceReducer);
 
-const authPersistedReducer = persistReducer(authPersistConfig, authReducer);
-const namePersistedReducer = persistReducer(namePersistConfig, nameReducer);
+const authPersistConfig = createPersistConfig('auth', ['auth']);
+const namePersistConfig = createPersistConfig('names', ['firstName', 'lastName']);
+const convosPersistConfig = createPersistConfig('convos', ['convos']);
+const emailPersistConfig = createPersistConfig('email', ['email']);
 
-const authPersistReducer = combineReducers({
-  auth_reduce: authPersistedReducer
-})
-const namePersistReducer = combineReducers({
-  name_reduce: namePersistedReducer
+const rootReducer = combineReducers({
+  auth_persist: createPersistedReducer(authReducer, authPersistConfig),
+  name_persist: createPersistedReducer(nameReducer, namePersistConfig),
+  convos_persist: createPersistedReducer(convosReducer, convosPersistConfig),
+  email_persist: createPersistedReducer(emailReducer, emailPersistConfig),
 })
 
 export const store = configureStore({
-    reducer: {
-      auth_persist: authPersistReducer,
-      name_persist: namePersistReducer,
-    },
+    reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false }),
 })
 
-export type RootState = ReturnType<typeof store.getState>;
+export interface RootState {
+  auth_persist: PersistedState & AuthState;
+  name_persist: PersistedState & NameState;
+  convos_persist: PersistedState & ConvosState;
+  email_persist: PersistedState & EmailState;
+}
 export type AppDispatch = typeof store.dispatch;
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();

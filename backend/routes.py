@@ -87,7 +87,7 @@ def update_password():
 
     if (form.validate() and current_user and (bcrypt.check_password_hash(current_user.password, 
                                                                          data.get(PASSWORD)))):
-      current_user.password = bcrypt.generate_password_hash(data.get(NEW_PASSWORD).decode('utf-8'))
+      current_user.password = bcrypt.generate_password_hash(data.get(NEW_PASSWORD)).decode('utf-8')
       db.session.commit()
       return make_response(jsonify({MSG: 'Password updated!'}), OK)
     return make_response(jsonify({MSG: 'Current password does not match'}), BAD_REQUEST)

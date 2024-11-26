@@ -18,7 +18,7 @@ import SubmitBtn from '@/components/SubmitBtn/submitbtn'
 import { OtherConstants } from '@/constants/other'
 
 interface NameSettingsProps {
-  csrfToken: string;
+  csrfToken: string | null;
 }
 
 type NameData = {
@@ -30,8 +30,8 @@ const NameSettings = ({ csrfToken }: NameSettingsProps) => {
   const dispatch = useAppDispatch();
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [loadingSubmit, setLoadingSubmit] = useState(false);
-  const firstName = useAppSelector((state) => state.name_persist.name_reduce.firstName);
-  const lastName = useAppSelector((state) => state.name_persist.name_reduce.lastName);
+  const firstName = useAppSelector((state) => state.name_persist.firstName);
+  const lastName = useAppSelector((state) => state.name_persist.lastName);
 
   const formNameSchema = z.object({
     first_name: z.string().max(FieldConstants.NAME_MAX, {
@@ -58,7 +58,7 @@ const NameSettings = ({ csrfToken }: NameSettingsProps) => {
       return;
     }
     try {
-      const response = await fetch(`${apiBaseUrl}/api/users/update/names`, {
+      const response = await fetch(`${apiBaseUrl}/api/user/update/names`, {
         method: APIConstants.PUT,
         headers: {
           'X-CSRFToken': csrfToken,

@@ -25,7 +25,7 @@ const fetchCSRFToken = async () => {
 
 function Logout() {
   const dispatch = useAppDispatch();
-  const auth = useAppSelector((state) => state.auth_persist.auth_reduce.auth);
+  const auth = useAppSelector((state) => state.auth_persist.auth);
   const { data: csrfToken } = useSWR("csrf-token", fetchCSRFToken);
   const logoutBegin = useRef(false); // Tracks whether logout has already started
   const [isLoaded, setIsLoaded] = useState(false);

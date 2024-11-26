@@ -14,5 +14,6 @@ export const ErrorConstants = Object.freeze({
   LOGIN: 'Error logging in',
   REGISTER: 'Error registering',
   LOGOUT: 'Error during logout process',
-  AUTH_GUEST: 'You cannot access this page when you are signed in!'
+  AUTH_GUEST: 'You cannot access this page when you are signed in!',
+  CONVO_GET: 'Error getting conversations'
 })

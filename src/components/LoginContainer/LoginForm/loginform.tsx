@@ -10,8 +10,9 @@ import SiteFullTitle from '@/components/SiteFullTitle/sitefulltitle';
 import Link from 'next/link';
 import getCSRF from '@/lib/GetCSRF';
 import { setAuth } from '@/redux/slices/authSlice';
-import { setFirstName } from '@/redux/slices/nameSlice';
-import { setLastName } from '@/redux/slices/nameSlice';
+import { setFirstName, setLastName } from '@/redux/slices/nameSlice';
+import { setEmail } from '@/redux/slices/emailSlice';
+import { setConversations } from '@/redux/slices/convoSlice';
 import { useAppDispatch } from '@/redux/store';
 import { toast } from "sonner";
 import { ErrorConstants } from '@/constants/errors';
@@ -71,15 +72,19 @@ function LoginForm() {
   
       if (response.ok) {
         dispatch(setAuth(true));
+        dispatch(setEmail(data.user.email));
         dispatch(setFirstName(data.user.first_name));
         dispatch(setLastName(data.user.last_name));
+        dispatch(setConversations(data.user.conversations));
         toast.success(data.message);
         push('/');
       }
       else {
         dispatch(setAuth(false));
+        dispatch(setEmail(''));
         dispatch(setFirstName(''));
         dispatch(setLastName(''));
+        dispatch(setConversations([]));
         toast.error(data.message);
       }
     } catch (error) {

@@ -2,7 +2,7 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface NameState {
+export interface NameState {
   firstName: string;
   lastName: string;
 }
