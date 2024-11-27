@@ -1,0 +1,23 @@
+---
+title: "Chatbot"
+description: "Intentify's embedded chatbot"
+---
+# Chatbot
+The main functionality of Intentify comes from its embedded chatbot, developed in [Botpress](https://botpress.com/). You can access the bot
+by going to [this link](https://cdn.botpress.cloud/webchat/v2.2/shareable.html?configUrl=https://files.bpcontent.cloud/2024/11/26/21/20241126213006-5BKMDW08.json).
+You can also download this bot and interact with it on Botpress by clicking [this link](https://drive.google.com/file/d/1VIziWGD0jWUoUnNVXpXBVkNlxmld7at1/view?usp=sharing).
+
+## Chatbot Embed vs Chatbot Components
+From tinkering around with its Botpress's React Components (detailed [here](https://botpress.com/docs/react-js)), Botpress's libraries seem to really dislike
+Next.JS, as Botpress's libraries will often bring up compilation errors. My guess is that they have something to do with how Next.js's handles its files and components differently
+to React Native (eg. server-side rendering), as using these libraries in React Native don't seem to bring up these errors.
+So, especially considering the amount of work needed to style and recode Botpress's chatbot from scratch, I just chose to use the provided embed script provided by Botpress,
+rather than forcing myself to use their components.
+
+It's worth noting that, from my testing, explicitly declaring Botpress's files as "use client" did not resolve these errors.
+
+## Improvements
+One major improvement that could be made to this chatbot is in regards to security. Currently, it's possible to be an unauthenticated user and add a conversation
+to an existing account's conversation list. Counteracting this would ideally involve checking if the user is authenticated. However, as the chatbot is available
+globally, updating the chatbot with the user's authenticated state (and email) may be pretty difficult. One alternative is to stylize and code Botpress's bot client
+from scratch. Yet, as discussed in "Chatbot Embed vs Chatbot Components", this could also be pretty difficult.

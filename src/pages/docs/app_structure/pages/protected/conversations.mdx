@@ -3,3 +3,18 @@ title: "Conversations"
 description: "Intentify's Conversations page"
 ---
 # Conversations
+A page that keeps track of a user's conversations. A conversation is saved here after the
+authenticated user provides their email to the bot and agrees to save it in their list.
+Every conversation entry details the date when the conversation started, the URLs explored,
+and the predicted occupation and intentions of the user during the specific conversation.
+Users can also delete a conversation from their list if they decide to.
+
+A User having no conversations saved will have no list. They must save at least one conversation
+to have a conversation list displayed.
+
+## Improvements
+The contents of the conversation list can seem squished on smaller resolutions. One solution
+could be to redesign a conversation entry to only consist three spaces: the conversation number, an edit button, and
+a delete button. The edit button could, then, bring up a modal showing the entry's entire information. This way,
+both desktop and mobile users could be able to easily use Intentify without having to worry about
+its conversation list seeming crammed.

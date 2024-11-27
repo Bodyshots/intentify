@@ -3,3 +3,42 @@ title: "Redux"
 description: "Redux Configuration"
 ---
 # Redux
+
+I use four Redux slices to keep track of an authenticated user's information. All of these slices
+are persistent to avoid constant fetching and setting, which could hinder performance.
+
+## authSlice
+A simple slice that keeps track of whether the user has been authenticated or not. It consists of
+only one state, auth, that is initially set to False. It is set to True after the user
+has registered or has signed into Intentify. If the user logs out or has their account deleted, then
+auth is set back to False.
+
+## convoSlice
+A slice to keep track of an authenticated user's conversations. It has three states:
+- **convos**: An array of Conversation objects. Set during after fetchConversations or deleteConversation
+have been fulfilled
+- **loading**: A boolean indicating whether an async thunk has resolved (False if so, True otherwise)
+- **error**: A string set whenever an async thunk encounters a rejection
+
+The slice also has two AsyncThunks. I use these to manage a user's conversation list:
+- **fetchConversations**: Get the user's conversation list from Intentify's Conversation table.
+Requires the user's email and csrfToken and returns a list of Conversation objects. If the user's
+email does not exist or the csrfToken is invalid, the thunk returns an empty list
+- **deleteConversation**: Delete a conversatioon from Intentify's Conversation table. Requires an
+email, Conversation ID, and a csrfToken. The email must match the Conversation's email (avoids users from
+deleting other users' conversations). Returns the user's conversation list without the specified conversation.
+Otherwise (if the conversation ID, email or csrfToken is invalid), the thunk returns an empty list.
+
+## emailSlice
+A slice that keeps track of an authenticated user's email. This slice only has one state, email, that is
+initially set to an empty string. Much like authSlice, it's set after the user registers an account or has
+signed into Intentify. Additionally, it's set to the user's new email after the user decides to change it.
+If the user logs out or has their account deleted, email is set back to an empty string.
+
+This slice is primarily used in conjunction with convoSlice for convoSlice's async thunks.
+
+## nameSlice
+A slice that's used to keep track of a user's first and last name. Consequently, it consists of two states: firstName
+and lastName. They are initially set to an empty string and are only set after the user sets a new first or last name.
+If the user has set a first or last name before, then these states will be set to the user's first and last names accordingly.
+After the user has signed out or has deleted their account, firstName and lastName are set back to an empty string.

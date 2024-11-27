@@ -1,4 +1,4 @@
 export default {
   "pages": "Pages",
-  "globals": "Global Components",
+  "chatbot": "Chatbot",
 }
