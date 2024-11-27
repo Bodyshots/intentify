@@ -1,7 +1,62 @@
 ---
-title: "Update user names"
-description: "PUT - Update user names"
+title: "Update User Names"
+description: "PUT - Update the first and last name of the current user"
 ---
 ```
-PUT {{NEXT_PUBLIC_API_BASE_URL}}/api/update/names
+PUT {{NEXT_PUBLIC_API_BASE_URL}}/api/user/update/names
+```
+
+# Update User Names
+
+Updates an authenticated user's first and last name.
+
+## Request Headers
+
+None.
+
+## Request Body
+
+### JSON Parameters
+- **first_name** (string, optional): The user's new first name
+- **last_name** (string, optional): The user's new last name
+
+**Example**:  
+```json
+{
+  "first_name": "Sigmund",
+  "last_name": "Freud"
+}
+```
+
+## Responses
+
+### 200
+The user's first and last names were successfully updated.
+
+**Example**:  
+```json
+{
+  "message": "First and last name updated!"
+}
+```
+
+### 400
+The user's first or last name is more than 255 characters.
+
+**Example**:  
+```json
+{
+    "message": "{'first_name': ['Please enter a first name less than 255 characters']}"
+}
+```
+
+### 500
+Returned if an error occurs during the update process.
+
+**Example**:  
+```json
+{
+  "message": "Error updating user first and last names",
+  "error": "Some descriptive error message"
+}
 ```

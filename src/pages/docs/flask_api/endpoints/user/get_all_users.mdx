@@ -1,7 +1,70 @@
 ---
-title: "List users"
-description: "GET - List users"
+title: "List All Users"
+description: "GET - List All Users"
 ---
 ```
 GET {{NEXT_PUBLIC_API_BASE_URL}}/api/users
+```
+
+# List All Users
+
+Returns a list of all users.
+
+## Request Headers
+
+None.
+
+## Request Body
+
+None.
+
+## Responses
+
+### 200
+Returns a list of all users, each containing their ID, email, first and last names, encrypted password, 
+and conversations (if any). 
+
+**Example**:  
+```json
+[
+  {
+    "id": 1,
+    "email": "test1@test1.com",
+    "first_name": "",
+    "last_name": "",
+    "password": "$2b$12$6APqdTz6usybpOylyxFr3OEbI8kAqXJ2TM.vq3ywKsRL1TVrFN9t.",
+    "conversations": [
+      {
+        "id": 8,
+        "email": "test1@test1.com",
+        "URLs": [
+          "https://en.wikipedia.org/wiki/Circular_reasoning",
+          "https://helpfulprofessor.com/circular-logic/"
+        ],
+        "created_at": "Tue, 26 Nov 2024 21:11:20 GMT",
+        "role": "Psychologist or Academic Researcher",
+        "intent": "The user is likely exploring the URLs to gain a deeper understanding of circular logic, particularly its implications in psychology and how it manifests in everyday reasoning, despite not being interested in the relationship between premises and conclusions."
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "email": "test2@test2.com",
+    "first_name": "",
+    "last_name": "",
+    "password": "$2b$12$7yRCCe05m8q8se9qlyGVR.iY196Qj32FjhjWckOSBfRbmK67HOAOq",
+    "conversations": []
+  }
+]
+```
+
+### 500
+An error occurred while attempting to retrieve all users.
+
+**Example**:  
+```json
+{
+  "message": "Error getting users",
+  "error": "Some descriptive error message"
+}
 ```

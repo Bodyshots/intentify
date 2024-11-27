@@ -1,6 +1,6 @@
 ---
 title: "Update User Email"
-description: "PUT - Update the Email Address of a User"
+description: "PUT - Update User Email"
 ---
 ```
 PUT {{NEXT_PUBLIC_API_BASE_URL}}/api/user/update/email
@@ -8,17 +8,18 @@ PUT {{NEXT_PUBLIC_API_BASE_URL}}/api/user/update/email
 
 # Update User Email
 
-Allows a logged-in user to update their email address. The user must provide their current email and the new email. Validation ensures the current email matches the logged-in user's email and that the new email is unique.
+Updates an authenticated user's email address. The user must give their current email and their new email. 
+Their current email must match their account's email. Furthermore, the user's new email must be unique.
 
 ## Request Headers
 
 - **Content-Type**: application/json  
-- **X-CSRFToken**: The CSRF token of the user  
+- **X-CSRFToken**: The CSRF token of the user
 
 ## Request Body
 
-- **email** (string, required): The current email of the user.  
-- **new_email** (string, required): The new email address to update to.  
+- **email** (string, required): The current email of the user
+- **new_email** (string, required): The user's new email address
 
 **Example**:  
 ```json
@@ -41,7 +42,7 @@ The user's email address is successfully updated.
 ```
 
 ### 400
-The current email does not match the logged-in user's email, or the new email address is already in use.  
+The current email does not match the authenticated user's email or the new email address is already in use.  
 
 **Example**:  
 ```json

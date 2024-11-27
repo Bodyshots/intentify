@@ -5,4 +5,58 @@ description: "GET - List Conversations"
 ```
 GET {{NEXT_PUBLIC_API_BASE_URL}}/api/conversations
 ```
+
 # List Conversations
+
+Retrieves a list of all conversations.
+This endpoint does not require authentication and returns data for all users' conversations.
+
+## Request Headers
+
+- **Content-Type**: application/json
+
+## Request Body
+None.
+
+## Responses
+
+### 200
+Returns a list of all conversations.
+
+**Example**:  
+```json
+[
+  {
+    "id": 10,
+    "email": "bf@skinner.com",
+    "urls": [
+      "https://en.wikipedia.org/wiki/Circular_reasoning",
+      "https://helpfulprofessor.com/circular-logic/"
+    ],
+    "role": "Psychologist or Academic Researcher",
+    "created_at": "Tue, 26 Nov 2024 21:11:20 GMT",
+    "intent": "The user is likely exploring the URLs to gain a deeper understanding of circular logic, particularly its implications in psychology and how it manifests in everyday reasoning, despite not being interested in the relationship between premises and conclusions."
+  },
+  {
+    "id": 12,
+    "email": "sigmund@freud.com",
+    "urls": [
+      "https://en.wikipedia.org/wiki/Inductive_reasoning"
+    ],
+    "role": "Student",
+    "created_at": "Tue, 26 Nov 2024 21:11:40 GMT",
+    "intent": "Learning about inductive reasoning for a class project."
+  }
+]
+```
+
+### 500
+An error occurred while attempting to retrieve all conversations.
+
+**Example**:  
+```json
+{
+  "message": "Error getting conversations",
+  "error": "Some descriptive error message"
+}
+```

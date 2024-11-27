@@ -7,5 +7,70 @@ POST {{NEXT_PUBLIC_API_BASE_URL}}/api/conversation/create
 ```
 # Create Conversation
 
-## Status Codes
-### 200
+Creates a new Conversation associated with a user's email. The user must be registered.
+This endpoint is exclusively used by Intentify's chatbot.
+
+## Request Headers
+
+- **Content-Type**: application/json
+
+## Request Body
+
+- **email** (string, required): The email of the user in the conversation
+- **urls** (array of strings, optional): URLs given by the user during the conversation
+- **role** (string, optional): The user's predicted role or occupation in the conversation
+- **intent** (string, optional): The user's predicted intent or reason for exploring their given URLs
+
+**Example**:  
+```json
+{
+  "email": "test1@test1.com",
+  "urls": [
+    "https://en.wikipedia.org/wiki/Circular_reasoning",
+    "https://helpfulprofessor.com/circular-logic/"
+  ],
+  "role": "Psychologist or Academic Researcher",
+  "intent": "The user is likely exploring the URLs to gain a deeper understanding of circular logic, particularly its implications in psychology and how it manifests in everyday reasoning, despite not being interested in the relationship between premises and conclusions."
+}
+```
+
+## Responses
+
+### 201
+The conversation is successfully created and associated with the user's email.
+
+**Example**:  
+```json
+{
+  "id": 10,
+  "email": "test1@test1.com",
+  "urls": [
+    "https://en.wikipedia.org/wiki/Circular_reasoning",
+    "https://helpfulprofessor.com/circular-logic/"
+  ],
+  "role": "Psychologist or Academic Researcher",
+  "intent": "The user is likely exploring the URLs to gain a deeper understanding of circular logic, particularly its implications in psychology and how it manifests in everyday reasoning, despite not being interested in the relationship between premises and conclusions.",
+  "message": "Conversation created successfully!"
+}
+```
+
+### 404
+The email provided does not match any existing user in the system.
+
+**Example**:  
+```json
+{
+  "message": "Account with email does not exist"
+}
+```
+
+### 500
+An error occurred while creating the conversation.
+
+**Example**:  
+```json
+{
+  "message": "Error creating conversation",
+  "error": "Some descriptive error message"
+}
+```

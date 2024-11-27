@@ -1,6 +1,6 @@
 ---
-title: "Logout User"
-description: "POST - Logout User"
+title: "Logout user"
+description: "POST - Logout a user"
 ---
 ```
 POST {{NEXT_PUBLIC_API_BASE_URL}}/api/logout
@@ -8,7 +8,7 @@ POST {{NEXT_PUBLIC_API_BASE_URL}}/api/logout
 
 # Logout User
 
-Logs out the currently authenticated user. This endpoint requires the user to be logged in and will terminate the session upon success.
+Logs out the currently authenticated user. The user needs to be logged in. Upon success, the user's session will be destroyed.
 
 ## Request Headers
 
@@ -17,12 +17,12 @@ Logs out the currently authenticated user. This endpoint requires the user to be
 
 ## Request Body
 
-No body is required for this endpoint.
+None.
 
 ## Responses
 
 ### 200
-The user is successfully logged out.  
+The user is successfully logged out.
 
 **Example**:  
 ```json

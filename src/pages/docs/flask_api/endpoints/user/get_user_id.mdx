@@ -1,7 +1,75 @@
 ---
-title: "Get user by id"
-description: "GET - Get user by id"
+title: "Get User by ID"
+description: "GET - Get User by ID"
 ---
 ```
 GET {{NEXT_PUBLIC_API_BASE_URL}}/api/user/<int:id>
+```
+
+# Get User by ID
+
+Returns the details of a specific user based on their user ID
+
+## Request Headers
+
+None.
+
+## URL Parameters
+
+- **id** (integer): The id of the specific user to retrieve.
+
+## Request Body
+
+None.
+
+## Responses
+
+### 200
+Returns the details of the user with the matching user ID.
+
+**Example**:  
+```json
+{
+  "user": {
+    "id": 1,
+    "email": "test1@test1.com",
+    "first_name": "",
+    "last_name": "",
+    "password": "$2b$12$6APqdTz6usybpOylyxFr3OEbI8kAqXJ2TM.vq3ywKsRL1TVrFN9t.",
+    "conversations": [
+      {
+        "id": 8,
+        "email": "test1@test1.com",
+        "URLs": [
+          "https://en.wikipedia.org/wiki/Circular_reasoning",
+          "https://helpfulprofessor.com/circular-logic/"
+        ],
+        "created_at": "Tue, 26 Nov 2024 21:11:20 GMT",
+        "role": "Psychologist or Academic Researcher",
+        "intent": "The user is likely exploring the URLs to gain a deeper understanding of circular logic, particularly its implications in psychology and how it manifests in everyday reasoning, despite not being interested in the relationship between premises and conclusions."
+      }
+    ]
+  }
+}
+```
+
+### 404
+No user has the specified user ID.
+
+**Example**:  
+```json
+{
+  "message": "User not found"
+}
+```
+
+### 500
+An error occurred during user retrieval.
+
+**Example**:  
+```json
+{
+  "message": "Error getting user",
+  "error": "Some descriptive error message"
+}
 ```

@@ -1,8 +1,81 @@
 ---
-title: "Get conversations by email"
-description: "POST - Get conversations by email"
+title: "Get Conversations by Email"
+description: "POST - Get Conversations by Email"
 ---
 ```
-POST {{NEXT_PUBLIC_API_BASE_URL}}/api/conversations
+POST {{NEXT_PUBLIC_API_BASE_URL}}/api/conversations/email
 ```
-# Get conversations by user id
+
+# Get Conversations by Email
+
+Returns a list of all conversations associated with a specific user's email.
+The user must be authenticated to access this data.
+
+## Request Headers
+
+- **Content-Type**: application/json  
+- **X-CSRFToken**: The CSRF token of the authenticated user
+
+## Request Body
+
+- **email** (string, required): The email address of the user
+
+**Example**:  
+```json
+{
+  "email": "sigmund@freud.com"
+}
+```
+
+## Responses
+
+### 200
+Returns a list of all conversations associated with the provided email.
+
+**Example**:  
+```json
+[
+  {
+    "id": 12,
+    "email": "sigmund@freud.com",
+    "urls": [
+      "https://en.wikipedia.org/wiki/Inductive_reasoning"
+    ],
+    "role": "Student",
+    "created_at": "Tue, 26 Nov 2024 21:11:40 GMT",
+    "intent": "Learning about inductive reasoning for a class project."
+  },
+  {
+    "id": 15,
+    "email": "sigmund@freud.com",
+    "urls": [
+      "https://en.wikipedia.org/wiki/Psychoanalysis",
+      "https://plato.stanford.edu/entries/freud/"
+    ],
+    "role": "Psychologist",
+    "created_at": "Tue, 26 Nov 2024 22:13:10 GMT",
+    "intent": "Researching psychoanalysis for a seminar."
+  }
+]
+```
+
+### 401
+No user is signed in or the session has expired.
+
+**Example**:  
+```json
+{
+  "message": "User not signed in"
+}
+```
+
+### 500
+An error occurred while attempting to retrieve the conversations.
+
+**Example**:  
+```json
+{
+  "message": "Error getting conversations",
+  "error": "Some descriptive error message"
+}
+```

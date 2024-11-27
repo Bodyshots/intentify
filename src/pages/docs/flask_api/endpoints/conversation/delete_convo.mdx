@@ -3,6 +3,85 @@ title: "Delete Conversation"
 description: "DELETE - Delete Conversation"
 ---
 ```
-DELETE {{NEXT_PUBLIC_API_BASE_URL}}/api/conversation/delete/<int:id>
+DELETE {{NEXT_PUBLIC_API_BASE_URL}}/api/conversation/delete/{convo_id}
 ```
 # Delete Conversation
+
+Deletes a specific conversation identified by its ID (convo_id) for the authenticated user.
+The user must be signed in, and the conversation must be associated with their email.
+
+## Request Headers
+
+- **Content-Type**: application/json  
+- **X-CSRFToken**: The CSRF token of the authenticated user
+
+## Request Body
+
+- **email** (string, required): The email of the user deleting the conversation
+
+**Example**:  
+```json
+{
+  "email": "adam@smith.com"
+}
+```
+
+## Path Parameters
+
+- **convo_id** (integer, required): The ID of the conversation to be deleted
+
+## Responses
+
+### 200
+The conversation is successfully deleted. Returns the updated list of the user's remaining conversations.
+
+**Example**:  
+```json
+{
+  "message": "Conversation deleted!",
+  "conversations": [
+    {
+      "id": 5,
+      "email": "test1@test1.com",
+      "urls": [
+        "https://en.wikipedia.org/wiki/Logic",
+        "https://plato.stanford.edu/entries/logic/"
+      ],
+      "role": "Academic Researcher",
+      "created_at": "Tue, 26 Nov 2024 21:11:40 GMT",
+      "intent": "Exploring logic fundamentals for a research paper."
+    },
+    {
+      "id": 7,
+      "email": "test1@test1.com",
+      "urls": [
+        "https://en.wikipedia.org/wiki/Critical_thinking"
+      ],
+      "role": "Educator",
+      "created_at": "Tue, 26 Nov 2024 22:13:10 GMT",
+      "intent": "Preparing materials on critical thinking for students."
+    }
+  ]
+}
+```
+
+### 401
+The user is not authenticated, or the conversation does not belong to the user.
+
+**Example**:  
+```json
+{
+  "message": "User not signed in or conversation does not exist"
+}
+```
+
+### 500
+An error occurred while attempting to delete the conversation.
+
+**Example**:  
+```json
+{
+  "message": "Error deleting conversation",
+  "error": "Some descriptive error message"
+}
+```

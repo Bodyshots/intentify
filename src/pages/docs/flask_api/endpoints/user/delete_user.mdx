@@ -1,14 +1,15 @@
 ---
-title: "Delete User Account"
-description: "DELETE - Delete the Current User's Account"
+title: "Delete Current User"
+description: "DELETE - Delete Current User"
 ---
 ```
 DELETE {{NEXT_PUBLIC_API_BASE_URL}}/api/user/delete
 ```
 
-# Delete User Account
+# Delete Current User
 
-Allows a logged-in user to delete their account permanently. The user must confirm their email and password to proceed.
+Allows an authenticated user to delete their account permanently.
+The user must confirm their email and password to do this.
 
 ## Request Headers
 
@@ -17,8 +18,8 @@ Allows a logged-in user to delete their account permanently. The user must confi
 
 ## Request Body
 
-- **email** (string, required): The email address of the user.  
-- **password** (string, required): The current password of the user.  
+- **email** (string, required): The email address of the user
+- **password** (string, required): The current password of the user 
 
 **Example**:  
 ```json

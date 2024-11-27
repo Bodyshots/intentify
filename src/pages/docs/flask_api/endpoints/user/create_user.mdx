@@ -14,7 +14,6 @@ All fields need to be less than 255 characters.
 ## Request Headers
 
 - **Content-Type**: application/json
-
 - **X-CSRFToken**: The CSRF token of the user
 
 ## Request Body
@@ -43,9 +42,33 @@ All fields need to be less than 255 characters.
 Creates a new User object with the provided email and password. The password
 is encrypted with the SECRET_KEY in the web application's environment variables.
 
+**Example**
+```json
+{
+    "email": "test2@test2.com",
+    "id": 2,
+    "message": "Registration successful!",
+    "password": "$2b$12$7yRCCe05m8q8se9qlyGVR.iY196Qj32FjhjWckOSBfRbmK67HOAOq"
+}
+```
+
 ### 401
 An account with the email already exists, one field is not within 255 characters,
 or the provided password is not at least 8 characters long.
+
+**Example**
+```json
+{
+    "message": "Account already exists or invalid email or password"
+}
+```
     
 ### 500
 An error occurred during User creation.
+
+**Example**
+```json
+{
+  "message": "Error registering user",
+  "error": "Some descriptive error message"
+}
