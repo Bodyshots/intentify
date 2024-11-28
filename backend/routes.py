@@ -139,8 +139,7 @@ def login():
       submitted_password = data.get(PASSWORD)
       
       user = User.get_by_email(submitted_email)
-      if user and User.check_passwords(user.password, submitted_password):
-        login_user(user, remember=True)
+      if user and User.check_passwords(user.password, submitted_password) and login_user(user, remember=True):
         session[EMAIL] = submitted_email
         session[CREATED_AT] = datetime.now(utc)
         session[EXPIRED_AT] = datetime.now(utc) + timedelta(SESSION_LIFETIME)
@@ -199,14 +198,13 @@ def register():
 @login_required
 def logout():
   try:
-    if check_auth_status():
+    if (check_auth_status()):
       response = make_response(jsonify({MSG: 'Logged out successfully!'}), OK)
 
       logout_user()
       db.session.commit()  # Commit changes to the database
       return response
-    return make_response(jsonify({MSG: 'You need to be logged in', 
-                                  ERROR: str(e)}), UNAUTHORIZED)
+    return make_response(jsonify({MSG: 'You need to be logged in'}), UNAUTHORIZED)
   except Exception as e:
     db.session.rollback()
     return make_response(jsonify({MSG: 'Error logging out user', 

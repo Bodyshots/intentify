@@ -16,8 +16,43 @@ rather than forcing myself to use their components.
 
 It's worth noting that, from my testing, explicitly declaring Botpress's files as "use client" did not resolve these errors.
 
+## Saving Conversations
+To allow the chatbot to save conversations, the backend server must be accessible via a public URL. Since both the frontend and backend services in this project are served locally, 
+you'll need to temporarily expose the backend using ngrok. So, you'll need to do a couple of things:
+
+- An ngrok account to use ngrok's commands (sign up [here](https://ngrok.com/))
+- Install "ngrok", which allows you to temporarily expose the server's URL publicly. You can install ngrok [here](https://download.ngrok.com)
+- A Botpress account to edit the chatbot
+
+### Configuration
+After you've installed ngrok, run Intentify as per usual. Then, run the following command:
+```
+ngrok http 4000
+```
+As our backend server is running on port 4000, this command will expose port 4000 on a public URL. Upon running this command, you'll see details about
+how the temporary public URL is doing, including its latency and approximate region. The URL you'll need is beside the text that says "Forwarding". If you're
+using the free plan, it'll look something like:
+```
+https://30f3-134-231-35-146.ngrok-free.app (an example, yours may be different)
+```
+Copy this URL and go edit Intentify's bot in Botpress. Find the node that is labelled "save_convo" and click the third card. It should have a blue thunderbolt
+symbol. Click the code popup and replace the value of "baseURL1" with your copied URL.
+
+Now, return to your Botpress workspace and go to the Webchat section. Under the Share tab, copy the Embed code of the bot and replace the Script src links of the
+ChatEmbed component. The file you'll need to edit is located in components/GlobalComps/ChatEmbed/ChatEmbed.tsx.
+
+If everything is working fine, you should be able to save conversations with Intentify! You'll still access the site using the localhost:3000 destination.
+Ensure you keep your ngrok command running while you interact with the
+website. If it stops, you'll need to do this entire process again; ngrok generates a different public URL everytime it's launched.
+
 ## Improvements
 One major improvement that could be made to this chatbot is in regards to security. Currently, it's possible to be an unauthenticated user and add a conversation
 to an existing account's conversation list. Counteracting this would ideally involve checking if the user is authenticated. However, as the chatbot is available
-globally, updating the chatbot with the user's authenticated state (and email) may be pretty difficult. One alternative is to stylize and code Botpress's bot client
-from scratch. Yet, as discussed in "Chatbot Embed vs Chatbot Components", this could also be pretty difficult.
+globally, updating the chatbot with the user's authenticated state (and email) may be pretty difficult and may require coding the Botpress's bot client
+from scratch.
+
+Another improvement is in regards to bot configuration, as editing the bot everytime Intentify is deployed from scratch can be burdensome. This can be
+solved by having a static backend server so a service like ngrok is no longer needed (may require having to deal with cross-site cookies for authentication).
+
+Finally, one last improvement is in regards to the URLs the bot can access. As the bot uses jina.ai to analyze URL content, URLs on HTTP are unavailable
+to the bot due to security concerns. This could be counteracted by using an alternative method of scanning such web pages (manual webscraping?).

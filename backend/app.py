@@ -8,7 +8,6 @@ from flask_session import Session
 from constants import LOGIN_VIEW
 from dotenv import load_dotenv
 from config import Config
-import os
 
 db = SQLAlchemy()
 cors = CORS()
@@ -52,9 +51,3 @@ def create_app():
     db.create_all()
     
   return app
-
-
-app = create_app()
-
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=4000, debug=True)

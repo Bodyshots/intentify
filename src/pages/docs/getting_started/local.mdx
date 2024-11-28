@@ -15,18 +15,20 @@ in a .env file.
 
 #### Frontend (src)
 - **NEXT_PUBLIC_API_BASE_URL**: The location of the Flask server. Set this to http://localhost:4000
-- **NEXT_PUBLIC_DB_BASE_URL**: The location of the database. Set this to http://127.0.0.1:5432
 
 #### Backend
-- **SECRET_KEY**: A randomly generated secret key for encryption.
+- **SECRET_KEY**: A randomly generated secret key for encryption
+- **DATABASE_URL**: The location of the database. In my presentation, this is set to my database hosted by 
+AWS. However, for local development, set this to http://127.0.0.1:5432.
 
 ### Scripts
 
 Inside, there are four scripts that help you with this web application's lifecycle.
+Note: Ensure you have Docker and Python's venv module installed.
 
 ### setup.sh
 Sets up and activates the virtual environment "venv" to install the required dependencies
-for the backend (requires the installation of Python's venv module).
+for the backend.
 
 ### setup_docker.sh
 Removes any existing docker containers and volumes. Thereafter, the script installs

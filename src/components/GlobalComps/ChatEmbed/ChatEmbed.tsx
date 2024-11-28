@@ -8,7 +8,7 @@ export function ChatEmbed() {
         src="https://cdn.botpress.cloud/webchat/v2.2/inject.js" 
       />
       <Script 
-        src="https://files.bpcontent.cloud/2024/11/19/00/20241119005939-9TZNTPEW.js" 
+        src="https://files.bpcontent.cloud/2024/11/26/21/20241126213005-ZPOC32I2.js" 
         strategy="lazyOnload"
       />
     </>

@@ -11,24 +11,24 @@ import GuestHomeCard from './GuestHomeCard/guesthomecard';
 
 const cards = [
   {
-    step_title: "1. Input a URL",
+    step_title: "1. Share a URL",
     Icon: Link,
-    desc: "Pass in a URL for our chatbots to interpret"
+    desc: "Enter a URL to kick off the conversation. Our chatbot will start exploring the site to personally understand you."
   },
   {
-    step_title: "2. Answer some questions",
+    step_title: "2. Answer Some Quick Questions",
     Icon: MessageCircleQuestion,
-    desc: "Give answers to some questions about your intentions around your given URL"
+    desc: "Tell us more about what you're looking for! A few simple questions will help us understand your intent on this site."
   },
   {
-    step_title: "3. Did we get what you're looking for?",
+    step_title: "3. Did We Guess Right?",
     Icon: SearchCheck,
-    desc: "You'll be prompted with what our chatbots believe why you're at that URL"
+    desc: "Our chatbot will give you a guess about why you're visiting. See if we're on the mark with our analysis!"
   },
   {
-    step_title: "4. Try again!",
+    step_title: "4. Keep Going or Try Again!",
     Icon: RefreshCcw,
-    desc: "Did we get it? If not, feel free to try again by answering some more questions!"
+    desc: "Not quite right? Feel free to explore more pages or answer a few more questions for a better guess!"
   }
 ]
 

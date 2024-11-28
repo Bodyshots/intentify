@@ -1,7 +1,8 @@
 ---
-title: "Databases and Cloud"
-description: "Intentify's databases and cloud dependencies"
+title: "Database and Cloud"
+description: "Intentify's database and cloud dependencies"
 ---
-# Databases and Cloud
-## Databases
-## Cloud
+# Database and Cloud
+To store its User and Conversation models as well as to keep track of User sessions, Intentify uses a PostgreSQL 16 database
+via AWS's relational database service (RDS) and only accepts TCP connections coming from my IP address. If you do not have access
+to a database hosted by AWS, you can build one by using the docker container defined in this project's compose.yml file.

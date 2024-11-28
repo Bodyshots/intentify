@@ -11,50 +11,70 @@ import Autoplay from "embla-carousel-autoplay"
 import { Quote } from 'lucide-react';
 
 const testimonials = [ {
-  header: 'A Game Changer for Understanding User Behavior',
-  body: `Intentify has completely transformed how we interpreted visitor intent!
-         With just a URL, it helped us in tailoring our content and marketing strategies.
-         Our conversion rate has never been higher!`,
+  header: `A game-changer for anyone who's curious about the web!`,
+  body: `As a digital marketer, I'm always exploring new websites and trends, but Intentify has taken my browsing experience to a whole new level. 
+  Highly recommend to anyone looking for a deeper, more personalized web experience!`,
   speaker: `Amanda Romero`,
   role: `Digital Marketing Specialist`
 },
 {
-  header: 'Saves Time and Delivers Targeted Insights!',
-  body: `Knowing why users visit our site has always been a guessing game.
-         But with Intentify, we've finally been able to stop guessing and start strategizing.
-         A must have for any UI/UX designer!`,
+  header: `It's like having a personal assistant for my online research.`,
+  body: `Intentify has completely revolutionized the way I conduct research.
+  Instead of just skimming websites, I now have a tool that actively engages with me, helping me dig deeper into the content.
+  It's really provides a fun way to reflect on why I'm visiting a page.`,
   speaker: `James Timothy`,
   role: `Content Strategist`
 },
 {
-  header: 'Invaluable for E-commerce Optimization!',
-  body: `We tried Intentify on our e-commerce platform, and we were dumbfounded!
-        Our customers are finding what they need faster, and we're seeing a boost in sales!`,
+  header: 'Never knew a chatbot could be this smart!',
+  body: `The chatbot isn't just asking generic questions-it's asking the right questions.
+  It accurately identified my profession right off the bat, then offered me related content to explore.
+  As someone in tech, I love that it can learn and adapt to my interests. This is the future of online interaction!`,
   speaker: `Lily Kennedy`,
-  role: `E-commerce Manager`
+  role: `Software Engineer`
 },
 {
-  header: 'A Digital Mind-Reader...',
-  body: `Every URL we analyze with Intentify tells us so much about our users before they even
-         interact with the site. It's almost like having a digital mind-reader that predicts what every
-         visitor needs.`,
+  header: `I didn't realize I needed Intentify...`,
+  body: `And then I tried it. 
+  The ability to save my browsing history and revisit past conversations is incredibly useful.
+  It's like an interactive research assistant that's always available.`,
   speaker: `Tom Simion`,
-  role: `Product Manager`
+  role: `Entrepreneur`
 },
 {
-  header: 'The Missing Puzzle Piece to User Intent',
-  body: `Understanding visitor intent was our missing piece, and Intentify fit perfectly.
-         Highly recommended for anyone serious about user experience!`,
+  header: 'Perfect for anyone who wants to explore the web with purpose!',
+  body: `Intentify takes browsing to the next level.
+  I've been using it for a few weeks now, and I'm hooked. How have I never heard of this tool before?`,
   speaker: `Emily Morgan`,
   role: `UX Designer`
 },
 {
-  header: 'Unbelievably Accurate and Easy to Use!',
-  body: `Not only does Intentify give highly accurate intent insights,
-         but the interface makes it easy for our team to understand and
-         apply these insights quickly`,
+  header: `I can't stop recommending this to everyone I know.`,
+  body: `The bot is incredibly accurate! Every time I go on a browsing spree, it nails my intentions.
+  I tell everyone I know about it, and they're all impressed!`,
   speaker: `Sarah Lee`,
-  role: `SEO Analyst`
+  role: `Freelance Writer`
+},
+{
+  header: `Finally, a tool that understands me!`,
+  body: `As an online educator, I'm constantly looking for new content and resources.
+  Intentify has helped me streamline my browsing and actually think about what I'm seeking on each site.`,
+  speaker: `Jessica Larson`,
+  role: `Online Educator`
+},
+{
+  header: `I bow to you, oh creator of Intentify...`,
+  body: `I've heard that the CEO of Intentify is insanely hot! I mean, have you seen him? Holy! I'd give him a job immediately just to look at his precious little eyes.`,
+  speaker: `Jennifer Lawrence`,
+  role: `Weirdo`
+},
+{
+  header: `This is Jennifer Lawrence's lawyer.`,
+  body: `We've seen how you've labelled our client on your site. This is grounds for slander and defamation.
+  If you do not remove that "Weirdo" subtitle from her testimonial immediately, we will be forced to pursue legal action.
+  Choose your next actions carefully.`,
+  speaker: `Sarah Edwards`,
+  role: `Another weirdo`
 }
 ]
 
