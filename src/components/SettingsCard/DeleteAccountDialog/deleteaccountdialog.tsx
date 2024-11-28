@@ -23,7 +23,7 @@ import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom'
 import { redirect } from 'next/navigation'
 import SubmitBtn from '@/components/SubmitBtn/submitbtn'
 import { OtherConstants } from '@/constants/other'
-import { setEmail } from '@/redux/slices/emailSlice'
+import { setUserID } from '@/redux/slices/userIDSlice'
 import { setFirstName, setLastName } from '@/redux/slices/nameSlice'
 import { setConversations } from '@/redux/slices/convoSlice'
 
@@ -79,7 +79,7 @@ const DeleteAccountDialog = ({ csrfToken }: DeleteAccountDialogProps) => {
   
       if (response.ok) {
         dispatch(setAuth(false));
-        dispatch(setEmail(''));
+        dispatch(setUserID(-1));
         dispatch(setFirstName(''));
         dispatch(setLastName(''));
         dispatch(setConversations([]));

@@ -1,14 +1,14 @@
 ---
-title: "Get Conversations by Email"
-description: "POST - Get Conversations by Email"
+title: "Get Conversations by User ID"
+description: "POST - Get Conversations by User ID"
 ---
 ```
-POST {{NEXT_PUBLIC_API_BASE_URL}}/api/conversations/email
+POST {{NEXT_PUBLIC_API_BASE_URL}}/api/conversations/user_id
 ```
 
-# Get Conversations by Email
+# Get Conversations by User ID
 
-Returns a list of all conversations associated with a specific user's email.
+Returns a list of all conversations associated with a specific user's ID.
 The user must be authenticated to access this data.
 
 ## Request Headers
@@ -18,43 +18,43 @@ The user must be authenticated to access this data.
 
 ## Request Body
 
-- **email** (string, required): The email address of the user
+- **user_id** (integer, required): The ID of the user
 
 **Example**:  
 ```json
 {
-  "email": "sigmund@freud.com"
+  "user_id": 1
 }
 ```
 
 ## Responses
 
 ### 200
-Returns a list of all conversations associated with the provided email.
+Returns a list of all conversations associated with the provided user ID.
 
 **Example**:  
 ```json
 [
   {
-    "id": 12,
-    "email": "sigmund@freud.com",
+    "user_id": 1,
     "urls": [
       "https://en.wikipedia.org/wiki/Inductive_reasoning"
     ],
     "role": "Student",
     "created_at": "Tue, 26 Nov 2024 21:11:40 GMT",
-    "intent": "Learning about inductive reasoning for a class project."
+    "intent": "Learning about inductive reasoning for a class project.",
+    "id": 7
   },
   {
-    "id": 15,
-    "email": "sigmund@freud.com",
+    "user_id": 1,
     "urls": [
       "https://en.wikipedia.org/wiki/Psychoanalysis",
       "https://plato.stanford.edu/entries/freud/"
     ],
     "role": "Psychologist",
     "created_at": "Tue, 26 Nov 2024 22:13:10 GMT",
-    "intent": "Researching psychoanalysis for a seminar."
+    "intent": "Researching psychoanalysis for a seminar.",
+    "id": 8
   }
 ]
 ```

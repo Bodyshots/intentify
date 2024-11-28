@@ -216,9 +216,10 @@ def logout():
 def create_conversation():
   try:
     data = request.get_json()
-    if (User.get_by_email(email=data.get(EMAIL))):
+    user = User.get_by_email(email=data.get(EMAIL))
+    if (user):
       # Create a new conversation for the authenticated user
-      new_convo = Conversation(email=data.get(EMAIL),
+      new_convo = Conversation(user_id=user.id,
                                urls=data.get(URLS),
                                user_role=data.get(ROLE),
                                user_intent=data.get(INTENT))
@@ -229,7 +230,7 @@ def create_conversation():
 
       return make_response(jsonify({
         ID: new_convo.id,
-        EMAIL: new_convo.email,
+        USER_ID: new_convo.user_id,
         URLS: new_convo.urls,
         ROLE: new_convo.user_role,
         INTENT: new_convo.user_intent,
@@ -255,7 +256,7 @@ def delete_conversation(convo_id: int):
         current_user.email == data.get(EMAIL) and convo_id == convo.id):
       db.session.delete(convo)
       db.session.commit()
-      new_convos = Conversation.get_by_email(email=data.get(EMAIL))
+      new_convos = Conversation.get_by_user_id(user_id=current_user.id)
       return make_response(jsonify({MSG: 'Conversation deleted!',
                                     CONVOS: [new_convo.json() for new_convo in new_convos]}), OK)
 
@@ -280,12 +281,12 @@ def get_conversations():
     return make_response(jsonify({MSG: 'Error getting conversations',
                                   ERROR: str(e)}), INTERNAL_ERR)
     
-@main.route('/api/conversations/email', methods=[POST])
-def get_conversations_email():
+@main.route('/api/conversations/user_id', methods=[POST])
+def get_conversations_user_id():
   try:
     data = request.get_json()
     if check_auth_status():
-      convos = Conversation.get_by_email(email=data.get(EMAIL))
+      convos = Conversation.get_by_user_id(user_id=data.get(USER_ID))
       convos_data = [convo.json() for convo in convos]
       return make_response(jsonify(convos_data), OK)
     return make_response(jsonify({MSG: "User not signed in"}), UNAUTHORIZED)

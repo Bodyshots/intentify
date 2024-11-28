@@ -14,7 +14,6 @@ import FormFieldCustom from '@/components/FormFieldCustom/formfieldcustom'
 import SubmitBtn from '@/components/SubmitBtn/submitbtn'
 import { OtherConstants } from '@/constants/other'
 import { useAppDispatch } from '@/redux/store'
-import { setEmail } from '@/redux/slices/emailSlice'
 
 interface EmailSettingsProps {
   csrfToken: string | null;
@@ -73,7 +72,6 @@ const EmailSettings = ({ csrfToken }: EmailSettingsProps) => {
       const data = await response.json();
 
       if (response.ok) {
-        dispatch(setEmail(values.new_email));
         toast.success(data.message);
       }
       else {

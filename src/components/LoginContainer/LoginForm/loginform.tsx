@@ -11,7 +11,7 @@ import Link from 'next/link';
 import getCSRF from '@/lib/GetCSRF';
 import { setAuth } from '@/redux/slices/authSlice';
 import { setFirstName, setLastName } from '@/redux/slices/nameSlice';
-import { setEmail } from '@/redux/slices/emailSlice';
+import { setUserID } from '@/redux/slices/userIDSlice';
 import { useAppDispatch } from '@/redux/store';
 import { toast } from "sonner";
 import { ErrorConstants } from '@/constants/errors';
@@ -72,7 +72,7 @@ function LoginForm() {
   
       if (response.ok) {
         dispatch(setAuth(true));
-        dispatch(setEmail(data.user.email));
+        dispatch(setUserID(data.user.id));
         dispatch(setFirstName(data.user.first_name));
         dispatch(setLastName(data.user.last_name));
         dispatch(setConversations(data.user.conversations));
@@ -81,7 +81,7 @@ function LoginForm() {
       }
       else {
         dispatch(setAuth(false));
-        dispatch(setEmail(''));
+        dispatch(setUserID(-1));
         dispatch(setFirstName(''));
         dispatch(setLastName(''));
         dispatch(setConversations([]));

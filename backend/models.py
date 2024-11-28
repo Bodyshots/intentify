@@ -15,7 +15,7 @@ class User(db.Model, UserMixin):
   conversations = db.relationship('Conversation', 
                                   backref='user',
                                   lazy=True,
-                                  cascade='all, delete-orphan')
+                                  cascade='all, delete-orphan, save-update')
   
   @staticmethod
   def get_by_id(id: int):
@@ -47,7 +47,7 @@ class User(db.Model, UserMixin):
 class Conversation(db.Model):
   __tablename__ = 'conversations'
   id = db.Column(db.Integer, primary_key=True)
-  email = db.Column(db.String(255), db.ForeignKey('users.email'), nullable=False)
+  user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
   urls = db.Column(db.ARRAY(db.Text))
   user_role = db.Column(db.Text, default="")
   user_intent = db.Column(db.Text, default="")
@@ -58,13 +58,13 @@ class Conversation(db.Model):
     return Conversation.query.get(int(convo_id))
 
   @staticmethod
-  def get_by_email(email: str):
-    return Conversation.query.filter_by(email=email)
+  def get_by_user_id(user_id: int):
+    return Conversation.query.filter_by(user_id=user_id)
 
   def json(self):
     return {
       ID: self.id,
-      EMAIL: self.email,
+      USER_ID: self.user_id,
       URLS: self.urls,
       INTENT: self.user_intent,
       ROLE: self.user_role,

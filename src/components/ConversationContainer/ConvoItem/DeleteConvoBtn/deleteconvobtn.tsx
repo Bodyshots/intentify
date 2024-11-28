@@ -23,11 +23,11 @@ const DeleteConvoBtn = ({ convo_id }: DeleteConvoBtnProps) => {
   const dispatch = useAppDispatch();
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const csrfToken = getCSRF();
-  const email = useAppSelector((state) => state.email_persist.email);
+  const user_id = useAppSelector((state) => state.userID_persist.user_id);
 
   async function deleteConvo(convo_id: number) {
     setLoadingSubmit(true);
-    dispatch(deleteConversation({ email, convo_id, csrfToken }))
+    dispatch(deleteConversation({ user_id, convo_id, csrfToken }))
     .finally(() => setLoadingSubmit(false));
   }
 

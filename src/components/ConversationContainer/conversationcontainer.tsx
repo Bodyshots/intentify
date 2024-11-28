@@ -14,7 +14,7 @@ const ConversationContainer = () => {
   const csrfToken = getCSRF();
   const [isLoaded, setIsLoaded] = useState(false);
   const auth = useAppSelector((state) => state.auth_persist.auth);
-  const email = useAppSelector((state) => state.email_persist.email);
+  const user_id = useAppSelector((state) => state.userID_persist.user_id);
   const convos = useAppSelector((state) => state.convos_persist.convos)
   const dispatch = useAppDispatch();
 
@@ -23,7 +23,7 @@ const ConversationContainer = () => {
       toast.error(ErrorConstants.AUTH_PROTECTED);
       redirect('/');
     }
-    dispatch(fetchConversations({email, csrfToken})).finally(() => setIsLoaded(true));
+    dispatch(fetchConversations({user_id, csrfToken})).finally(() => setIsLoaded(true));
   }, [csrfToken]);
 
   if (!isLoaded) {

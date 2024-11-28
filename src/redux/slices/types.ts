@@ -21,9 +21,9 @@ export interface ConvosState {
   error: string | null;
 }
 
-// Email
-export interface EmailState {
-  email: string;
+// UserID
+export interface UserIDState {
+  user_id: number;
 }
 
 // Names

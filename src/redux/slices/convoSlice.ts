@@ -7,12 +7,12 @@ import { toast } from 'sonner';
 import { Conversation, ConvosState } from './types';
 
 interface fetchConvoParams {
-  email: string;
+  user_id: number;
   csrfToken: string;
 }
 
 interface deleteConvoParams {
-  email: string;
+  user_id: number;
   convo_id: number;
   csrfToken: string;
 }
@@ -27,16 +27,16 @@ const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const fetchConversations = createAsyncThunk(
   'convos/fetchConversations',
-  async ({email, csrfToken}: fetchConvoParams) => {
-    if (email && csrfToken) {
-      const response = await fetch(`${apiBaseUrl}/api/conversations/email`, {
+  async ({user_id, csrfToken}: fetchConvoParams) => {
+    if (user_id && csrfToken) {
+      const response = await fetch(`${apiBaseUrl}/api/conversations/user_id`, {
         method: APIConstants.POST,
         headers: {
           'X-CSRFToken': csrfToken,
           'Content-Type': APIConstants.CONTENT_JSON,
         },
         body: JSON.stringify({
-          email: email,
+          'user_id': user_id,
         }),
         credentials: APIConstants.CRED_INCLUDE
       });
@@ -55,8 +55,8 @@ export const fetchConversations = createAsyncThunk(
 
 export const deleteConversation = createAsyncThunk(
   'convos/deleteConversation',
-  async ({email, convo_id, csrfToken}: deleteConvoParams) => {
-    if (email && csrfToken) {
+  async ({user_id, convo_id, csrfToken}: deleteConvoParams) => {
+    if (user_id && csrfToken) {
       const response = await fetch(`${apiBaseUrl}/api/conversation/delete/${convo_id}`, {
         method: APIConstants.DELETE,
         headers: {
@@ -64,7 +64,7 @@ export const deleteConversation = createAsyncThunk(
           'Content-Type': APIConstants.CONTENT_JSON,
         },
         body: JSON.stringify({
-          email: email,
+          'user_id': user_id,
         }),
         credentials: APIConstants.CRED_INCLUDE
       });

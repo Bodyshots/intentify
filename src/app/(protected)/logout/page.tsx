@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 import Loading from "@/app/loading";
 import { ErrorConstants } from "@/constants/errors";
 import { APIConstants } from "@/constants/api";
-import { setEmail } from "@/redux/slices/emailSlice";
+import { setUserID } from "@/redux/slices/userIDSlice";
 import { setConversations } from "@/redux/slices/convoSlice";
 import { setFirstName, setLastName } from "@/redux/slices/nameSlice";
 
@@ -57,7 +57,7 @@ function Logout() {
 
         if (response.ok) {
           dispatch(setAuth(false));
-          dispatch(setEmail(''));
+          dispatch(setUserID(-1));
           dispatch(setFirstName(''));
           dispatch(setLastName(''));
           dispatch(setConversations([]));
