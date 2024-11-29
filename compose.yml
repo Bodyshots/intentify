@@ -28,11 +28,8 @@ services:
     ports:
       - 4000:4000
     environment:
-      FLASK_APP: app.py
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/postgres
-    depends_on:
-      db:
-        condition: service_healthy
+      FLASK_APP: run.py
+      DATABASE_URL: postgresql://postgres:postgres@database-1.cdycyi2c6ez2.us-east-1.rds.amazonaws.com:5432/initial_intentify_db
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:4000/api/health"]  # Adjust the endpoint as necessary
       interval: 10s
