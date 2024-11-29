@@ -6,3 +6,5 @@ description: "Intentify's database and cloud dependencies"
 To store its User and Conversation models as well as to keep track of User sessions, Intentify uses a PostgreSQL 16 database
 via AWS's relational database service (RDS) and only accepts TCP connections coming from my IP address. If you do not have access
 to a database hosted by AWS, you can build one by using the docker container defined in this project's compose.yml file.
+
+I also use Supabase to host the introduction video seen in both the authenticated and guest views of Intentify's Home page.

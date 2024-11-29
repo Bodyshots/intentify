@@ -28,7 +28,8 @@ const AuthHome = () => {
             loop
             muted
             className="rounded-3xl aspect-auto shadow-2xl border-1 md:border-1 border-base-content/20 xl:w-[50%] justify-center">
-            <source src="/intentify_trailer.mp4" type="video/mp4" />
+            <source src="https://cuogebjjvsozxiyyichx.supabase.co/storage/v1/object/sign/videos/intentify_trailer.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ2aWRlb3MvaW50ZW50aWZ5X3RyYWlsZXIubXA0IiwiaWF0IjoxNzMyODUyMzk4LCJleHAiOjg2NTczMjc2NTk5OH0.YzAdzhnLgCWRyD6lsKCf2JIV9pYwoimuxd3lbTDONTg&t=2024-11-29T03%3A53%3A18.732Z"
+                    type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
