@@ -22,18 +22,17 @@ have been fulfilled
 
 The slice also has two AsyncThunks. I use these to manage a user's conversation list:
 - **fetchConversations**: Get the user's conversation list from Intentify's Conversation table.
-Requires the user's email and csrfToken and returns a list of Conversation objects. If the user's
-email does not exist or the csrfToken is invalid, the thunk returns an empty list
-- **deleteConversation**: Delete a conversatioon from Intentify's Conversation table. Requires an
-email, Conversation ID, and a csrfToken. The email must match the Conversation's email (avoids users from
+Requires the user's ID and csrfToken and returns a list of Conversation objects. If the user's
+ID or the csrfToken is invalid, the thunk returns an empty list
+- **deleteConversation**: Delete a conversatioon from Intentify's Conversation table. Requires a user ID,
+Conversation ID, and a csrfToken. The user ID must match the Conversation's user ID (avoids users from
 deleting other users' conversations). Returns the user's conversation list without the specified conversation.
-Otherwise (if the conversation ID, email or csrfToken is invalid), the thunk returns an empty list.
+Otherwise (if the conversation ID, user ID or csrfToken is invalid), the thunk returns an empty list.
 
-## emailSlice
-A slice that keeps track of an authenticated user's email. This slice only has one state, email, that is
-initially set to an empty string. Much like authSlice, it's set after the user registers an account or has
-signed into Intentify. Additionally, it's set to the user's new email after the user decides to change it.
-If the user logs out or has their account deleted, email is set back to an empty string.
+## userIDSlice
+A slice that keeps track of an authenticated user's ID. This slice only has one state, user_id, that is
+initially set to -1. Much like authSlice, it's set after the user registers an account or has
+signed into Intentify. If the user logs out or has their account deleted, user_id is set back to -1.
 
 This slice is primarily used in conjunction with convoSlice for convoSlice's async thunks.
 

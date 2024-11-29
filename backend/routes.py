@@ -253,7 +253,7 @@ def delete_conversation(convo_id: int):
     data = request.get_json()
     convo = Conversation.get_by_id(convo_id)
     if convo and (check_auth_status() and
-        current_user.email == data.get(EMAIL) and convo_id == convo.id):
+        current_user.id == data.get(USER_ID) and convo_id == convo.id):
       db.session.delete(convo)
       db.session.commit()
       new_convos = Conversation.get_by_user_id(user_id=current_user.id)
