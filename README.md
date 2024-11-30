@@ -1,78 +1,72 @@
-<p align="center">
-  <a href="https://nextjs-flask-starter.vercel.app/">
-    <img src="https://assets.vercel.com/image/upload/v1588805858/repositories/vercel/logo.png" height="96">
-    <h3 align="center">Next.js Flask Starter</h3>
-  </a>
-</p>
+# Introduction
 
-<p align="center">Simple Next.js boilerplate that uses <a href="https://flask.palletsprojects.com/">Flask</a> as the API backend.</p>
+**Intentify** is a website developed for Brave's Web-scraping for Visitor Classification Mini-challenge, combining both AI and webscraping to classify users based on their inputted URL.
+Additionally, Intentify allows users to search for related webpages to their URL, helping users find what they are looking for and enhancing Intentify's predictions.
+By analyzing the contents of a user's URLs, Intentify is able to predict a user's occupation and intentions by the end of their conversation.
 
-<br/>
+## Tech-stack
+Below is a list of technologies used to create Intentify. Required technologies for the Brave Mini-challenge are bolded.
 
-## Introduction
+### Frontend
+- **React**
+- **Redux**
+- Next.js
 
-This is a hybrid Next.js + Python app that uses Next.js as the frontend and Flask as the API backend. One great use case of this is to write Next.js apps that use Python AI libraries on the backend.
+### Backend + Cloud
+- **Python** (specifically, Python3)
+- **Flask**
+- **AWS**
+- Supabase
 
-## How It Works
+### Other Techologies
+- Botpress
+- Jina.ai
+- Nextra
 
-The Python/Flask server is mapped into to Next.js app under `/api/`.
+## Developing Locally - Getting started
+First, clone the git repository. Before running the web application, you'll need to
+set up a few services and environment variables.
 
-This is implemented using [`next.config.js` rewrites](https://github.com/vercel/examples/blob/main/python/nextjs-flask/next.config.js) to map any request to `/api/:path*` to the Flask API, which is hosted in the `/api` folder.
+### Environment Variables
+Intentify's frontend and backend both require environment variables that need to be set
+in a .env file.
 
-On localhost, the rewrite will be made to the `127.0.0.1:5328` port, which is where the Flask server is running.
+#### Frontend (src)
+- **NEXT_PUBLIC_API_BASE_URL**: The location of the Flask server. Set this to http://localhost:4000
 
-In production, the Flask server is hosted as [Python serverless functions](https://vercel.com/docs/concepts/functions/serverless-functions/runtimes/python) on Vercel.
+#### Backend
+- **SECRET_KEY**: A randomly generated secret key for encryption
+- **DATABASE_URL**: The location of the database. In my presentation, this is set to my database hosted by 
+AWS. However, for local development, set this to http://127.0.0.1:5432.
 
-## Demo
+### Scripts
 
-https://nextjs-flask-starter.vercel.app/
+Inside, there are four scripts that help you with this web application's lifecycle.
+Note: Ensure you have Docker and Python's venv module installed.
 
-## Deploy Your Own
+### setup.sh
+Sets up and activates the virtual environment "venv" to install the required dependencies
+for the backend.
 
-You can clone & deploy it to Vercel with one click:
+### setup_docker.sh
+Removes any existing docker containers and volumes. Thereafter, the script installs
+the necessary frontend dependencies in the virtual environment and rebuilds the web
+application's containers.<br/><br/>
+The web application depends on three services:
+- db - A PostgreSQL database that runs on port 5432
+- flaskapp - The Flask backend of the web application, running on port 4000
+- nextapp - The Next.JS frontend of the web application, running on port 3000
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?demo-title=Next.js%20Flask%20Starter&demo-description=Simple%20Next.js%20boilerplate%20that%20uses%20Flask%20as%20the%20API%20backend.&demo-url=https%3A%2F%2Fnextjs-flask-starter.vercel.app%2F&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F795TzKM3irWu6KBCUPpPz%2F44e0c6622097b1eea9b48f732bf75d08%2FCleanShot_2023-05-23_at_12.02.15.png&project-name=Next.js%20Flask%20Starter&repository-name=nextjs-flask-starter&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fnextjs-flask&from=vercel-examples-repo)
+### run.sh
+Runs the web application, utilizing the virtual environment.
 
-## Developing Locally
+### shutdown.sh
+Stops all running docker containers.
 
-You can clone & create this repo with the following command
+---
+In general, start Intentify by running (in order), setup.sh, setup_docker.sh, and run.sh.
+Once done, run shutdown.sh to stop all running services. You don't have to set
+the application back up after you stop it; just run run.sh to start it back up.
 
-```bash
-npx create-next-app nextjs-flask --example "https://github.com/vercel/examples/tree/main/python/nextjs-flask"
-```
-
-## Getting Started
-
-First, install the dependencies:
-
-```bash
-npm install
-# or
-yarn
-# or
-pnpm install
-```
-
-Then, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-The Flask server will be running on [http://127.0.0.1:5328](http://127.0.0.1:5328) – feel free to change the port in `package.json` (you'll also need to update it in `next.config.js`).
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [Flask Documentation](https://flask.palletsprojects.com/en/1.1.x/) - learn about Flask features and API.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Contact
+You can reach out by emailing me at lanzangeles100@gmail.com. You can also go and visit my website at https://lanzangeles.netlify.app/!
