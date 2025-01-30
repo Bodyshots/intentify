@@ -24,6 +24,10 @@ def check_auth_status():
         return current_user and current_user.is_authenticated
   return False
 
+@main.route('/api/test')
+def hello_world():
+  return 'hello world!'
+
 ###### Users ######
 @main.route('/api/users', methods=[GET])
 def get_users():

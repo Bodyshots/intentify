@@ -1,22 +1,22 @@
 services:
 
   # db service
-  # db:
-  #   container_name: db
-  #   image: postgres:16
-  #   environment:
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: postgres
-  #     POSTGRES_DB: postgres
-  #   ports:
-  #     - 5432:5432
-  #   volumes:
-  #     - pgdata:/var/lib/postgresql/data
-  #   healthcheck:
-  #     test: ["CMD", "pg_isready", "-U", "postgres"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
+  db:
+    container_name: db
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # flask service
   flaskapp:
@@ -29,7 +29,7 @@ services:
       - 4000:4000
     environment:
       FLASK_APP: run.py
-      DATABASE_URL: postgresql://postgres:postgres@database-1.cdycyi2c6ez2.us-east-1.rds.amazonaws.com:5432/initial_intentify_db
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/postgres
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:4000/api/health"]  # Adjust the endpoint as necessary
       interval: 10s
