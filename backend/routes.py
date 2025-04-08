@@ -199,16 +199,13 @@ def register():
                                   ERROR: str(e)}), INTERNAL_ERR)
 
 @main.route('/api/logout', methods=[POST])
-@login_required
 def logout():
   try:
-    if (check_auth_status()):
-      response = make_response(jsonify({MSG: 'Logged out successfully!'}), OK)
+    response = make_response(jsonify({MSG: 'Logged out successfully!'}), OK)
 
-      logout_user()
-      db.session.commit()  # Commit changes to the database
-      return response
-    return make_response(jsonify({MSG: 'You need to be logged in'}), UNAUTHORIZED)
+    logout_user()
+    db.session.commit()  # Commit changes to the database
+    return response
   except Exception as e:
     db.session.rollback()
     return make_response(jsonify({MSG: 'Error logging out user', 
